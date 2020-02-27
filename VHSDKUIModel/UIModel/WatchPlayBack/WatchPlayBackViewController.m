@@ -126,7 +126,7 @@ static AnnouncementView* announcementView = nil;
     [self.backView addSubview:_moviePlayer.moviePlayerView];
     [self.backView sendSubviewToBack:_moviePlayer.moviePlayerView];
 
-    _moviePlayer.documentView.frame = self.docAreaView.bounds;
+//    _moviePlayer.documentView.frame = self.docAreaView.bounds;
 }
 
 - (void)viewDidLoad {
@@ -291,6 +291,9 @@ static AnnouncementView* announcementView = nil;
 }
 #pragma mark - 码率选择
 - (IBAction)definitionBtnCLicked:(UIButton *)sender {
+    
+    if(_definitionList.count==0)
+        return;
     
     int _leve = _moviePlayer.curDefinition;
     BOOL isCanPlayDefinition = NO;
@@ -832,6 +835,8 @@ static AnnouncementView* announcementView = nil;
         NSLog(@"%@",code);
 //        [ws showMsg:code afterDelay:1.5];
         [tableView tableViewDidFinishedLoading];
+        if( [failedData[@"code"] intValue] == 10407)
+            tableView.reachedTheEnd = YES;
 //        [UIAlertView popupAlertByDelegate:nil title:failedData[@"content"] message:code];
     }];
 }

@@ -161,6 +161,11 @@ typedef NS_ENUM(NSInteger, VHRoomDevice) {
  */
 - (void)room:(VHRoom *)room iskickout:(BOOL)iskickout;
 
+/*
+ * liveOver 直播结束
+ */
+- (void)room:(VHRoom *)room liveOver:(BOOL)liveOver;
+
 /**
  * 收到被禁言/取消禁言
  */

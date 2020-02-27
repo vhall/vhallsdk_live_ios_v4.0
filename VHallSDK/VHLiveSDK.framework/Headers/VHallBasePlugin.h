@@ -16,7 +16,7 @@
 /**
  * 活动Model 活动正常开始后 才会有值
  */
-@property (nonatomic,weak,readonly) VHallActivityModel *activityModel;
+@property (nonatomic,weak) VHallActivityModel *activityModel;
 
 /**
  * 初始化功能模块
@@ -29,4 +29,9 @@
  * moviePlayer 观看端实例
  */
 - (instancetype)initWithMoviePlayer:(VHallMoviePlayer*)moviePlayer;
+
+/**
+* 开始活动通知
+*/
+- (void)startActivity:(NSNotification *)notify;
 @end

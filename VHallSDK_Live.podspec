@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "VHallSDK_Live"
-  s.version      = "4.0.1"
+  s.version      = "4.1.0"
   s.summary      = "VHallSDK for IOS"
   s.homepage     = "https://github.com/vhall/vhallsdk_live_ios_v4.0"
   s.license      = "MIT"

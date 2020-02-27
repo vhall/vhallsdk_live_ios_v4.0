@@ -24,6 +24,7 @@
     VHSettingTextFieldItem *item30;
 
     UISwitch *_noiseSwitch;
+    UISwitch *_beautifySwitch;
 }
 @property(nonatomic,strong) NSMutableArray *groups;
 
@@ -59,11 +60,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:)
                                             name:UIKeyboardDidHideNotification object:nil];
     [[UIApplication sharedApplication].keyWindow setBackgroundColor:[UIColor whiteColor]];
-    UIView *headerView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 64)];
+    UIView *headerView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, (iPhoneX?80:64))];
     headerView.backgroundColor=[UIColor blackColor];
     [self.view insertSubview:headerView atIndex:0];
     
-    UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0,20, 44, 44)];
+    UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0,(iPhoneX?36:20), 44, 44)];
     [back setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateNormal];
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [headerView addSubview:back];
@@ -74,7 +75,7 @@
     [title setText:@"参数设置"];
     [title setFont:[UIFont systemFontOfSize:18]];
     [title sizeToFit];
-    title.center = CGPointMake(headerView.center.x, 40);
+    title.center = CGPointMake(headerView.center.x, (iPhoneX?56:40));
     [headerView addSubview:title];
 
     _pickerView = [CustomPickerView loadFromXib];
@@ -84,8 +85,10 @@
     
     _noiseSwitch = [[UISwitch alloc]init];
     [_noiseSwitch addTarget:self action:@selector(noiseSwitch) forControlEvents:UIControlEventValueChanged];
+    _beautifySwitch = [[UISwitch alloc]init];
+    [_beautifySwitch addTarget:self action:@selector(beautifySwitch) forControlEvents:UIControlEventValueChanged];
     
-    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 64, self.view.width, [UIScreen mainScreen].bounds.size.height-64) style:UITableViewStyleGrouped];
+    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, (iPhoneX?80:64), self.view.width, [UIScreen mainScreen].bounds.size.height-(iPhoneX?80:64)) style:UITableViewStyleGrouped];
    // tableView.backgroundColor=[UIColor whiteColor];
     _tableView.userInteractionEnabled=YES;
     UIView *header=[[UIView alloc] initWithFrame:CGRectMake(0, 0,  [UIScreen mainScreen].bounds.size.width, 30)];
@@ -125,7 +128,7 @@
     _selectArray = @[@"352X288",@"640X480",@"960X540",@"1280X720"];
     
     //0    1 VHPushTypeSD 2 VHPushTypeHD 3 VHPushTypeUHD
-    DEMO_Setting.pushResolution = @"1";//
+    DEMO_Setting.pushResolution = @"3";//
 
     self.title = @"设置";
     [self setupGroup0];
@@ -144,6 +147,11 @@
 {
     [super viewWillAppear:animated];
     _pickerView.frame = [UIScreen mainScreen].bounds;
+}
+
+- (void)viewWillLayoutSubviews
+{
+    _tableView.frame = CGRectMake(0, (iPhoneX?80:64), self.view.width, [UIScreen mainScreen].bounds.size.height-(iPhoneX?80:64));
 }
 
 /*
@@ -252,7 +260,7 @@
 {
     VHSettingGroup *group =self.groups[section];
     if(section == 1)
-        return group.items.count+1;
+        return group.items.count+2;
     return group.items.count;
 }
 
@@ -275,6 +283,21 @@
         
         return noiseSwitchcell;
     }
+    else if(indexPath.section == 1 && indexPath.row == group.items.count+1)
+    {
+        static   NSString *Identifier = @"beautifySwitchcell";
+        UITableViewCell *beautifySwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
+        if (beautifySwitchcell == nil)
+            beautifySwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
+        _beautifySwitch.on = DEMO_Setting.beautifyFilterEnable;
+        beautifySwitchcell.textLabel.text = @"美颜";
+        beautifySwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
+        _beautifySwitch.left = self.view.width - 60;
+        _beautifySwitch.top = 10;
+        [beautifySwitchcell.contentView addSubview:_beautifySwitch];
+        
+        return beautifySwitchcell;
+    }
     else if(indexPath.section == 3 && indexPath.row == 0)
     {
         static   NSString *identifier1 = @"selectedResolutionCell";
@@ -296,7 +319,7 @@
             button.tag = 10010 + i;
             [button addTarget:self action:@selector(selectedResolution:) forControlEvents:UIControlEventTouchUpInside];
             
-            if (i == 2) {
+            if (i == 0) {
                 button.selected = YES;
             }
         }
@@ -356,6 +379,7 @@
         if (arrowItem.desVc)
         {
             UIViewController *vc =[[arrowItem.desVc alloc] init];
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:vc animated:YES completion:nil];
         }
     }
@@ -617,6 +641,11 @@
 {
     DEMO_Setting.isOpenNoiseSuppresion = _noiseSwitch.on;
 }
+- (void)beautifySwitch
+{
+    DEMO_Setting.beautifyFilterEnable = _beautifySwitch.on;
+}
+
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {

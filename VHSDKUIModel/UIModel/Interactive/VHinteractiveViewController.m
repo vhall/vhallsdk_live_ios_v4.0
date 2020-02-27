@@ -34,6 +34,11 @@
     return self;
 }
 
+-(BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -135,7 +140,7 @@
 //进入互动房间回调
 - (void)room:(VHRoom *)room enterRoomWithError:(NSError *)error {
     if (error) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"互动房间进入失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"错误:%@",error.description] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         alert.tag = 1001;
         [alert show];
     }
@@ -170,6 +175,7 @@
 - (void)room:(VHRoom *)room didUnpublish:(VHRenderView *)cameraView
 {
     VHLog(@"停止推流");
+    [self closeButtonClick:nil];
 }
 
 // 有新的成员加入房间
@@ -273,13 +279,18 @@
 - (void)room:(VHRoom *)room iskickout:(BOOL)iskickout
 {
     [self kickOut];
+    [self showMsgInWindow:@"已被踢出互动" afterDelay:1];
+}
+- (void)room:(VHRoom *)room liveOver:(BOOL)liveOver
+{
+    [self closeButtonClick:nil];
 }
 /**
  * 收到被禁言/取消禁言
  */
 - (void)room:(VHRoom *)room forbidChat:(BOOL)forbidChat
 {
-    
+    [self showMsgInWindow:forbidChat?@"已被禁言":@"已取消禁言" afterDelay:1];
 }
 /**
  * 收到全体禁言/取消全体禁言
@@ -287,6 +298,7 @@
 - (void)room:(VHRoom *)room allForbidChat:(BOOL)allForbidChat
 {
 //    收到全体禁言/取消全体禁言
+    [self showMsgInWindow:allForbidChat?@"已被全体禁言":@"已取消全体禁言" afterDelay:1];
 }
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -304,7 +316,7 @@
     [self removeAllViews];
 
     [_cameraView stopStats];
-    
+    [_interactiveRoom unpublish];
     //离开互动房间
     [_interactiveRoom leaveRoom];
     _interactiveRoom = nil;
@@ -314,7 +326,8 @@
 }
 //摄像头切换
 - (void)swapStatusChanged:(UIButton *)sender {
-    [_cameraView switchCamera];
+     AVCaptureDevicePosition position = [_cameraView switchCamera];
+     _cameraView.transform = CGAffineTransformMakeScale((position == AVCaptureDevicePositionFront)?-1:1,1);//镜像
 }
 
 //麦克风按钮事件
@@ -377,24 +390,30 @@
     if (!_cameraView) {
         
         //设置中设置的推流分辨率
-        NSString *re = [[NSUserDefaults standardUserDefaults] objectForKey:@"VHInteractivePushResolution"];
+        NSInteger re = [[[NSUserDefaults standardUserDefaults] objectForKey:@"VHInteractivePushResolution"] integerValue];
+        NSDictionary* options = @{VHFrameResolutionTypeKey:@(VHFrameResolution640x480),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};
+        switch (re) {
+            case 0:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution192x144),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
+            case 1:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution320x240),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
+            case 2:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution480x360),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
+            case 3:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution640x480),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
+            default:
+                break;
+        }
         
-        _cameraView = [[VHLocalRenderView alloc] initCameraViewWithFrame:CGRectZero pushType:[re intValue] options:nil];
+        _cameraView = [[VHLocalRenderView alloc] initCameraViewWithFrame:CGRectZero options:options];
         _cameraView.scalingMode = VHRenderViewScalingModeAspectFill;
         //设置摄像头旋转方向，注意：如需要转屏请自行监听屏转，设置摄像头orientation。
-        [_cameraView setDeviceOrientation:[UIDevice currentDevice].orientation];
+        [_cameraView setDeviceOrientation:UIDeviceOrientationPortrait];
+        _cameraView.transform = CGAffineTransformMakeScale(-1,1);//镜像 
+//        [_cameraView setDeviceOrientation:[UIDevice currentDevice].orientation];
     }
     return _cameraView;
 }
 
 - (void)kickOut {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"您已被踢出房间" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-        [self kickOutAction];
-    }];
-    [alert addAction:action];
-    [self presentViewController:alert animated:NO completion:nil];
+    [_interactiveRoom unpublish];
+    [self kickOutAction];
 }
 
 - (void)kickOutAction {

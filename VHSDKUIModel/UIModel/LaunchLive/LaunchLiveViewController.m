@@ -55,6 +55,8 @@
 @property (nonatomic,strong) VHMessageToolView * messageToolView;  //输入框
 @property (weak, nonatomic) IBOutlet UIView *noiseView;
 @property (weak, nonatomic) IBOutlet UILabel *noiseLabel;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *backbtntopConstraint;
 @end
 
 @implementation LaunchLiveViewController
@@ -190,16 +192,11 @@
     
     _msgTextField.layer.masksToBounds = YES;
     _msgTextField.layer.cornerRadius = 15;
-    [_msgTextField setValue:[UIColor lightGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
+//    [_msgTextField setValue:[UIColor lightGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
 
-    // TODO:暂时不支持此功能，但保留。
     _audioStartAndStopBtn.hidden = YES;
     
-#if VHallFilterSDK_ENABLE
-    _filterBtn.hidden = NO;
-#else
-    _filterBtn.hidden = YES;
-#endif
+    _filterBtn.hidden = !self.beautifyFilterEnable;
 }
 
 - (void)viewDidLayoutSubviews
@@ -216,6 +213,8 @@
     else
         _chatView.frame = CGRectMake(10, 0,_chatContainerView.width-10,_chatContainerView.height - 50);
     [_chatContainerView addSubview:_chatView];
+    if (self.interfaceOrientation == UIInterfaceOrientationPortrait)
+        _backbtntopConstraint.constant = iPhoneX? 40 :20;
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -251,8 +250,7 @@
     }
 }
 
-#pragma mark - Camera
-#pragma mark -
+#pragma mark - 初始化推流器
 - (void)initCameraEngine
 {
     AVCaptureVideoOrientation captureVideoOrientation;
@@ -270,24 +268,17 @@
     config.videoCaptureFPS = self.videoCaptureFPS;
     config.isOpenNoiseSuppresion = self.isOpenNoiseSuppresion;
     config.videoResolution = self.videoResolution;
-    config.videoBitRate = self.videoBitRate;
+    config.audioBitRate = self.audioBitRate;
     config.captureDevicePosition = AVCaptureDevicePositionBack;
-#if VHallFilterSDK_ENABLE
-    config.beautifyFilterEnable = YES;
-    config.captureDevicePosition = AVCaptureDevicePositionFront;
-#endif
-    _torchBtn.hidden = YES;
-
+    if(self.beautifyFilterEnable)
+    {
+        config.beautifyFilterEnable = YES;
+        config.captureDevicePosition = AVCaptureDevicePositionFront;
+        _isFontVideo = YES;
+    }
     self.engine = [[VHallLivePublish alloc] initWithConfig:config];
 
-#if VHallFilterSDK_ENABLE
     _torchBtn.hidden = YES;
-    _isFontVideo = YES;
-    
-    [self filterSettingBtnClick:_defaultFilterSelectBtn];
-#endif
-
-    
     self.engine.delegate = self;
 
     self.engine.displayView.frame   = _perView.bounds;
@@ -307,8 +298,79 @@
     // chat 模块
     _chat = [[VHallChat alloc] initWithLivePublish:self.engine];
     _chat.delegate = self;
+    
+    if (self.beautifyFilterEnable) {
+        [self filterSettingBtnClick:_defaultFilterSelectBtn];
+    }
 }
 
+#pragma mark - 发起/停止直播
+- (IBAction)startVideoPlayer
+{
+#if (TARGET_IPHONE_SIMULATOR)
+    [self showMsg:@"无法在模拟器上发起直播！" afterDelay:1.5];
+    return;
+#endif
+    
+    if (!_isVideoStart)
+    {
+        [_chatDataArray removeAllObjects];
+        [_chatView update];
+        [_hud show:YES];
+        _torchBtn.hidden = NO;
+
+        NSMutableDictionary * param = [[NSMutableDictionary alloc]init];
+        param[@"id"] =  _roomId;
+        param[@"access_token"] = _token;
+//        param[@"is_single_audio"] = @"0";    // 0 ：视频， 1：音频
+        [_engine startLive:param];
+
+        self.engine.displayView.frame   = _perView.bounds;
+        [self.perView insertSubview:_engine.displayView atIndex:0];
+    }
+    else
+    {
+        _isVideoStart=NO;
+        _bitRateLabel.text = @"";
+        [_hud hide:YES];
+        _videoStartAndStopBtn.selected = NO;
+        [self chatShow:NO];
+        _torchBtn.hidden = YES;
+        [_engine stopLive];//停止活动
+    }
+    _logView.hidden = YES;
+    //_isVideoStart = !_isVideoStart;
+}
+//发起/停止纯音频直播
+- (IBAction)startAudioPlayer
+{
+//    TODO:暂时不支持此功能，但保留。
+//    if (!_isAudioStart)
+//    {
+//        _isVideoStart = YES;
+//        [self startVideoPlayer];
+//
+//        _logView.hidden = NO;
+//        _chatBtn.hidden = NO;
+//        [_hud show:YES];
+
+//        NSMutableDictionary * param = [[NSMutableDictionary alloc]init];
+//        param[@"id"] =  _roomId;
+//        param[@"access_token"] = _token;
+//        param[@"is_single_audio"] = @"1";   // 0 ：视频， 1：音频
+//        [_engine startLive:param];
+//    }else{
+//        _logView.hidden = YES;
+//        _bitRateLabel.text = @"";
+//        _chatBtn.hidden = YES;
+//        [_hud hide:YES];
+//        [_audioStartAndStopBtn setTitle:@"音频直播" forState:UIControlStateNormal];
+//        [_engine disconnect];//停止向服务器推流
+//    }
+//    _isAudioStart = !_isAudioStart;
+}
+
+#pragma mark - 基础操作
 - (IBAction)swapBtnClick:(id)sender
 {
     UIButton *btn=(UIButton*)sender;
@@ -358,75 +420,7 @@
     return ret;
 }
 
-- (IBAction)startVideoPlayer
-{
-#if (TARGET_IPHONE_SIMULATOR)
-    [self showMsg:@"无法在模拟器上发起直播！" afterDelay:1.5];
-    return;
-#endif
-    
-    if (!_isVideoStart)
-    {
-    //        _isAudioStart = YES;
-    //        [self startAudioPlayer];
-    //    self.engine.audioBitRate = _audioBitRate;
-        [_chatDataArray removeAllObjects];
-        [_chatView update];
-        [_hud show:YES];
-        _torchBtn.hidden = NO;
-
-        NSMutableDictionary * param = [[NSMutableDictionary alloc]init];
-        param[@"id"] =  _roomId;
-        param[@"access_token"] = _token;
-//        param[@"is_single_audio"] = @"0";    // 0 ：视频， 1：音频
-        [_engine startLive:param];
-
-        self.engine.displayView.frame   = _perView.bounds;
-        [self.perView insertSubview:_engine.displayView atIndex:0];
-    }
-    else
-    {
-        _isVideoStart=NO;
-        _bitRateLabel.text = @"";
-        [_hud hide:YES];
-        _videoStartAndStopBtn.selected = NO;
-        [self chatShow:NO];
-        _torchBtn.hidden = YES;
-        [_engine stopLive];//停止活动
-    }
-    _logView.hidden = YES;
-    //_isVideoStart = !_isVideoStart;
-}
-
-- (IBAction)startAudioPlayer
-{
-//    TODO:暂时不支持此功能，但保留。
-//    if (!_isAudioStart)
-//    {
-//        _isVideoStart = YES;
-//        [self startVideoPlayer];
-//
-//        _logView.hidden = NO;
-//        _chatBtn.hidden = NO;
-//        [_hud show:YES];
-
-//        NSMutableDictionary * param = [[NSMutableDictionary alloc]init];
-//        param[@"id"] =  _roomId;
-//        param[@"access_token"] = _token;
-//        param[@"is_single_audio"] = @"1";   // 0 ：视频， 1：音频
-//        [_engine startLive:param];
-//    }else{
-//        _logView.hidden = YES;
-//        _bitRateLabel.text = @"";
-//        _chatBtn.hidden = YES;
-//        [_hud hide:YES];
-//        [_audioStartAndStopBtn setTitle:@"音频直播" forState:UIControlStateNormal];
-//        [_engine disconnect];//停止向服务器推流
-//    }
-//    _isAudioStart = !_isAudioStart;
-}
-
-#pragma mark Delegate
+#pragma mark - 直播代理
 
 -(void)firstCaptureImage:(UIImage *)image
 {
@@ -463,6 +457,8 @@
             if (_isVideoStart || _isAudioStart) {
                 _videoStartAndStopBtn.selected = YES;
             }
+            //设置画面填充模式
+            [_engine setContentMode:VHRTMPMovieScalingModeAspectFill];
         }
             break;
         case VHLiveStatusSendError:
@@ -526,10 +522,7 @@
     }
 }
 
-
-#if VHallFilterSDK_ENABLE
-#pragma mark - Filter
-#pragma mark -
+#pragma mark - 美颜设置
 - (IBAction)filterBtnClick:(UIButton *)sender
 {
 //    [_chatMsgInput resignFirstResponder];
@@ -566,38 +559,18 @@
     sender.selected = YES;
     [sender setBackgroundColor:MakeColorRGBA(0xfd3232,0.5)];
     _lastFilterSelectBtn = sender;
-
-//    switch (sender.tag) {
-//        case 1:[_engine setBeautifyFilterWithBilateral:10.0f Brightness:1.0f  Saturation:1.0f];break;
-//        case 2:[_engine setBeautifyFilterWithBilateral:8.0f  Brightness:1.05f Saturation:1.0f];break;
-//        case 3:[_engine setBeautifyFilterWithBilateral:6.0f  Brightness:1.10f Saturation:1.0f];break;
-//        case 4:[_engine setBeautifyFilterWithBilateral:4.0f  Brightness:1.15f Saturation:1.0f];break;
-//        case 5:[_engine setBeautifyFilterWithBilateral:2.0f  Brightness:1.20f Saturation:1.0f];break;
-//        default:break;
-//    }
     
-//    *  @param beautify   磨皮   默认 2.0f  取值范围[1.0, 10.0]  10.0 正常图片没有磨皮
-//    *  @param brightness 亮度   默认 1.20f 取值范围[0.0, 2.0]  1.0 正常亮度
-//    *  @param saturation 饱和度 默认 1.0f  取值范围[0.0, 2.0]  1.0 正常饱和度
-//    *  @param sharpness  锐化   默认 0.5f  取值范围[-4.0，4.0] 0.0 正常锐化
-
     switch (sender.tag) {
-        case 1:[self.engine setBeautify:10.0f Brightness:1.0f Saturation:1.0f Sharpness:1.0f];break;
-        case 2:[self.engine setBeautify:8.0f Brightness:1.25f Saturation:1.25f Sharpness:1.0f];break;
-        case 3:[self.engine setBeautify:6.0f Brightness:1.5f Saturation:1.5f Sharpness:1.0f];break;
-        case 4:[self.engine setBeautify:4.0f Brightness:1.75f Saturation:1.75f Sharpness:1.0f];break;
-        case 5:[self.engine setBeautify:2.0f Brightness:2.0f Saturation:1.0f Sharpness:1.0f];break;
+        case 1:[self.engine setBeautify:10.0f Brightness:1.0f  Saturation:1.0f Sharpness:0.0f];break;
+        case 2:[self.engine setBeautify:8.0f  Brightness:1.05f Saturation:1.0f Sharpness:0.0f];break;
+        case 3:[self.engine setBeautify:6.0f  Brightness:1.10f Saturation:1.0f Sharpness:0.0f];break;
+        case 4:[self.engine setBeautify:4.0f  Brightness:1.15f Saturation:1.0f Sharpness:0.0f];break;
+        case 5:[self.engine setBeautify:2.0f  Brightness:1.2f  Saturation:1.0f Sharpness:0.0f];break;
         default:break;
     }
 }
-#else
-- (IBAction)filterBtnClick:(UIButton *)sender{}
-- (IBAction)filterSettingBtnClick:(UIButton *)sender{}
-#endif
 
 #pragma mark - Chat && QA
-#pragma mark -
-
 - (void)chatShow:(BOOL)isShow
 {
     if(isShow)

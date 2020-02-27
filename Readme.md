@@ -26,6 +26,10 @@ pod 'VHallSDK_Live' , :git => 'https://github.com/vhall/vhallsdk_live_ios_v4.0.g
 pod 'VHallSDK_Interactive' , :git => 'https://github.com/vhall/vhallsdk_live_ios_v4.0.git'<br>
 
 ### 版本更新信息
+#### 版本 v4.1.0 更新时间：2020.02.27
+更新内容：<br>
+1、解决播放器bug<br>
+2、优化Demo<br>
 
 #### 版本 v4.0.1 更新时间：2019.09.16
 更新内容：<br>

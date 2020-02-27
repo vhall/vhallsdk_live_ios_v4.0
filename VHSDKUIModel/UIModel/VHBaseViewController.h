@@ -12,5 +12,6 @@
 @property(nonatomic,assign)UIInterfaceOrientation interfaceOrientation;
 
 - (void)showMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay;
+- (void)showMsgInWindow:(NSString*)msg afterDelay:(NSTimeInterval)delay;
 -(void) showRendererMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay;
 @end

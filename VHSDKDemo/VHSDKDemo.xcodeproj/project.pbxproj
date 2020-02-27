@@ -92,7 +92,7 @@
 /* Begin PBXFileReference section */
 		2F6B05B61E94FF800010E0C7 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		2FA3F1A71F564C9900E2E436 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
-		C000AA3E1E66E053005DFB7C /* VHSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VHSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C000AA3E1E66E053005DFB7C /* VHSDKDemo4.x.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VHSDKDemo4.x.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C000AA421E66E053005DFB7C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C000AA441E66E053005DFB7C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C000AA451E66E053005DFB7C /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -254,7 +254,7 @@
 		C000AA3F1E66E053005DFB7C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C000AA3E1E66E053005DFB7C /* VHSDKDemo.app */,
+				C000AA3E1E66E053005DFB7C /* VHSDKDemo4.x.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -529,6 +529,7 @@
 				C000AA3B1E66E053005DFB7C /* Frameworks */,
 				C000AA3C1E66E053005DFB7C /* Resources */,
 				C0FABCE620EF1031003947C6 /* Embed Frameworks */,
+				C0710F7723D042E00044883F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -536,7 +537,7 @@
 			);
 			name = VHSDKDemo;
 			productName = VHSDKDemo;
-			productReference = C000AA3E1E66E053005DFB7C /* VHSDKDemo.app */;
+			productReference = C000AA3E1E66E053005DFB7C /* VHSDKDemo4.x.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -595,6 +596,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C0710F7723D042E00044883F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nAPP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\nEXTRACTED_ARCHS=()\n\nfor ARCH in $ARCHS\ndo\necho \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\nlipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\nEXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\ndone\n\necho \"Merging extracted architectures: ${ARCHS}\"\nlipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \"${EXTRACTED_ARCHS[@]}\"\nrm \"${EXTRACTED_ARCHS[@]}\"\n\necho \"Replacing original executable with thinned version\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C000AA3A1E66E053005DFB7C /* Sources */ = {
@@ -755,6 +776,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = S82ZX9394G;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -771,9 +793,10 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
+				MARKETING_VERSION = 4.1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.VHSDKDemo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo4.0.en;
+				PRODUCT_NAME = VHSDKDemo4.x;
 			};
 			name = Debug;
 		};
@@ -781,6 +804,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = S82ZX9394G;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -797,9 +821,10 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
+				MARKETING_VERSION = 4.1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.VHSDKDemo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo4.0.en;
+				PRODUCT_NAME = VHSDKDemo4.x;
 			};
 			name = Release;
 		};

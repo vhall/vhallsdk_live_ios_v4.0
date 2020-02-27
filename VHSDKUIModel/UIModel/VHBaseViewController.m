@@ -87,6 +87,22 @@
     [hud hide:YES afterDelay:delay];
 }
 
+
+- (void)showMsgInWindow:(NSString*)msg afterDelay:(NSTimeInterval)delay
+{
+    UIView *window = [UIApplication sharedApplication].delegate.window;
+    if(!window)
+        window = self.view;
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:window animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = msg;
+    hud.margin = 10.f;
+    //            hud.yOffset = 150.f;
+    hud.removeFromSuperViewOnHide = YES;
+    [hud hide:YES afterDelay:delay];
+}
+
 -(void) showRendererMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

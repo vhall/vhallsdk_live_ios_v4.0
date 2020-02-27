@@ -137,7 +137,7 @@ typedef NS_ENUM(NSInteger,VHVideoResolution)
 @property (nonatomic,assign)NSInteger videoBitRate;
 
 /**
- *  音频码率设置 取值范围 [32,48,96,128]  单位 kbps  默认64
+ *  音频码率设置 取值范围 [32,48,64,96,128]  单位 kbps  默认64
  */
 @property (nonatomic,assign)NSInteger audioBitRate;
 

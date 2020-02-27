@@ -82,8 +82,10 @@
         lblNickName.textColor = [UIColor blackColor];
         //内容
         [_textLabel setText:_model.text];
+        if([_model isKindOfClass:[VHallChatModel class]] && _model.replyMsg)
+            [_textLabel setText:[NSString stringWithFormat:@"回复 %@：%@",_model.replyMsg.user_name,_model.text]];
         
-        NSLog(@"************ %@",_model.text);
+//        NSLog(@"************ %@",_model.text);
         
         [_textLabel sizeToFit];
     }
