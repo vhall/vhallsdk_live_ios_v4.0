@@ -157,8 +157,12 @@
 /**
  *  更新DLNA 播放地址
  *  参数为 dlnaControl对象
+ *  返回值 NO 为不可投屏状态
  */
-- (void)dlnaMappingObject:(id)DLNAobj;
+- (BOOL)dlnaMappingObject:(id)DLNAobj;
+
+///设置音频输出设备
++ (void)audioOutput:(BOOL)inSpeaker;
 @end
 
 

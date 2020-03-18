@@ -9,6 +9,7 @@
 #import "WatchLiveChatTableViewCell.h"
 #import "MLEmojiLabel.h"
 #import "UIImageView+WebCache.h"
+#import <VHLiveSDK/VHallApi.h>
 
 @implementation WatchLiveChatTableViewCell
 {
@@ -77,7 +78,7 @@
     }
     else{
         [pic sd_setImageWithURL:[NSURL URLWithString:_model.avatar] placeholderImage:[UIImage imageNamed:@"UIModel.bundle/head50"]];
-        lblNickName.text = _model.user_name;
+        lblNickName.text = [_model.user_name stringByAppendingFormat:@"[%@]%@",_model.role,[_model.account_id isEqualToString:[VHallApi currentUserID]]?@"(myself)":@""];
         lblTime.text = _model.time;
         lblNickName.textColor = [UIColor blackColor];
         //内容

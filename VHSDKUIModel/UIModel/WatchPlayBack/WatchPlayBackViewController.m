@@ -136,6 +136,11 @@ static AnnouncementView* announcementView = nil;
     [self initViews];
     _commentsArray=[NSMutableArray array];//初始化评论数组
     
+    _moviePlayer = [[VHallMoviePlayer alloc]initWithDelegate:self];
+    _moviePlayer.moviePlayerView.frame = self.view.bounds;
+    _moviePlayer.timeout = (int)_timeOut;
+    _moviePlayer.defaultDefinition = VHMovieDefinitionSD;
+    
     [self play];
     _docConentView.hidden = YES;
     
@@ -208,17 +213,6 @@ static AnnouncementView* announcementView = nil;
 
 - (void)play
 {
-    if (_moviePlayer) {
-        [_moviePlayer stopPlay];
-        [_moviePlayer destroyMoivePlayer];
-        _moviePlayer = nil;
-    }
-    
-    _moviePlayer = [[VHallMoviePlayer alloc]initWithDelegate:self];
-    _moviePlayer.moviePlayerView.frame = self.view.bounds;
-    _moviePlayer.timeout = (int)_timeOut;
-    _moviePlayer.defaultDefinition = VHMovieDefinitionSD;
-    
     if (_moviePlayer.moviePlayerView) {
         [MBProgressHUD showHUDAddedTo:_moviePlayer.moviePlayerView animated:YES];
     }
@@ -232,6 +226,8 @@ static AnnouncementView* announcementView = nil;
     }
     
     VHLog(@"开始=== %f",[[NSDate date] timeIntervalSince1970]);
+    [_moviePlayer startPlayback:param];
+    [_moviePlayer startPlayback:param];
     [_moviePlayer startPlayback:param];
 }
 
@@ -852,6 +848,7 @@ static AnnouncementView* announcementView = nil;
 
 - (IBAction)dlnaClick:(id)sender {
     id control = self.dlnaView.control;
+    [_moviePlayer pausePlay];
     [_moviePlayer dlnaMappingObject:control];
     [_showView insertSubview:self.dlnaView atIndex:10];
 }

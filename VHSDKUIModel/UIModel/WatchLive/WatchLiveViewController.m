@@ -162,6 +162,7 @@ static AnnouncementView* announcementView = nil;
     _moviePlayer = [[VHallMoviePlayer alloc]initWithDelegate:self];
     self.view.clipsToBounds = YES;
     _moviePlayer.movieScalingMode = VHRTMPMovieScalingModeAspectFit;
+    _moviePlayer.defaultDefinition = VHMovieDefinitionHD;
     _moviePlayer.bufferTime = (int)_bufferTimes;
 //    _moviePlayer.reConnectTimes = 2;
 //    [_moviePlayer setRenderViewModel:VHRenderModelDewarpVR];
@@ -504,6 +505,7 @@ static AnnouncementView* announcementView = nil;
     _isMute = !_isMute;
     [_moviePlayer setMute:_isMute];
     sender.selected = _isMute;
+    [VHallMoviePlayer audioOutput:YES];
 }
 
 #pragma mark - RTMP屏幕自适应
@@ -633,9 +635,7 @@ static AnnouncementView* announcementView = nil;
         announcementView.content = announcementView.content;
     }
     //开启扬声器播放
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker|AVAudioSessionCategoryOptionMixWithOthers|AVAudioSessionCategoryOptionAllowBluetooth
-                                           error:nil];
-    [[AVAudioSession sharedInstance]setActive:YES error:nil];
+    [VHallMoviePlayer audioOutput:YES];
 }
 
 -(void)viewWillLayoutSubviews
@@ -1080,6 +1080,9 @@ static AnnouncementView* announcementView = nil;
 - (void)moviePlayer:(VHallMoviePlayer *)player microInvitationWithAttributes:(NSDictionary *)attributes error:(NSError *)error {
     
     if (!error) {
+        //退出全屏
+        [self rotateScreen:NO];
+        _fullscreenBtn.selected = NO;
         //进入互动
         VHinteractiveViewController *controller = [[VHinteractiveViewController alloc] init];
         controller.roomId = self.roomId;
@@ -1761,6 +1764,9 @@ static AnnouncementView* announcementView = nil;
 
 - (void)rotateScreen:(BOOL)isLandscapeRight
 {
+    if(isLandscapeRight && self.view.width>self.view.height)return;
+    if(!isLandscapeRight && self.view.width<self.view.height)return;
+    
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)])
     {
         NSNumber *num = [[NSNumber alloc] initWithInt:(isLandscapeRight?UIInterfaceOrientationLandscapeRight:UIInterfaceOrientationPortrait)];
@@ -1796,11 +1802,9 @@ static AnnouncementView* announcementView = nil;
 - (IBAction)DlNAClick:(id)sender
 {
     id control = self.dlnaView.control;
+    [_moviePlayer pausePlay];
     [_moviePlayer dlnaMappingObject:control];
     [_showView insertSubview:self.dlnaView atIndex:10];
-    
-    
-    
 }
 - (IBAction)customMsgBtnClick:(id)sender
 {
@@ -1815,6 +1819,20 @@ static AnnouncementView* announcementView = nil;
             //            [UIAlertView popupAlertByDelegate:nil title:failedData[@"content"] message:code];
             [wf showMsgInWindow:code afterDelay:2];
         }];
+    }
+}
+
+- (IBAction)changeDocFrameBtnClick:(UIButton*)sender
+{
+    sender.selected = !sender.selected;
+    if(sender.selected)
+    {
+        _moviePlayer.documentView.frame = CGRectMake(100, 100, 160, 90);
+        [self.view addSubview:_moviePlayer.documentView];
+    }
+    else{
+        _moviePlayer.documentView.frame = self.docAreaView.bounds;
+        [self.docAreaView addSubview:_moviePlayer.documentView];
     }
 }
 

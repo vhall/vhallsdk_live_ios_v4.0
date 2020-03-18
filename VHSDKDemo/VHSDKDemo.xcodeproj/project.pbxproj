@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2FA3F1A81F564C9900E2E436 /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA3F1A71F564C9900E2E436 /* libxml2.2.tbd */; };
 		C000AA431E66E053005DFB7C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C000AA421E66E053005DFB7C /* main.m */; };
-		C000AA461E66E053005DFB7C /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C000AA451E66E053005DFB7C /* AppDelegate.mm */; };
+		C000AA461E66E053005DFB7C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C000AA451E66E053005DFB7C /* AppDelegate.m */; };
 		C000AA4E1E66E053005DFB7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C000AA4D1E66E053005DFB7C /* Assets.xcassets */; };
 		C000AA511E66E053005DFB7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C000AA4F1E66E053005DFB7C /* LaunchScreen.storyboard */; };
 		C000AA881E66E41C005DFB7C /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C000AA871E66E41C005DFB7C /* BaseViewController.m */; };
@@ -95,7 +95,7 @@
 		C000AA3E1E66E053005DFB7C /* VHSDKDemo4.x.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VHSDKDemo4.x.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C000AA421E66E053005DFB7C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C000AA441E66E053005DFB7C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		C000AA451E66E053005DFB7C /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		C000AA451E66E053005DFB7C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		C000AA4D1E66E053005DFB7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C000AA501E66E053005DFB7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C000AA581E66E0FD005DFB7C /* CONSTS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CONSTS.h; sourceTree = "<group>"; };
@@ -264,7 +264,7 @@
 			children = (
 				C000AA581E66E0FD005DFB7C /* CONSTS.h */,
 				C000AA441E66E053005DFB7C /* AppDelegate.h */,
-				C000AA451E66E053005DFB7C /* AppDelegate.mm */,
+				C000AA451E66E053005DFB7C /* AppDelegate.m */,
 				C000AB271E66E893005DFB7C /* LoginViewController.h */,
 				C000AB281E66E893005DFB7C /* LoginViewController.m */,
 				C000AB291E66E893005DFB7C /* LoginViewController.xib */,
@@ -521,9 +521,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C000AA3D1E66E053005DFB7C /* VHSDKDemo */ = {
+		C000AA3D1E66E053005DFB7C /* VHSDKDemo4.x */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C000AA551E66E053005DFB7C /* Build configuration list for PBXNativeTarget "VHSDKDemo" */;
+			buildConfigurationList = C000AA551E66E053005DFB7C /* Build configuration list for PBXNativeTarget "VHSDKDemo4.x" */;
 			buildPhases = (
 				C000AA3A1E66E053005DFB7C /* Sources */,
 				C000AA3B1E66E053005DFB7C /* Frameworks */,
@@ -535,7 +535,7 @@
 			);
 			dependencies = (
 			);
-			name = VHSDKDemo;
+			name = VHSDKDemo4.x;
 			productName = VHSDKDemo;
 			productReference = C000AA3E1E66E053005DFB7C /* VHSDKDemo4.x.app */;
 			productType = "com.apple.product-type.application";
@@ -551,7 +551,7 @@
 				TargetAttributes = {
 					C000AA3D1E66E053005DFB7C = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = S82ZX9394G;
+						DevelopmentTeam = H49DK955B9;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -575,7 +575,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C000AA3D1E66E053005DFB7C /* VHSDKDemo */,
+				C000AA3D1E66E053005DFB7C /* VHSDKDemo4.x */,
 			);
 		};
 /* End PBXProject section */
@@ -654,7 +654,7 @@
 				C06D62C522A67F6500A5D69E /* WHDebugCpuMonitor.m in Sources */,
 				C000AAED1E66E646005DFB7C /* SDWebImageCompat.m in Sources */,
 				C000AB091E66E66B005DFB7C /* CustomPickerView.m in Sources */,
-				C000AA461E66E053005DFB7C /* AppDelegate.mm in Sources */,
+				C000AA461E66E053005DFB7C /* AppDelegate.m in Sources */,
 				C000AAA71E66E546005DFB7C /* VHSettingGroup.m in Sources */,
 				C000AAEC1E66E646005DFB7C /* SDImageCache.m in Sources */,
 				C000AAEF1E66E646005DFB7C /* SDWebImageDownloader.m in Sources */,
@@ -776,8 +776,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = S82ZX9394G;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = H49DK955B9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../VHallSDK",
@@ -793,9 +793,9 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.1.1;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo4.0.en;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo4.x;
 			};
 			name = Debug;
@@ -804,8 +804,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = S82ZX9394G;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = H49DK955B9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../VHallSDK",
@@ -821,9 +821,9 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.1.1;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo4.0.en;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo4.x;
 			};
 			name = Release;
@@ -840,7 +840,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C000AA551E66E053005DFB7C /* Build configuration list for PBXNativeTarget "VHSDKDemo" */ = {
+		C000AA551E66E053005DFB7C /* Build configuration list for PBXNativeTarget "VHSDKDemo4.x" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C000AA561E66E053005DFB7C /* Debug */,

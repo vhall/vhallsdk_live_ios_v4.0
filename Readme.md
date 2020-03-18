@@ -19,13 +19,20 @@
 
 
 ### 使用CocoaPods 引入SDK
-pod 'VHallSDK_Live' , :git => 'https://github.com/vhall/vhallsdk_live_ios_v4.0.git'<br>
+pod 'VHallSDK_Live'<br>
 
 
 使用互动功能SDK<br>
-pod 'VHallSDK_Interactive' , :git => 'https://github.com/vhall/vhallsdk_live_ios_v4.0.git'<br>
+pod 'VHallSDK_Interactive'<br>
 
 ### 版本更新信息
+#### 版本 v4.1.1 更新时间：2020.03.18
+更新内容：<br>
+1、解决回放后台播放bug<br>
+2、支持pod集成 SDK<br>
+3、H5 活动历史消息数据兼容<br>
+4、上麦bug修复<br>
+
 #### 版本 v4.1.0 更新时间：2020.02.27
 更新内容：<br>
 1、解决播放器bug<br>
