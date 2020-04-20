@@ -32,6 +32,7 @@
  * return 返回sdk版本号
  */
 +(NSString *) sdkVersion;
++(NSString *) sdkVersionEX;
 
 /*！
  *  注册app

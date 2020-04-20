@@ -11,24 +11,27 @@
 #import "WatchLiveChatTableViewCell.h"
 #import <VHLiveSDK/VHallApi.h>
 #import "VHMessageToolView.h"
-#import "VHPullingRefreshTableView.h"
+#import "MJRefresh.h"
 #import "AnnouncementView.h"
 #import "DLNAView.h"
 #import "VHPlayerView.h"
+#import "MBProgressHUD.h"
 
 #define RATEARR @[@1.0,@1.25,@1.5,@2.0,@0.5,@0.67,@0.8]//倍速播放循环顺序
 
 static AnnouncementView* announcementView = nil;
-@interface WatchPlayBackViewController ()<VHallMoviePlayerDelegate,UITableViewDelegate,UITableViewDataSource,VHPullingRefreshTableViewDelegate,VHPlayerViewDelegate>
+@interface WatchPlayBackViewController ()<VHallMoviePlayerDelegate,UITableViewDelegate,UITableViewDataSource,VHPlayerViewDelegate>
 {
     VHallComment*_comment;
     int  _bufferCount;
 
-    VHPullingRefreshTableView* _tableView;
-    UIButton              *_toolViewBackView;//遮罩
+
+    UIButton    *_toolViewBackView;//遮罩
     
     NSArray*_videoLevePicArray;
     NSArray* _definitionList;
+    
+    
 }
 @property (nonatomic,strong) VHallMoviePlayer  *moviePlayer;//播放器
 @property (weak, nonatomic) IBOutlet UILabel *bufferCountLabel;
@@ -58,7 +61,8 @@ static AnnouncementView* announcementView = nil;
 
 @property (weak, nonatomic) IBOutlet UIButton *definitionBtn;
 @property (weak, nonatomic) IBOutlet UIButton *rateBtn;
-
+@property (nonatomic,strong) UITableView * tableView;
+@property (nonatomic,assign) int  pageNum;
 @end
 
 @implementation WatchPlayBackViewController
@@ -94,7 +98,7 @@ static AnnouncementView* announcementView = nil;
 
 - (id)init
 {
-    self = [super initWithNibName:NSStringFromClass([self class]) bundle:meetingResourcesBundle];
+    self = LoadVCNibName;
     if (self) {
     }
     return self;
@@ -175,25 +179,24 @@ static AnnouncementView* announcementView = nil;
 //    _moviePlayer.timeout = (int)_timeOut;
 //    _moviePlayer.defaultDefinition = VHMovieDefinitionSD;
     
-    _tableView = [[VHPullingRefreshTableView alloc] initWithFrame:CGRectMake(0, 0, VH_SW, _historyCommentTableView.height) pullingDelegate:self headView:YES  footView:YES];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, VH_SW, _historyCommentTableView.height)];
     _tableView.backgroundColor = MakeColorRGB(0xe2e8eb);
     _tableView.dataSource=self;
     _tableView.delegate=self;
-    _tableView.startPos = 0;
     _tableView.tag = -1;
-    _tableView.dataArr = [NSMutableArray array];
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.separatorColor = MakeColorRGB(0xe2e8eb);
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    [_tableView tableViewDidFinishedLoading];
     [_historyCommentTableView addSubview:_tableView];
     
     _comment = [[VHallComment alloc] initWithMoviePlayer:_moviePlayer];
     
-    _videoLevePicArray=@[@"UIModel.bundle/原画.tiff",@"UIModel.bundle/超清.tiff",@"UIModel.bundle/高清.tiff",@"UIModel.bundle/标清.tiff",@"UIModel.bundle/语音开启",@""];
+    _videoLevePicArray=@[@"原画",@"超清",@"高清",@"标清",@"语音开启",@""];
     
     self.textLabel.center=CGPointMake(self.docAreaView.width/2, self.docAreaView.height/2);
     [self.docAreaView addSubview:self.textLabel];
+    
+    [self configTableViewRefresh];
 }
 
 - (void)destoryMoivePlayer
@@ -226,8 +229,6 @@ static AnnouncementView* announcementView = nil;
     }
     
     VHLog(@"开始=== %f",[[NSDate date] timeIntervalSince1970]);
-    [_moviePlayer startPlayback:param];
-    [_moviePlayer startPlayback:param];
     [_moviePlayer startPlayback:param];
 }
 
@@ -313,7 +314,7 @@ static AnnouncementView* announcementView = nil;
     [MBProgressHUD hideHUDForView:_moviePlayer.moviePlayerView animated:NO];
     [MBProgressHUD showHUDAddedTo:_moviePlayer.moviePlayerView animated:YES];
     [_moviePlayer setCurDefinition:_leve];
-    [_definitionBtn setImage:[UIImage imageNamed:_videoLevePicArray[_moviePlayer.curDefinition]] forState:UIControlStateNormal];
+    [_definitionBtn setImage:BundleUIImage(_videoLevePicArray[_moviePlayer.curDefinition]) forState:UIControlStateNormal];
     _playModelTemp=_moviePlayer.playMode;
 }
 
@@ -345,8 +346,7 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - 历史记录
 - (IBAction)historyCommentButtonClick:(id)sender
 {
-    _tableView.startPos=0;
-    [self pullingTableViewDidStartRefreshing:_tableView];
+    [_tableView.mj_header beginRefreshing];
 }
 
 #pragma mark - 视频控制
@@ -446,7 +446,7 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - VHMoviePlayerDelegate
 - (void)playError:(VHSaasLivePlayErrorType)livePlayErrorType info:(NSDictionary *)info;
 {
-    [MBProgressHUD hideAllHUDsForView:self.moviePlayer.moviePlayerView animated:YES];
+    [MBProgressHUD hideHUDForView:self.moviePlayer.moviePlayerView animated:YES];
     NSString * msg = @"";
     switch (livePlayErrorType) {
         case VHSaasLivePlayGetUrlError:
@@ -530,7 +530,7 @@ static AnnouncementView* announcementView = nil;
     VHLog(@"可用分辨率%@ 当前分辨率：%ld",definitionList,(long)_moviePlayer.curDefinition);
     _definitionList = definitionList;
     _definitionBtn.hidden = NO;
-    [_definitionBtn setImage:[UIImage imageNamed:_videoLevePicArray[_moviePlayer.curDefinition]] forState:UIControlStateNormal];
+    [_definitionBtn setImage:BundleUIImage(_videoLevePicArray[_moviePlayer.curDefinition]) forState:UIControlStateNormal];
     if (_moviePlayer.curDefinition == VHMovieDefinitionAudio) {
         _playModelTemp=VHMovieVideoPlayModeVoice;
     }
@@ -579,7 +579,7 @@ static AnnouncementView* announcementView = nil;
             _playMaskView.playButton.selected  = NO;
             break;
         case VHPlayerStatePlaying:
-            [MBProgressHUD hideAllHUDsForView:self.moviePlayer.moviePlayerView animated:YES];
+            [MBProgressHUD hideHUDForView:self.moviePlayer.moviePlayerView animated:YES];
             _playMaskView.playButton.selected  = YES;
             
             VHLog(@"播放中=== %f",[[NSDate date] timeIntervalSince1970]);
@@ -722,16 +722,14 @@ static AnnouncementView* announcementView = nil;
     {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [_comment sendComment:text success:^{
-            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             _commentTextField.text = @"";
-//            [UIAlertView popupAlertByDelegate:nil title:@"发表成功" message:nil];
             [weakSelf showMsg:@"发表成功" afterDelay:1];
             [weakSelf getHistoryComment];
             
         } failed:^(NSDictionary *failedData) {
-            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSString* code = [NSString stringWithFormat:@"%@ %@", failedData[@"code"],failedData[@"content"]];
-//            [UIAlertView popupAlertByDelegate:nil title:failedData[@"content"] message:code];
             [weakSelf showMsg:code afterDelay:2];
         }];
     }
@@ -758,8 +756,6 @@ static AnnouncementView* announcementView = nil;
         default:
             break;
     }
-//    UIAlertView*alert = [[UIAlertView alloc]initWithTitle:@"提示" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//    [alert show];
     [self showMsg:message afterDelay:1];
 }
 
@@ -798,59 +794,75 @@ static AnnouncementView* announcementView = nil;
     return 60;
 }
 
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(VHPullingRefreshTableView *)tableView
-{
-    [_commentsArray removeAllObjects];
-    [self performSelector:@selector(loadData:) withObject:tableView];
+#pragma mark - TableViewRefresh
+- (void)configTableViewRefresh {
+    __weak typeof(self)weakSelf = self;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        weakSelf.pageNum = 1;
+        [weakSelf loadData:1];
+    }];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf loadData:weakSelf.pageNum + 1];
+    }];
 }
 
-- (void)pullingTableViewDidStartLoading:(VHPullingRefreshTableView *)tableView
+- (void)loadData:(NSInteger)page
 {
-    [self performSelector:@selector(loadData:) withObject:tableView];
-}
-
-- (void)loadData:(VHPullingRefreshTableView *)tableView
-{
-    __weak typeof(self) ws = self;
-    [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
+    if(page==1)
+        [_commentsArray removeAllObjects];
+    
+    __weak typeof(self) weakSelf = self;
+    [MBProgressHUD hideHUDForView:self.view animated:NO];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [_comment getHistoryCommentPageCountLimit:20 offSet:_commentsArray.count success:^(NSArray *msgs) {
-        [MBProgressHUD hideAllHUDsForView:ws.view animated:NO];
+        [MBProgressHUD hideHUDForView:weakSelf.view animated:NO];
         if (msgs.count > 0)
         {
-            [ws.commentsArray addObjectsFromArray:msgs];
-            [tableView tableViewDidFinishedLoading];
-            tableView.reachedTheEnd = (msgs == nil || ws.commentsArray.count <= 5);
-            [tableView reloadData];
+            weakSelf.pageNum++;
+            
+            [weakSelf.commentsArray addObjectsFromArray:msgs];
+            [weakSelf.tableView reloadData];
+            
+            [weakSelf.tableView.mj_header endRefreshing];
+            [weakSelf.tableView.mj_footer endRefreshing];
+            if (msgs == nil || weakSelf.commentsArray.count <= 5){
+                [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
         }
         
     } failed:^(NSDictionary *failedData) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
+        [MBProgressHUD hideHUDForView:self.view animated:NO];
         NSString* code = [NSString stringWithFormat:@"%@,%@",failedData[@"content"], failedData[@"code"]];
         NSLog(@"%@",code);
-//        [ws showMsg:code afterDelay:1.5];
-        [tableView tableViewDidFinishedLoading];
+        [weakSelf.tableView.mj_header endRefreshing];
+        [weakSelf.tableView.mj_footer endRefreshing];
         if( [failedData[@"code"] intValue] == 10407)
-            tableView.reachedTheEnd = YES;
-//        [UIAlertView popupAlertByDelegate:nil title:failedData[@"content"] message:code];
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
     }];
 }
 
 -(DLNAView *)dlnaView
 {
     if (!_dlnaView) {
-        _dlnaView = [[DLNAView alloc] init];
-        [_dlnaView setFrame:CGRectMake(0, 0, _showView.width, _showView.height)];
+        _dlnaView = [[DLNAView alloc] initWithFrame:self.view.bounds];
+        _dlnaView.type = 1;
     }
     return _dlnaView;
 }
 
 - (IBAction)dlnaClick:(id)sender {
-    id control = self.dlnaView.control;
+    if(![self.dlnaView showInView:self.view moviePlayer:_moviePlayer])
+    {
+        [self showMsg:@"投屏功能暂不可用" afterDelay:1];
+        return;
+    }
+    
     [_moviePlayer pausePlay];
-    [_moviePlayer dlnaMappingObject:control];
-    [_showView insertSubview:self.dlnaView atIndex:10];
+    
+    __weak typeof(self)wf = self;
+    self.dlnaView.closeBlock = ^{
+        [wf.moviePlayer reconnectPlay];
+    };
 }
 
 #pragma mark - 旋转

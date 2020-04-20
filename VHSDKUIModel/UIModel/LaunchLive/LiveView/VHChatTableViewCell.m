@@ -46,7 +46,7 @@
 #define  MAX_pay_BG_W  250//*VH_RATE_SCALE
 #define  Online_H  40
 
-#define VHRES_personPlaceHold_Image [UIImage imageNamed:@"UIModel.bundle/head50"]
+#define VHRES_personPlaceHold_Image BundleUIImage(@"head50")
 
 
 NSString * const VHChatMsgIdentifier = @"VHChatMsgIdentifier";
@@ -191,9 +191,9 @@ static MLEmojiLabel  *g_textLabel;
             g_textLabel.numberOfLines = 0;
             g_textLabel.font = TEXT_Font;
             g_textLabel.lineBreakMode = NSLineBreakByCharWrapping;
-            g_textLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-            g_textLabel.customEmojiPlistName = @"faceExpression.plist";
-            g_textLabel.customEmojiBundleName = @"UIModel.bundle";
+            g_textLabel.customEmojiRegex = CustomEmojiRegex;
+            g_textLabel.customEmojiPlistName = CustomEmojiPlistName;
+            g_textLabel.customEmojiBundleName = BundleName;
         }
         g_textLabel.frame = CGRectMake(0, 0, MAX_CHAT_BG_W-2*UISTEP, 14);
         [g_textLabel setText:pollingDate.text];
@@ -217,9 +217,9 @@ static MLEmojiLabel  *g_textLabel;
             g_textLabel.numberOfLines = 0;
             g_textLabel.font = TEXT_Font;
             g_textLabel.lineBreakMode = NSLineBreakByCharWrapping;
-            g_textLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-            g_textLabel.customEmojiPlistName = @"faceExpression.plist";
-            g_textLabel.customEmojiBundleName = @"UIModel.bundle";
+            g_textLabel.customEmojiRegex = CustomEmojiRegex;
+            g_textLabel.customEmojiPlistName = CustomEmojiPlistName;
+            g_textLabel.customEmojiBundleName = BundleName;
         }
         g_textLabel.frame = CGRectMake(0, 0, MAX_CHAT_BG_W-2*UISTEP, 14);
         [g_textLabel setText:[NSString stringWithFormat:@"赏给主播 大红包"]];
@@ -256,9 +256,9 @@ static MLEmojiLabel  *g_textLabel;
         _textLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _textLabel.isNeedAtAndPoundSign = YES;
         _textLabel.textColor = [UIColor blackColor];
-        _textLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-        _textLabel.customEmojiPlistName = @"faceExpression.plist";
-        _textLabel.customEmojiBundleName = @"UIModel.bundle";
+        _textLabel.customEmojiRegex = CustomEmojiRegex;
+        _textLabel.customEmojiPlistName = CustomEmojiPlistName;
+        _textLabel.customEmojiBundleName = BundleName;
         _textLabel.userInteractionEnabled=NO;
         _textLabel.disableThreeCommon = YES;
         [_bgView addSubview:_textLabel];
@@ -287,7 +287,7 @@ static MLEmojiLabel  *g_textLabel;
     //用户名
     if( ![self.msg.formUserId isEqualToString:VH_userId])
     {
-        [_bgView setBackgroundImage:[[UIImage imageNamed:@"UIModel.bundle/chat_other.tiff"] resizableImageWithCapInsets:UIEdgeInsetsMake(30, 20, 5, 5)]forState:UIControlStateNormal];
+        [_bgView setBackgroundImage:[BundleUIImage(@"chat_other") resizableImageWithCapInsets:UIEdgeInsetsMake(30, 20, 5, 5)]forState:UIControlStateNormal];
         _nameLabel.text = self.msg.formUserName;
         CGSize titleSize = [VHChatTableViewCell calStrSize:_nameLabel.text font:_nameLabel.font];
         if(titleSize.width>MAX_CHAT_BG_W- front - UISTEP)
@@ -297,7 +297,7 @@ static MLEmojiLabel  *g_textLabel;
     }
     else
     {
-        [_bgView setBackgroundImage:[[UIImage imageNamed:@"UIModel.bundle/chat_self.tiff"] resizableImageWithCapInsets:UIEdgeInsetsMake(30, 5, 5, 20)]forState:UIControlStateNormal];
+        [_bgView setBackgroundImage:[BundleUIImage(@"chat_self") resizableImageWithCapInsets:UIEdgeInsetsMake(30, 5, 5, 20)]forState:UIControlStateNormal];
         _nameLabel.hidden = YES;
     }
     
@@ -374,7 +374,7 @@ static MLEmojiLabel  *g_textLabel;
         [_headerBtn setBackgroundImage:VHRES_personPlaceHold_Image forState:UIControlStateNormal];
     }
     _headerBtn.frame = CGRectMake(UISTEP, UISTEP, _headerBtn.width, _headerBtn.height);
-    [_bgView setBackgroundImage:[[UIImage imageNamed:@"UIModel.bundle/chat_other.tiff"] resizableImageWithCapInsets:UIEdgeInsetsMake(30, 20, 5, 5)]forState:UIControlStateNormal];
+    [_bgView setBackgroundImage:[BundleUIImage(@"chat_other") resizableImageWithCapInsets:UIEdgeInsetsMake(30, 20, 5, 5)]forState:UIControlStateNormal];
     if (iPhone5) {
         NSString *message=nil;
         if (self.msg.formUserName.length>13) {
@@ -434,9 +434,9 @@ static MLEmojiLabel  *g_textLabel;
         _textLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _textLabel.isNeedAtAndPoundSign = YES;
         _textLabel.textColor = [UIColor blackColor];
-        _textLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-        _textLabel.customEmojiPlistName = @"faceExpression.plist";
-        _textLabel.customEmojiBundleName = @"UIModel.bundle";
+        _textLabel.customEmojiRegex = CustomEmojiRegex;
+        _textLabel.customEmojiPlistName = CustomEmojiPlistName;
+        _textLabel.customEmojiBundleName = BundleName;
         _textLabel.userInteractionEnabled=NO;
         _textLabel.disableThreeCommon = YES;
         [_bgView addSubview:_textLabel];
@@ -480,7 +480,7 @@ static MLEmojiLabel  *g_textLabel;
     
     //用户名
     
-    [_bgView setBackgroundImage:[[UIImage imageNamed:@"UIModel.bundle/chat_other.tiff"] resizableImageWithCapInsets:UIEdgeInsetsMake(30, 20, 5, 5)]forState:UIControlStateNormal];
+    [_bgView setBackgroundImage:[BundleUIImage(@"chat_other") resizableImageWithCapInsets:UIEdgeInsetsMake(30, 20, 5, 5)]forState:UIControlStateNormal];
     _nameLabel.text = self.msg.formUserName;
     CGSize titleSize = [VHChatTableViewCell calStrSize:_nameLabel.text font:_nameLabel.font];
     if(titleSize.width>MAX_CHAT_BG_W- front - UISTEP)
@@ -499,7 +499,7 @@ static MLEmojiLabel  *g_textLabel;
     if (self.msg.payFromType == PayFromPC)
     {
         text=@"赏给主播 大红包";
-        [_giftImage setImage:[UIImage imageNamed:@"UIModel.bundle/payMessage.tiff"]];
+        [_giftImage setImage:BundleUIImage(@"payMessage")];
     }else if (self.msg.payFromType == PayFromApp)
     {
         text=[NSString stringWithFormat:@"赏给主播 %@",self.msg.giftName];
@@ -539,7 +539,7 @@ static MLEmojiLabel  *g_textLabel;
         _qLabel.numberOfLines = 1;
         _qLabel.font = USER_Font;
         [_bgView addSubview:_qLabel];
-        _qImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"UIModel.bundle/questionMessage.tiff"]];
+        _qImageView = [[UIImageView alloc]initWithImage:BundleUIImage(@"questionMessage")];
         _qImageView.frame =  CGRectMake(0, 0, 20, 20);
         [_qLabel addSubview:_qImageView];
     }
@@ -648,9 +648,9 @@ static MLEmojiLabel  *g_textLabel;
             g_textLabel.numberOfLines = 0;
             g_textLabel.font = TEXT_Font;
             g_textLabel.lineBreakMode = NSLineBreakByCharWrapping;
-            g_textLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-            g_textLabel.customEmojiPlistName = @"faceExpression.plist";
-            g_textLabel.customEmojiBundleName = @"UIModel.bundle";
+            g_textLabel.customEmojiRegex = CustomEmojiRegex;
+            g_textLabel.customEmojiPlistName = CustomEmojiPlistName;
+            g_textLabel.customEmojiBundleName = BundleName;
         }
         g_textLabel.frame = CGRectMake(0, 0, FULL_MAX_CHAT_BG_W-3*UISTEP-FULL_ICON_W, 14);
         [g_textLabel setText:pollingDate.text];
@@ -693,9 +693,9 @@ static MLEmojiLabel  *g_textLabel;
         _textLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _textLabel.isNeedAtAndPoundSign = YES;
         _textLabel.textColor = [UIColor blackColor];
-        _textLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-        _textLabel.customEmojiPlistName = @"faceExpression.plist";
-        _textLabel.customEmojiBundleName = @"UIModel.bundle";
+        _textLabel.customEmojiRegex = CustomEmojiRegex;
+        _textLabel.customEmojiPlistName = CustomEmojiPlistName;
+        _textLabel.customEmojiBundleName = BundleName;
         _textLabel.userInteractionEnabled=NO;
         _textLabel.disableThreeCommon = YES;
 //        _textLabel.atColor = [UIColor whiteColor];
@@ -846,9 +846,9 @@ static MLEmojiLabel  *g_textLabel;
         _textLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _textLabel.isNeedAtAndPoundSign = YES;
         _textLabel.textColor = [UIColor whiteColor];
-        _textLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-        _textLabel.customEmojiPlistName = @"faceExpression.plist";
-        _textLabel.customEmojiBundleName = @"UIModel.bundle";
+        _textLabel.customEmojiRegex = CustomEmojiRegex;
+        _textLabel.customEmojiPlistName = CustomEmojiPlistName;
+        _textLabel.customEmojiBundleName = BundleName;
         _textLabel.userInteractionEnabled=NO;
         _textLabel.disableThreeCommon = YES;
         [_bgView addSubview:_textLabel];
@@ -927,7 +927,7 @@ static MLEmojiLabel  *g_textLabel;
     if (self.msg.payFromType == PayFromPC)
     {
         text=@"赏给主播 大红包";
-        [_giftImage setImage:[UIImage imageNamed:@"UIModel.bundle/payMessage.tiff"]];
+        [_giftImage setImage:BundleUIImage(@"payMessage")];
     }else if (self.msg.payFromType == PayFromApp)
     {
         text=[NSString stringWithFormat:@"赏给主播 %@",self.msg.giftName];

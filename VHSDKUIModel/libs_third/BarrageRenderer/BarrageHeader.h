@@ -30,7 +30,7 @@
 #import "BarrageRenderer.h"
 #import "BarrageLoader.h"
 #import "BarrageDescriptor.h"
-#import "BarrageWalkImageTextSprite.h"
+
 #import "BarrageWalkTextSprite.h"
 #import "BarrageFloatTextSprite.h"
 #import "BarrageWalkImageSprite.h"

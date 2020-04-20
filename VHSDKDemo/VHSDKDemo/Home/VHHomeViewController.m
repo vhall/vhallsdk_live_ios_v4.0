@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIButton       *loginBtn;
 @property (weak, nonatomic) IBOutlet UIImageView    *headImage;//头像
 @property (weak, nonatomic) IBOutlet UILabel        *nickName;//昵称
+@property (weak, nonatomic) IBOutlet UILabel        *activityIdLabel;//发起活动id
+@property (weak, nonatomic) IBOutlet UILabel        *watchActivityIdLabel;//观看id
 
 @property (weak, nonatomic) IBOutlet UIButton *btn0;
 @property (weak, nonatomic) IBOutlet UIButton *btn1;
@@ -54,11 +56,21 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self updateUI];
+}
+
 -(void)updateUI
 {
-    _nickName.text      = [VHallApi isLoggedIn]?[VHallApi currentUserNickName]:@"游客";
-    _loginBtn.selected  = [VHallApi isLoggedIn];
-    _deviceCategory.text= [UIDevice currentDevice].name;
+    _nickName.text              = DEMO_Setting.nickName;
+    _loginBtn.selected          = [VHallApi isLoggedIn];
+    _deviceCategory.text        = [UIDevice currentDevice].name;
+    _activityIdLabel.text       = [@"发起ID:" stringByAppendingString:DEMO_Setting.activityID];//发起活动id
+    _watchActivityIdLabel.text  = [@"观看ID:" stringByAppendingString:DEMO_Setting.watchActivityID];//观看id
+    
+    
     [_headImage sd_setImageWithURL:[NSURL URLWithString:[VHallApi currentUserHeadUrl]] placeholderImage:[UIImage imageNamed:@"defaultHead"]];
 }
 
@@ -66,19 +78,19 @@
 - (void)startLive:(UIInterfaceOrientation)orientation
 {
     if (DEMO_Setting.activityID.length<=0) {
-        [UIAlertView popupAlertByDelegate:nil title:@"请在设置中输入发直播活动ID" message:nil];
+        [self showMsg:@"请在设置中输入发直播活动ID" afterDelay:2];
         return;
     }
     if (DEMO_Setting.liveToken == nil||DEMO_Setting.liveToken<=0) {
-        [UIAlertView popupAlertByDelegate:nil title:@"请在设置中输入token" message:nil];
+        [self showMsg:@"请在设置中输入token" afterDelay:2];
         return;
     }
     if (DEMO_Setting.videoBitRate<=0 || DEMO_Setting.audioBitRate<=0) {
-        [UIAlertView popupAlertByDelegate:nil title:@"码率不能为负数" message:nil];
+        [self showMsg:@"码率不能为负数" afterDelay:2];
         return;
     }
     if (DEMO_Setting.videoCaptureFPS< 1 || DEMO_Setting.videoCaptureFPS>30) {
-        [UIAlertView popupAlertByDelegate:nil title:@"帧率设置错误[1-30]" message:nil];
+        [self showMsg:@"帧率设置错误[1-30]" afterDelay:2];
         return;
     }
     
@@ -116,7 +128,7 @@
         case 2://观看直播
         {
             if (DEMO_Setting.watchActivityID.length<=0) {
-                [UIAlertView popupAlertByDelegate:nil title:@"请在设置中输入活动ID" message:nil];
+                [self showMsg:@"请在设置中输入活动ID" afterDelay:2];
                 return;
             }
             WatchLiveViewController * watchVC  =[[WatchLiveViewController alloc]init];
@@ -130,7 +142,7 @@
         case 3://观看回放
         {
             if (DEMO_Setting.watchActivityID.length<=0) {
-                [UIAlertView popupAlertByDelegate:nil title:@"请在设置中输入活动ID" message:nil];
+                [self showMsg:@"请在设置中输入活动ID" afterDelay:2];
                 return;
             }
             WatchPlayBackViewController * watchVC  =[[WatchPlayBackViewController alloc]init];
@@ -159,16 +171,30 @@
         __weak typeof(self) weekself= self;
         [VHallApi logout:^{
             [weekself showMsg:@"已退出" afterDelay:1.5];
+            DEMO_Setting.nickName = [VHallApi currentUserNickName];
             [weekself updateUI];
             _loginBtn.selected = NO;
         } failure:^(NSError *error) {
             [weekself updateUI];
         }];
-    }else
+    }
+    else
     {
-        LoginViewController *login = [[LoginViewController alloc] init];
-        login.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:login animated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+- (IBAction)headBtnClicked:(id)sender
+{
+    if (![VHallApi isLoggedIn])
+        return;
+    
+    Class class= objc_getClass("VHListViewController");
+    if(class)
+    {
+        UIViewController* vc = ((UIViewController*)[[class alloc] init]);
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:vc animated:YES completion:nil];
     }
 }
 

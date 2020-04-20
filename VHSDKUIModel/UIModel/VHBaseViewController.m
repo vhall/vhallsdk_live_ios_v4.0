@@ -7,7 +7,7 @@
 //
 
 #import "VHBaseViewController.h"
-
+#import "MBProgressHUD.h"
 @interface VHBaseViewController ()
 
 @end
@@ -80,11 +80,11 @@
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = msg;
+    hud.label.text = msg;
     hud.margin = 10.f;
     //            hud.yOffset = 150.f;
     hud.removeFromSuperViewOnHide = YES;
-    [hud hide:YES afterDelay:delay];
+    [hud hideAnimated:YES afterDelay:delay];
 }
 
 
@@ -96,22 +96,22 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:window animated:YES];
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = msg;
+    hud.label.text = msg;
     hud.margin = 10.f;
     //            hud.yOffset = 150.f;
     hud.removeFromSuperViewOnHide = YES;
-    [hud hide:YES afterDelay:delay];
+    [hud hideAnimated:YES afterDelay:delay];
 }
 
 -(void) showRendererMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = msg;
+    hud.label.text = msg;
     hud.margin = 30.f;
     //            hud.yOffset = 150.f;
     hud.removeFromSuperViewOnHide = YES;
-    [hud hide:YES afterDelay:delay];
+    [hud hideAnimated:YES afterDelay:delay];
 }
 
 @end

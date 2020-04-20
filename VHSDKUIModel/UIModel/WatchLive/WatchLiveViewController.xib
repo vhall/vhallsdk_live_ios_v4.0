@@ -332,19 +332,23 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="28" id="rFG-Gv-QjJ"/>
                                     </constraints>
-                                    <state key="normal" image="播放">
+                                    <state key="normal" image="播放.png">
                                         <color key="titleColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
-                                    <state key="selected" image="暂停"/>
+                                    <state key="selected" image="暂停.png"/>
                                     <connections>
                                         <action selector="stopWatchBtnClick:" destination="-1" eventType="touchUpInside" id="YR9-wj-WY7"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HTd-VW-Re1">
-                                    <rect key="frame" x="278" y="1" width="60" height="30"/>
+                                    <rect key="frame" x="338" y="1" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="5NZ-Ob-YLY"/>
+                                        <constraint firstAttribute="width" constant="30" id="eDa-Rd-xGi"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <inset key="imageEdgeInsets" minX="4" minY="2" maxX="0.0" maxY="0.0"/>
-                                    <state key="normal" image="适应屏幕">
+                                    <state key="normal" image="适应屏幕.png">
                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
@@ -356,27 +360,35 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="27" id="s6W-pn-x5R"/>
                                     </constraints>
-                                    <state key="normal" image="原画"/>
+                                    <state key="normal" image="原画.png"/>
                                     <connections>
                                         <action selector="definitionBtnCLicked:" destination="-1" eventType="touchUpInside" id="fPq-dP-vNN"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QUw-Cq-ZnB">
-                                    <rect key="frame" x="212" y="0.0" width="60" height="30"/>
+                                    <rect key="frame" x="302" y="0.0" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="30" id="AVe-PZ-sdl"/>
+                                        <constraint firstAttribute="height" constant="30" id="yMG-u9-9mQ"/>
+                                    </constraints>
                                     <inset key="imageEdgeInsets" minX="4" minY="2" maxX="0.0" maxY="0.0"/>
-                                    <state key="normal" image="单视频"/>
-                                    <state key="selected" image="单音频"/>
+                                    <state key="normal" image="单视频关.png"/>
+                                    <state key="selected" image="单音频.png"/>
                                     <connections>
                                         <action selector="playModeBtnCLicked:" destination="-1" eventType="touchUpInside" id="uGK-UD-o49"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dek-1c-ate">
-                                    <rect key="frame" x="146" y="0.0" width="60" height="30"/>
+                                    <rect key="frame" x="266" y="0.0" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="30" id="Cgt-cf-3V7"/>
+                                        <constraint firstAttribute="height" constant="30" id="Xht-mp-QUz"/>
+                                    </constraints>
                                     <inset key="imageEdgeInsets" minX="4" minY="2" maxX="0.0" maxY="0.0"/>
-                                    <state key="normal" image="开音">
+                                    <state key="normal" image="开音.png">
                                         <color key="titleColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
-                                    <state key="selected" image="静音"/>
+                                    <state key="selected" image="静音.png"/>
                                     <connections>
                                         <action selector="muteBtnClick:" destination="-1" eventType="touchUpInside" id="ygd-zi-Dvw"/>
                                     </connections>
@@ -389,36 +401,48 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xEX-4j-Vhy">
-                                    <rect key="frame" x="344" y="0.0" width="60" height="30"/>
-                                    <state key="normal" image="fullscreen"/>
-                                    <state key="selected" image="unfullscreen"/>
+                                    <rect key="frame" x="374" y="0.0" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="30" id="VL1-yU-OEg"/>
+                                        <constraint firstAttribute="height" constant="30" id="sgP-Uu-tni"/>
+                                    </constraints>
+                                    <state key="normal" image="fullscreen.png"/>
+                                    <state key="selected" image="unfullscreen.png"/>
                                     <connections>
                                         <action selector="fullscreenBtnClicked:" destination="-1" eventType="touchUpInside" id="OTq-9J-5zJ"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tzW-Mu-qbH">
-                                    <rect key="frame" x="74" y="0.0" width="66" height="30"/>
-                                    <state key="normal" image="弹幕关"/>
+                                    <rect key="frame" x="230" y="0.0" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="2zm-j9-qL9"/>
+                                        <constraint firstAttribute="width" constant="30" id="408-hB-23j"/>
+                                    </constraints>
+                                    <state key="normal" image="弹幕关.png"/>
                                     <state key="selected" image="弹幕"/>
                                     <connections>
                                         <action selector="barrageBtnClick:" destination="-1" eventType="touchUpInside" id="YNJ-1x-eSU"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mbl-zB-Ad9">
-                                    <rect key="frame" x="2" y="0.0" width="66" height="31"/>
-                                    <state key="normal" image="陀螺默认"/>
+                                    <rect key="frame" x="194" y="0.0" width="30" height="31"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="31" id="fc2-gz-qpY"/>
+                                        <constraint firstAttribute="width" constant="30" id="kia-O4-TPm"/>
+                                    </constraints>
+                                    <state key="normal" image="陀螺默认.png"/>
                                     <state key="selected" backgroundImage="陀螺选中"/>
                                     <connections>
                                         <action selector="startGyroClick:" destination="-1" eventType="touchUpInside" id="3H2-Cz-GQT"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YdZ-EJ-Cac">
-                                    <rect key="frame" x="-31" y="4" width="33" height="22"/>
+                                    <rect key="frame" x="161" y="4" width="33" height="22"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="33" id="0xz-uk-POp"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <state key="normal" backgroundImage="投屏">
+                                    <state key="normal" backgroundImage="投屏.png">
                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </state>
                                     <connections>
@@ -477,7 +501,7 @@
                                 <constraint firstAttribute="width" constant="28" id="B1h-oG-Czk"/>
                                 <constraint firstAttribute="height" constant="28" id="uSo-xw-5gJ"/>
                             </constraints>
-                            <state key="normal" image="返回">
+                            <state key="normal" image="返回.png">
                                 <color key="titleColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -519,21 +543,21 @@
         </view>
     </objects>
     <resources>
-        <image name="fullscreen" width="30" height="30"/>
-        <image name="unfullscreen" width="30" height="30"/>
-        <image name="单视频" width="30" height="30"/>
-        <image name="单音频" width="30" height="30"/>
-        <image name="原画" width="30" height="30"/>
-        <image name="开音" width="30" height="30"/>
+        <image name="fullscreen.png" width="30" height="30"/>
+        <image name="unfullscreen.png" width="30" height="30"/>
+        <image name="单视频关.png" width="30" height="30"/>
+        <image name="单音频.png" width="30" height="30"/>
+        <image name="原画.png" width="30" height="30"/>
+        <image name="开音.png" width="30" height="30"/>
         <image name="弹幕" width="33" height="33.333332061767578"/>
-        <image name="弹幕关" width="33" height="33.666667938232422"/>
-        <image name="投屏" width="44" height="41"/>
-        <image name="播放" width="60.333332061767578" height="60.333332061767578"/>
-        <image name="暂停" width="60.333332061767578" height="60.333332061767578"/>
-        <image name="返回" width="28.666666030883789" height="28.666666030883789"/>
-        <image name="适应屏幕" width="30" height="30"/>
+        <image name="弹幕关.png" width="33" height="33.666667938232422"/>
+        <image name="投屏.png" width="44" height="41"/>
+        <image name="播放.png" width="60.333332061767578" height="60.333332061767578"/>
+        <image name="暂停.png" width="60.333332061767578" height="60.333332061767578"/>
+        <image name="返回.png" width="28.666666030883789" height="28.666666030883789"/>
+        <image name="适应屏幕.png" width="30" height="30"/>
         <image name="陀螺选中" width="33.333332061767578" height="33.333332061767578"/>
-        <image name="陀螺默认" width="33.333332061767578" height="33.333332061767578"/>
-        <image name="静音" width="30" height="30"/>
+        <image name="陀螺默认.png" width="33.333332061767578" height="33.333332061767578"/>
+        <image name="静音.png" width="30" height="30"/>
     </resources>
 </document>

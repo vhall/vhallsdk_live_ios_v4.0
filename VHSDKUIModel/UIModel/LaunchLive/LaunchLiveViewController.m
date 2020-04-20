@@ -12,6 +12,7 @@
 #import "WatchLiveOnlineTableViewCell.h"
 #import "WatchLiveChatTableViewCell.h"
 #import <VHLiveSDK/VHallApi.h>
+#import "UIAlertController+ITTAdditionsUIModel.h"
 
 #import "VHLiveChatView.h"
 #import "VHMessageToolView.h"
@@ -64,7 +65,7 @@
 #pragma mark - Lifecycle
 - (id)init
 {
-    self = [super initWithNibName:NSStringFromClass([self class]) bundle:meetingResourcesBundle];
+    self = LoadVCNibName;
     if (self) {
         [self initDatas];
     }
@@ -78,6 +79,17 @@
     [self initViews];
     //初始化CameraEngine
     [self initCameraEngine];
+    
+    //获取音频权限
+    AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
+    if (permissionStatus == AVAudioSessionRecordPermissionUndetermined) {
+       [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+       }];
+    } else if (permissionStatus == AVAudioSessionRecordPermissionDenied) {
+
+    } else {
+        
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -182,7 +194,7 @@
     [self registerLiveNotification];
     _hud = [[MBProgressHUD alloc]initWithView:self.perView];
     [self.perView addSubview:_hud];
-    [_hud hide:YES];
+    [_hud hideAnimated:YES];
     [self.perView addSubview:_closeBtn];
     
     _chatMsgSend.layer.masksToBounds = YES;
@@ -192,8 +204,13 @@
     
     _msgTextField.layer.masksToBounds = YES;
     _msgTextField.layer.cornerRadius = 15;
-//    [_msgTextField setValue:[UIColor lightGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
-
+    
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:_msgTextField.placeholder attributes:
+         @{NSForegroundColorAttributeName:[UIColor lightGrayColor],
+           NSFontAttributeName:_msgTextField.font}
+         ];
+    _msgTextField.attributedPlaceholder = attrString;
+    
     _audioStartAndStopBtn.hidden = YES;
     
     _filterBtn.hidden = !self.beautifyFilterEnable;
@@ -264,11 +281,11 @@
     VHPublishConfig* config = [VHPublishConfig configWithType:VHPublishConfigTypeDefault];
     config.orientation = captureVideoOrientation;
     config.publishConnectTimes = 2;
-    config.videoBitRate = self.videoBitRate;
-    config.videoCaptureFPS = self.videoCaptureFPS;
+    config.videoBitRate = self.videoBitRate<=0?700:self.videoBitRate;
+    config.videoCaptureFPS = self.videoCaptureFPS<=0?15:self.videoCaptureFPS;
     config.isOpenNoiseSuppresion = self.isOpenNoiseSuppresion;
-    config.videoResolution = self.videoResolution;
-    config.audioBitRate = self.audioBitRate;
+    config.videoResolution = self.videoResolution<=0?2:self.videoResolution;
+    config.audioBitRate = self.audioBitRate<=0?64:self.audioBitRate;
     config.captureDevicePosition = AVCaptureDevicePositionBack;
     if(self.beautifyFilterEnable)
     {
@@ -316,7 +333,7 @@
     {
         [_chatDataArray removeAllObjects];
         [_chatView update];
-        [_hud show:YES];
+        [_hud showAnimated:YES];
         _torchBtn.hidden = NO;
 
         NSMutableDictionary * param = [[NSMutableDictionary alloc]init];
@@ -332,7 +349,7 @@
     {
         _isVideoStart=NO;
         _bitRateLabel.text = @"";
-        [_hud hide:YES];
+        [_hud hideAnimated:YES];
         _videoStartAndStopBtn.selected = NO;
         [self chatShow:NO];
         _torchBtn.hidden = YES;
@@ -436,7 +453,7 @@
             _bitRateLabel.text = @"";
             _videoStartAndStopBtn.selected = NO;
             [weakSelf chatShow:NO];
-            [UIAlertView popupAlertByDelegate:nil title:msg message:nil];
+            [UIAlertController showAlertControllerTitle:msg msg:@"" btnTitle:@"确定" callBack:nil];
         });
     };
 
@@ -451,7 +468,7 @@
             break;
         case VHLiveStatusPushConnectSucceed:
         {
-            [_hud hide:YES];
+            [_hud hideAnimated:YES];
             [weakSelf chatShow:YES];
             _isVideoStart=YES;
             if (_isVideoStart || _isAudioStart) {
@@ -469,7 +486,7 @@
             break;
         case VHLiveStatusPushConnectError:
         {
-            [_hud hide:YES];
+            [_hud hideAnimated:YES];
             NSString *str =[NSString stringWithFormat:@"连接失败:%@",content];
             resetStartPlay(str);
             errorLiveStatus = YES;
@@ -477,14 +494,14 @@
             break;
         case VHLiveStatusParamError:
         {
-            [_hud hide:YES];
+            [_hud hideAnimated:YES];
             resetStartPlay(@"参数错误");
             errorLiveStatus = YES;
         }
             break;
         case VHLiveStatusGetUrlError:
         {
-            [_hud hide:YES];
+            [_hud hideAnimated:YES];
             _isVideoStart=NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf showMsg:content afterDelay:1.5];
@@ -507,7 +524,7 @@
             break;
         case  VHLiveStatusAudioRecoderError :
         {
-            [_hud hide:YES];
+            [_hud hideAnimated:YES];
             _isVideoStart=NO;
             dispatch_async(dispatch_get_main_queue(), ^{
 //                [weakSelf showMsg:@"音频采集失败,可能是麦克风未授权使用" afterDelay:1.5];

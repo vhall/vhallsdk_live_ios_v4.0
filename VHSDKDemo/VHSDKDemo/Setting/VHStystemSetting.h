@@ -34,14 +34,17 @@
 @property(nonatomic, assign)BOOL      beautifyFilterEnable;//美颜开关
 
 //互动设置
-@property(nonatomic, copy)NSString *pushResolution;  //互动分辨率
+/*
+   0 VHFrameResolution192x144
+   1 VHFrameResolution320x240
+   2 VHFrameResolution480x360
+   3 VHFrameResolution640x480
+ */
+@property(nonatomic, copy)NSString   *pushResolution;  //互动分辨率
+@property(nonatomic, assign)BOOL      inavBeautifyFilterEnable;//互动美颜开关
 
 //聊天问答等功能需登录
 @property(nonatomic, strong)NSString* account;      //账号
 @property(nonatomic, strong)NSString* password;     //密码
-
-//appKey
-@property(nonatomic, strong)NSString* appKey;
-@property(nonatomic, strong)NSString* appSecretKey;
 
 @end

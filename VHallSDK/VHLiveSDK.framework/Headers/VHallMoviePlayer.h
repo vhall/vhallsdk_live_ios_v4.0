@@ -46,7 +46,7 @@
 @property (nonatomic, readonly) NSTimeInterval          playableDuration;   //可播放时长
 @property (nonatomic, assign)   NSTimeInterval          currentPlaybackTime;//当前播放时间点
 @property (nonatomic, assign)   float                   rate;//点播倍速播放速率 0.50, 0.67, 0.80, 1.0, 1.25, 1.50, and 2.0
-
+@property (nonatomic, assign)   NSTimeInterval          initialPlaybackTime;//初始化要播放的位置
 /**
  *  初始化VHMoviePlayer对象
  *  @param delegate 代理
@@ -63,26 +63,6 @@
  *  param[@"pass"]  = 活动如果有K值或密码需要传
  */
 -(BOOL)startPlay:(NSDictionary*)param;
-
-/**
- *  发送 申请上麦/取消申请 消息
- *  @param type 1举手，0取消举手
- */
-- (BOOL)microApplyWithType:(NSInteger)type;
-
-/**
- *  发送 申请上麦/取消申请 消息
- *  @param type 1举手，0取消举手
- *  @param finishBlock 消息发送结果
- */
-- (BOOL)microApplyWithType:(NSInteger)type finish:(void(^)(NSError *error))finishBlock;
-
-/**
- *  收到邀请后 是否同意上麦
- *  @param type 1接受，2拒绝，3超时失败
- *  @param finishBlock 结果回调
- */
-- (BOOL)replyInvitationWithType:(NSInteger)type finish:(void(^)(NSError *error))finishBlock;
 
 /**
  *  观看回放/点播视频
@@ -117,26 +97,32 @@
 - (void)setMute:(BOOL)mute;
 
 /**
- *  重连socket
- */
--(BOOL)reconnectSocket;
-
-/**
- *  设置系统声音大小
- *  @param size float  [0.0~1.0]
- */
-+ (void)setSysVolumeSize:(float)size;
-
-/**
- *  获取系统声音大小
- */
-+ (float)getSysVolumeSize;
-
-/**
  *  销毁播放器
  */
 - (void)destroyMoivePlayer;
 
+#pragma mark - 连麦互动接口
+/**
+ *  发送 申请上麦/取消申请 消息
+ *  @param type 1举手，0取消举手
+ */
+- (BOOL)microApplyWithType:(NSInteger)type;
+
+/**
+ *  发送 申请上麦/取消申请 消息
+ *  @param type 1举手，0取消举手
+ *  @param finishBlock 消息发送结果
+ */
+- (BOOL)microApplyWithType:(NSInteger)type finish:(void(^)(NSError *error))finishBlock;
+
+/**
+ *  收到邀请后 是否同意上麦
+ *  @param type 1接受，2拒绝，3超时失败
+ *  @param finishBlock 结果回调
+ */
+- (BOOL)replyInvitationWithType:(NSInteger)type finish:(void(^)(NSError *error))finishBlock;
+
+#pragma mark - 辅助接口
 /**
  *  清空视频剩余的最后一帧画面
  */
@@ -161,8 +147,24 @@
  */
 - (BOOL)dlnaMappingObject:(id)DLNAobj;
 
+/**
+ *  重连socket
+ */
+-(BOOL)reconnectSocket;
+
 ///设置音频输出设备
 + (void)audioOutput:(BOOL)inSpeaker;
+
+/**
+ *  设置系统声音大小
+ *  @param size float  [0.0~1.0]
+ */
++ (void)setSysVolumeSize:(float)size;
+
+/**
+ *  获取系统声音大小
+ */
++ (float)getSysVolumeSize;
 @end
 
 

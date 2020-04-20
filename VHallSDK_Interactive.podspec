@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name            = "VHallSDK_Interactive"
-  s.version         = "4.1.1"
+  s.version         = "4.1.2"
   s.author          = { "vhall" => "xiaoxiang.wang@vhall.com" }
   s.license         = { :type => "MIT", :file => "LICENSE" }
   s.homepage        = 'https://www.vhall.com'
@@ -11,15 +11,13 @@ Pod::Spec.new do |s|
   #s.source_files   = ''
   s.libraries 	    = 'xml2.2'
   s.frameworks      = "AVFoundation", "VideoToolbox","OpenAL","CoreMedia","CoreTelephony" ,"OpenGLES" ,"MediaPlayer" ,"AssetsLibrary","QuartzCore" ,"JavaScriptCore","Security"
-  s.module_name     = 'VHallSDK_Live'
+  s.module_name     = 'VHallSDK_Interactive'
   s.resources       = ['README.md']
   #s.resource_bundles= {}
-  s.vendored_frameworks = 'VHallSDK/VHallInteractive/WebRTC.framework','VHallSDK/VHallInteractive/VHInteractive.framework'
+  s.vendored_frameworks = 'VHallSDK/VHLiveSDK.framework','VHallSDK/VhallLiveBaseApi.framework','VHallSDK/VHallInteractive/WebRTC.framework','VHallSDK/VHallInteractive/VHInteractive.framework'
   s.pod_target_xcconfig = {
     'FRAMEWORK_SEARCH_PATHS' => '$(inherited) $(PODS_ROOT)/**',
     'HEADER_SEARCH_PATHS' => '$(inherited) $(PODS_ROOT)/**'
   }
-
-  s.dependency 'VHallSDK_Live','>=4.1.1'
 
 end

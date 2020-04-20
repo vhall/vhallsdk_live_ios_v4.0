@@ -41,6 +41,12 @@ typedef NS_ENUM(NSInteger, VHRoomDevice) {
 
 @interface VHRoom : NSObject
 
+/*！
+ * 用来获得当前sdk的版本号
+ * return 返回sdk版本号
+ */
++(NSString *) sdkVersionEX;
+
 @property (nonatomic, weak) id <VHRoomDelegate> delegate;
 
 /*

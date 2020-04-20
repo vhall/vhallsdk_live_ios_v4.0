@@ -12,14 +12,49 @@
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <objc/message.h>
+
+#import "CONSTS.h"
+#import "MBProgressHUD.h"
+#import <VHLiveSDK/VHallApi.h>
+#import "VHStystemSetting.h"
+#import "UIView+ITTAdditions.h"
+
+#import "UIModel.h"
+#endif
+
+
+//#if DEBUG  // 调试状态, 打开LOG功能
+#define VHLog(...) NSLog(__VA_ARGS__)
+//#else // 发布状态, 关闭LOG功能
+//#define VHLog(...)
+//#endif
+
+#define kViewFramePath  @"frame"
+
+#pragma mark - iphone detection functions
+
+#define APPDELEGATE [AppDelegate getAppDelegate]
+
+#define IOSVersion  [[UIDevice currentDevice].systemVersion floatValue]
+
+#define KIScreenHeight [[UIScreen mainScreen] bounds].size.height
+
+#define KIScreenWidth [[UIScreen mainScreen] bounds].size.width
+
+//颜色
 #define MakeColor(r,g,b,a) ([UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a])
-#define MessageTool_SendBtnColor [UIColor colorWithRed:153.0f/255.0f green:153.0f/255.0f blue:153.0f/255.0f alpha:1.0f]
 #define MakeColorRGB(hex)  ([UIColor colorWithRed:((hex>>16)&0xff)/255.0 green:((hex>>8)&0xff)/255.0 blue:(hex&0xff)/255.0 alpha:1.0])
-#define VH_SH           ((VHScreenWidth<VHScreenHeight)?VHScreenHeight:VHScreenWidth)
-#define VH_SW           ((VHScreenWidth<VHScreenHeight)?VHScreenWidth:VHScreenHeight)
+#define MakeColorRGBA(hex,a) ([UIColor colorWithRed:((hex>>16)&0xff)/255.0 green:((hex>>8)&0xff)/255.0 blue:(hex&0xff)/255.0 alpha:a])
+#define MakeColorARGB(hex) ([UIColor colorWithRed:((hex>>16)&0xff)/255.0 green:((hex>>8)&0xff)/255.0 blue:(hex&0xff)/255.0 alpha:((hex>>24)&0xff)/255.0])
+
 #define VHScreenHeight  ([UIScreen mainScreen].bounds.size.height)
 #define VHScreenWidth   ([UIScreen mainScreen].bounds.size.width)
-#define VH_Device_OS_ver [[UIDevice currentDevice] systemVersion]
+#define VH_SH           ((VHScreenWidth<VHScreenHeight)?VHScreenHeight:VHScreenWidth)
+#define VH_SW           ((VHScreenWidth<VHScreenHeight)?VHScreenWidth:VHScreenHeight)
 
 #define iPhoneX \
 ({BOOL isPhoneX = NO;\
@@ -28,15 +63,5 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 }\
 (isPhoneX);})
 
-#ifdef __OBJC__
-#import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
-#import "CONSTS.h"
-#import "MBHUDHelper.h"
-#import <VHLiveSDK/VHallApi.h>
-#import "VHStystemSetting.h"
-#import "UIView+ITTAdditions.h"
-#import "UIAlertView+ITTAdditions.h"
-#endif
 
 #endif /* VHSDKDemo_Header_pch */

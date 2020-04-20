@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VHHomeViewController">
             <connections>
+                <outlet property="activityIdLabel" destination="7M3-24-YDC" id="OSg-Ld-SzK"/>
                 <outlet property="btn0" destination="J6R-Ja-EIo" id="m4Z-Hn-tSG"/>
                 <outlet property="btn1" destination="Ygi-pJ-CEE" id="wpm-2Q-71t"/>
                 <outlet property="btn2" destination="7XL-cD-EE1" id="gfa-qj-aCB"/>
@@ -20,6 +19,7 @@
                 <outlet property="loginBtn" destination="0nS-m9-LUz" id="owz-f4-KwH"/>
                 <outlet property="nickName" destination="Jut-58-1jc" id="1B5-bT-APn"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="watchActivityIdLabel" destination="haQ-eP-xuX" id="qiZ-2h-DH4"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -42,7 +42,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jut-58-1jc">
-                            <rect key="frame" x="163" y="236.5" width="49" height="24"/>
+                            <rect key="frame" x="163.5" y="236.5" width="48" height="24"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <color key="textColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                             <nil key="highlightedColor"/>
@@ -81,13 +81,23 @@
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="elO-5b-dro">
+                            <rect key="frame" x="131.5" y="94" width="112" height="112"/>
+                            <connections>
+                                <action selector="headBtnClicked:" destination="-1" eventType="touchUpInside" id="qVW-xF-jzi"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="elO-5b-dro" firstAttribute="leading" secondItem="k3v-cL-9tj" secondAttribute="leading" id="09d-L2-h3s"/>
                         <constraint firstItem="Auc-ju-R8I" firstAttribute="top" secondItem="Svq-0i-1hS" secondAttribute="top" constant="36" id="1al-v5-hvJ"/>
                         <constraint firstItem="Swr-qH-ZZ9" firstAttribute="top" secondItem="Svq-0i-1hS" secondAttribute="top" id="3NG-z9-yCv"/>
+                        <constraint firstItem="elO-5b-dro" firstAttribute="centerY" secondItem="k3v-cL-9tj" secondAttribute="centerY" id="4yd-bL-KwD"/>
                         <constraint firstItem="iZp-rs-LIF" firstAttribute="leading" secondItem="k3v-cL-9tj" secondAttribute="leading" constant="-23" id="BhT-Ah-23a"/>
                         <constraint firstItem="XwX-NC-DH8" firstAttribute="leading" secondItem="Svq-0i-1hS" secondAttribute="leading" constant="10" id="Buc-g6-0u2"/>
+                        <constraint firstItem="elO-5b-dro" firstAttribute="width" secondItem="k3v-cL-9tj" secondAttribute="width" id="DpD-Yw-mpq"/>
+                        <constraint firstItem="elO-5b-dro" firstAttribute="height" secondItem="k3v-cL-9tj" secondAttribute="height" id="Fpy-19-ti9"/>
                         <constraint firstItem="Swr-qH-ZZ9" firstAttribute="leading" secondItem="Svq-0i-1hS" secondAttribute="leading" id="Kir-Fa-MVr"/>
                         <constraint firstItem="iZp-rs-LIF" firstAttribute="bottom" secondItem="k3v-cL-9tj" secondAttribute="bottom" constant="24" id="M6i-gy-nDU"/>
                         <constraint firstItem="Jut-58-1jc" firstAttribute="centerY" secondItem="Svq-0i-1hS" secondAttribute="centerY" constant="108" id="NJq-sP-gd4"/>
@@ -139,10 +149,17 @@
                                         <action selector="btnClick:" destination="-1" eventType="touchUpInside" id="Thc-Ex-LW1"/>
                                     </connections>
                                 </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12345678" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7M3-24-YDC">
+                                    <rect key="frame" x="322.5" y="180" width="44.5" height="11"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="Ygi-pJ-CEE" firstAttribute="height" secondItem="J6R-Ja-EIo" secondAttribute="height" id="0t2-aI-VJr"/>
+                                <constraint firstAttribute="bottom" secondItem="7M3-24-YDC" secondAttribute="bottom" constant="2" id="3eS-oS-ToQ"/>
                                 <constraint firstItem="Ygi-pJ-CEE" firstAttribute="leading" secondItem="J6R-Ja-EIo" secondAttribute="trailing" id="5XU-Zi-qgc"/>
                                 <constraint firstItem="Ygi-pJ-CEE" firstAttribute="top" secondItem="hCQ-ts-0Fc" secondAttribute="top" id="9aa-Ci-08E"/>
                                 <constraint firstItem="J6R-Ja-EIo" firstAttribute="leading" secondItem="hCQ-ts-0Fc" secondAttribute="leading" id="DWq-U7-Znj"/>
@@ -151,6 +168,7 @@
                                 <constraint firstItem="J6R-Ja-EIo" firstAttribute="top" secondItem="hCQ-ts-0Fc" secondAttribute="top" id="uZ2-v8-W9t"/>
                                 <constraint firstAttribute="trailing" secondItem="Ygi-pJ-CEE" secondAttribute="trailing" id="wOB-Sr-zgC"/>
                                 <constraint firstAttribute="bottom" secondItem="J6R-Ja-EIo" secondAttribute="bottom" id="yQ8-bQ-TAZ"/>
+                                <constraint firstAttribute="trailing" secondItem="7M3-24-YDC" secondAttribute="trailing" constant="8" id="zs0-0j-Cme"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0RI-Af-edA" userLabel="watch">
@@ -182,9 +200,16 @@
                                         <action selector="btnClick:" destination="-1" eventType="touchUpInside" id="9gV-wu-uhd"/>
                                     </connections>
                                 </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12345678" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="haQ-eP-xuX">
+                                    <rect key="frame" x="322.5" y="2" width="44.5" height="11"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="haQ-eP-xuX" firstAttribute="top" secondItem="0RI-Af-edA" secondAttribute="top" constant="2" id="4O9-6c-oJr"/>
                                 <constraint firstItem="770-xz-PQM" firstAttribute="width" secondItem="7XL-cD-EE1" secondAttribute="width" id="4vd-aE-HKg"/>
                                 <constraint firstItem="770-xz-PQM" firstAttribute="top" secondItem="0RI-Af-edA" secondAttribute="top" id="9nn-Ad-l84"/>
                                 <constraint firstItem="7XL-cD-EE1" firstAttribute="leading" secondItem="0RI-Af-edA" secondAttribute="leading" id="CUW-cL-cgn"/>
@@ -193,6 +218,7 @@
                                 <constraint firstItem="7XL-cD-EE1" firstAttribute="top" secondItem="0RI-Af-edA" secondAttribute="top" id="RQb-Uu-x7c"/>
                                 <constraint firstAttribute="bottom" secondItem="770-xz-PQM" secondAttribute="bottom" id="gPK-iJ-Aod"/>
                                 <constraint firstAttribute="trailing" secondItem="770-xz-PQM" secondAttribute="trailing" id="hrq-77-NBr"/>
+                                <constraint firstAttribute="trailing" secondItem="haQ-eP-xuX" secondAttribute="trailing" constant="8" id="lMP-dC-Gs5"/>
                                 <constraint firstItem="770-xz-PQM" firstAttribute="height" secondItem="7XL-cD-EE1" secondAttribute="height" id="yQg-HI-FUi"/>
                             </constraints>
                         </view>
@@ -254,13 +280,13 @@
         <image name="headCircu" width="159" height="159"/>
         <image name="line" width="528" height="528"/>
         <image name="personBackGround" width="375" height="280"/>
-        <image name="phonePic" width="7" height="13"/>
-        <image name="playBack" width="32" height="33"/>
-        <image name="playBackSelect" width="32" height="33"/>
+        <image name="phonePic" width="7.5" height="13.5"/>
+        <image name="playBack" width="32.5" height="33"/>
+        <image name="playBackSelect" width="32.5" height="33"/>
         <image name="porLiving" width="24" height="35"/>
         <image name="porLivingSelec" width="24" height="35"/>
-        <image name="redSet" width="86" height="108"/>
-        <image name="watchLiving" width="37" height="26"/>
-        <image name="watchLivingSelected" width="37" height="26"/>
+        <image name="redSet" width="86" height="108.5"/>
+        <image name="watchLiving" width="37.5" height="26"/>
+        <image name="watchLivingSelected" width="37.5" height="26"/>
     </resources>
 </document>

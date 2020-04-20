@@ -9,10 +9,11 @@
 #import "VHinteractiveViewController.h"
 #import <VHInteractive/VHRoom.h>
 #import <VHLiveSDK/VHallApi.h>
+#import "UIAlertController+ITTAdditionsUIModel.h"
 
 #define iconSize 34
 
-@interface VHinteractiveViewController ()<VHRoomDelegate,UIAlertViewDelegate>
+@interface VHinteractiveViewController ()<VHRoomDelegate>
 {
     UIButton *_micBtn;//麦克风按钮
     UIButton *_cameraBtn;//摄像头按钮
@@ -55,8 +56,9 @@
     [self initSubViews];
     
     if (!self.roomId) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"互动房间id不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
+        [UIAlertController showAlertControllerTitle:@"温馨提示" msg:@"互动房间id不能为空" btnTitle:@"确定" callBack:^{
+            
+        }];
     }
     else
     {
@@ -99,31 +101,31 @@
     swapBtn.bounds = CGRectMake(0, 0, iconSize, iconSize);
     swapBtn.top = self.view.height*0.5-((iconSize+6)*4)*0.5;
     swapBtn.right = self.view.right-12;
-    [swapBtn setBackgroundImage:[UIImage imageNamed:@"UIModel.bundle/icon_video_camera_switching.tiff"] forState:UIControlStateNormal];
-    [swapBtn setBackgroundImage:[UIImage imageNamed:@"UIModel.bundle/icon_video_camera_switching.tiff"] forState:UIControlStateSelected];
+    [swapBtn setBackgroundImage:BundleUIImage(@"icon_video_camera_switching") forState:UIControlStateNormal];
+    [swapBtn setBackgroundImage:BundleUIImage(@"icon_video_camera_switching") forState:UIControlStateSelected];
     [swapBtn addTarget:self action:@selector(swapStatusChanged:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:swapBtn];
 
     //开关摄像头按钮
     _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _cameraBtn.frame = CGRectMake(swapBtn.left, swapBtn.bottom+12, iconSize, iconSize);
-    [_cameraBtn setBackgroundImage:[UIImage imageNamed:@"UIModel.bundle/icon_video_open_camera.tiff"] forState:UIControlStateNormal];
-    [_cameraBtn setBackgroundImage:[UIImage imageNamed:@"UIModel.bundle/icon_video_close_camera.tiff"] forState:UIControlStateSelected];
+    [_cameraBtn setBackgroundImage:BundleUIImage(@"icon_video_open_camera") forState:UIControlStateNormal];
+    [_cameraBtn setBackgroundImage:BundleUIImage(@"icon_video_close_camera") forState:UIControlStateSelected];
     [_cameraBtn addTarget:self action:@selector(videoStatusChanged:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_cameraBtn];
 
     //麦克风按钮
     _micBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _micBtn.frame = CGRectMake(_cameraBtn.left, _cameraBtn.bottom+12, iconSize, iconSize);
-    [_micBtn setBackgroundImage:[UIImage imageNamed:@"UIModel.bundle/icon_video_open_microphone.tiff"] forState:UIControlStateNormal];
-    [_micBtn setBackgroundImage:[UIImage imageNamed:@"UIModel.bundle/icon_video_close_microphone.tiff"] forState:UIControlStateSelected];
+    [_micBtn setBackgroundImage:BundleUIImage(@"icon_video_open_microphone") forState:UIControlStateNormal];
+    [_micBtn setBackgroundImage:BundleUIImage(@"icon_video_close_microphone") forState:UIControlStateSelected];
     [_micBtn addTarget:self action:@selector(micBtnStatusChanged:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_micBtn];
 
     //下麦按钮
     UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     closeBtn.frame = CGRectMake(_micBtn.left, _micBtn.bottom+12, iconSize, iconSize);
-    [closeBtn setBackgroundImage:[UIImage imageNamed:@"UIModel.bundle/icon_video_lowerwheat.tiff"] forState:UIControlStateNormal];
+    [closeBtn setBackgroundImage:BundleUIImage(@"icon_video_lowerwheat") forState:UIControlStateNormal];
     [closeBtn addTarget:self action:@selector(closeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:closeBtn];
 }
@@ -140,9 +142,11 @@
 //进入互动房间回调
 - (void)room:(VHRoom *)room enterRoomWithError:(NSError *)error {
     if (error) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"错误:%@",error.description] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        alert.tag = 1001;
-        [alert show];
+        __weak typeof(self) wf = self;
+        [UIAlertController showAlertControllerTitle:@"温馨提示" msg:[NSString stringWithFormat:@"错误:%@",error.description] btnTitle:@"确定" callBack:^{
+            [wf closeButtonClick:nil];
+        }];
+        VHLog(@"错误:%@",error.description);
     }
 }
 // 房间连接成功
@@ -155,10 +159,10 @@
 // 房间错误回调
 - (void)room:(VHRoom *)room didError:(VHRoomErrorStatus)status reason:(NSString *)reason
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"互动房间连接出错：%@",reason] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-    alert.tag = 1000;
-    [alert show];
-    
+    __weak typeof(self) wf = self;
+    [UIAlertController showAlertControllerTitle:@"温馨提示" msg:[NSString stringWithFormat:@"互动房间连接出错：%@",reason] btnTitle:@"确定" callBack:^{
+        [wf closeButtonClick:nil];
+    }];
     VHLog(@"房间连接错误%@",reason);
 }
 // 房间状态变化
@@ -300,14 +304,6 @@
 //    收到全体禁言/取消全体禁言
     [self showMsgInWindow:allForbidChat?@"已被全体禁言":@"已取消全体禁言" afterDelay:1];
 }
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == 1000 || alertView.tag == 1001) {
-        
-        [self closeButtonClick:nil];
-    }
-}
 
 #pragma mark - button click
 //退出
@@ -390,9 +386,8 @@
     if (!_cameraView) {
         
         //设置中设置的推流分辨率
-        NSInteger re = [[[NSUserDefaults standardUserDefaults] objectForKey:@"VHInteractivePushResolution"] integerValue];
         NSDictionary* options = @{VHFrameResolutionTypeKey:@(VHFrameResolution640x480),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};
-        switch (re) {
+        switch (_pushResolution) {
             case 0:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution192x144),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
             case 1:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution320x240),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
             case 2:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution480x360),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
@@ -405,7 +400,9 @@
         _cameraView.scalingMode = VHRenderViewScalingModeAspectFill;
         //设置摄像头旋转方向，注意：如需要转屏请自行监听屏转，设置摄像头orientation。
         [_cameraView setDeviceOrientation:UIDeviceOrientationPortrait];
-        _cameraView.transform = CGAffineTransformMakeScale(-1,1);//镜像 
+        _cameraView.transform = CGAffineTransformMakeScale(-1,1);//镜像
+        _cameraView.beautifyEnable = _inavBeautifyFilterEnable;
+        
 //        [_cameraView setDeviceOrientation:[UIDevice currentDevice].orientation];
     }
     return _cameraView;

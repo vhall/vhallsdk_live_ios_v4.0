@@ -115,14 +115,14 @@
 
     _smallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     if (_type ==3) {
-        [_smallButton setBackgroundImage: [UIImage imageNamed:@"UIModel.bundle/message_emoji.tiff"] forState:UIControlStateNormal];
+        [_smallButton setBackgroundImage: BundleUIImage(@"message_emoji") forState:UIControlStateNormal];
     }else
     {
-        [_smallButton setBackgroundImage: [UIImage imageNamed:@"UIModel.bundle/message_emoji.tiff"] forState:UIControlStateNormal];
+        [_smallButton setBackgroundImage: BundleUIImage(@"message_emoji") forState:UIControlStateNormal];
     }
     
     
-    [_smallButton setBackgroundImage: [UIImage imageNamed:@"UIModel.bundle/live_keyboard.tiff"] forState:UIControlStateSelected];
+    [_smallButton setBackgroundImage: BundleUIImage(@"live_keyboard") forState:UIControlStateSelected];
     [_smallButton addTarget:self
                      action:@selector(buttonAction:)
            forControlEvents:UIControlEventTouchUpInside];

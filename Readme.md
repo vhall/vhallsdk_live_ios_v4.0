@@ -26,6 +26,14 @@ pod 'VHallSDK_Live'<br>
 pod 'VHallSDK_Interactive'<br>
 
 ### 版本更新信息
+#### 版本 v4.1.2 更新时间：2020.04.20
+更新内容：<br>
+1、demo优化<br>
+2、解决GPUimage 冲突bug<br>
+3、解决偶尔web显示角色错误<br>
+4、解决历史聊天信息不全问题<br>
+5、回放静音失效问题<br>
+
 #### 版本 v4.1.1 更新时间：2020.03.18
 更新内容：<br>
 1、解决回放后台播放bug<br>
@@ -52,3 +60,43 @@ pod 'VHallSDK_Interactive'<br>
 
 ## 历史版本 
 [历史版本](https://github.com/vhall/vhallsdk_live_ios)<br>
+
+
+## Demo
+
+### Demo 结构
+VHSDKDemo.xcworkspace   Demo工作空间，用于管理 VHSDKDemo和UIModel两个工程<br>
+VHSDKDemo 	        App 层模拟用户 App  <br>
+VHSDKUIModel            Demo UI层简单实现，以静态库形式提供App层使用，此模块是Demo一部分，仅供参考<br>
+VHallSDK                微吼 SaaS 直播 SDK<br>
+
+### Demo 使用说明
+1、打开 工程 VHSDKDemo.xcworkspace <br>
+2、填写 CONSTS.h 中的 信息，修改包名签名<br>
+3、选择target 为 VHSDKDemo4.x 直接编译运行<br>
+4、登录<br>
+5、设置相关参数，发直播需要设置有效期内的直播token (AccessToken) 需要用 API 生成<br>
+ 
+
+
+### 两种引入App 工程方式
+
+1、打开 UIModel.xcodeproj 编译完成后 可以把  VHallSDK，UIModel 拷贝到目标App 工程直接引用，UIModel中使用了第三方库如有冲突自行删除冲突静态库即可<br>
+
+2、源码依赖 UIModel，直接把VHSDKUIModel下UIModel文件夹拖到App工程中，podfile 添加 UIModel的依赖库，设置好依赖路径，pch 文件中 引入UIModel.h 编译即可。注：额外设置DLNA lib路径<br>
+
+UIModel 依赖的第三方库如下，如版本不同自行调整
+```
+  pod 'VHallSDK_Interactive'
+
+  pod 'BarrageRenderer','2.1.0'
+  pod 'Masonry','1.1.0'
+  pod 'MBProgressHUD','1.2.0'
+  pod 'MLEmojiLabel','1.0.2'
+  pod 'Reachability','3.2'
+  pod 'SDWebImage','5.6.1'
+  pod 'MJRefresh','3.3.1'
+```
+
+Demo 体验 appstore 搜索微吼小直播 应用设置填写 Appkey即可体验<br>
+

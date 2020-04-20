@@ -7,7 +7,6 @@
 //
 #import <AVFoundation/AVFoundation.h>
 #import "WatchLiveViewController.h"
-#import <MediaPlayer/MPMoviePlayerController.h>
 #import "WatchLiveOnlineTableViewCell.h"
 #import "WatchLiveChatTableViewCell.h"
 #import "WatchLiveQATableViewCell.h"
@@ -31,6 +30,8 @@
 #import "VHSurveyViewController.h"
 
 #import "LaunchLiveViewController.h"
+
+#import "UIAlertController+ITTAdditionsUIModel.h"
 
 # define DebugLog(fmt, ...) NSLog((@"\n[文件名:%s]\n""[函数名:%s]\n""[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
 
@@ -180,7 +181,7 @@ static AnnouncementView* announcementView = nil;
     _survey=[[VHallSurvey alloc] initWithMoviePlayer:_moviePlayer];
     _survey.delegate= self;
     
-    _logView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UIModel.bundle/vhallLogo.tiff"]];
+    _logView = [[UIImageView alloc] initWithImage:BundleUIImage(@"vhallLogo")];
     _logView.backgroundColor = [UIColor whiteColor];
     _logView.contentMode = UIViewContentModeCenter;
     
@@ -193,8 +194,8 @@ static AnnouncementView* announcementView = nil;
     
     _docConentView.hidden = YES;
     _logView.hidden = YES;
-    _videoLevePicArray=@[@"UIModel.bundle/原画.tiff",@"UIModel.bundle/超清.tiff",@"UIModel.bundle/高清.tiff",@"UIModel.bundle/标清.tiff",@""];
-//    _videoPlayModelPicArray=@[@"UIModel.bundle/单视频",@"UIModel.bundle/单音频"];
+    _videoLevePicArray=@[@"原画",@"超清",@"高清",@"标清",@""];
+//    _videoPlayModelPicArray=@[@"单视频",@"单音频"];
     _videoPlayModel=[NSMutableArray array];
 
     if ([self.chatView  respondsToSelector:@selector(setLayoutMargins:)]) {
@@ -204,7 +205,7 @@ static AnnouncementView* announcementView = nil;
     [self initBarrageRenderer];
     
     //申请上麦视图
-    _countDowwnView = [[MicCountDownView alloc] initWithFrame:CGRectMake(KIScreenWidth-48, KIScreenHeight-200, 40, 40)];
+    _countDowwnView = [[MicCountDownView alloc] initWithFrame:CGRectMake(VHScreenWidth-48, VHScreenHeight-200, 40, 40)];
     [_countDowwnView.button addTarget:self action:@selector(micUpClick:) forControlEvents:UIControlEventTouchUpInside];
     _countDowwnView.delegate = self;
     [self.view addSubview:_countDowwnView];
@@ -304,67 +305,6 @@ static AnnouncementView* announcementView = nil;
      }];
 }
 
--(void)clickSurvey:(id)mode
-{
-    if (![VHallApi isLoggedIn]) {
-        [self showMsgInWindow:@"请登录" afterDelay:2];
-        return;
-    }
-    
-    VHallSurveyModel *model =mode;
-    
-    //获取问卷详情，使用原生绘制问卷，可通过此接口获取问卷详情数据，更具问卷文档解析数据
-    [_survey getSurveryRequestWithSurveyId:model.surveyId webInarId:_roomId success:^(NSDictionary *result) {
-        
-        NSLog(@"问卷数据 %@",result);
-        
-        if ([result[@"code"] integerValue] == 200) {
-            
-        } else {
-            
-        }
-    } failed:^(NSDictionary *failedData) {
-        
-    }];
-    
-    
-    //v4.0.0
-    if (model.surveyURL)
-    {
-        if (!_surveyController) {
-            _surveyController = [[VHSurveyViewController alloc] init];
-            _surveyController.delegate = self;
-        }
-        _surveyController.view.frame = self.view.bounds;
-        _surveyController.url = model.surveyURL;
-        [self.view addSubview:_surveyController.view];
-    }
-    // < v4.0.0
-    else
-    {
-//        __weak typeof(self) weakSelf =self;
-//        [self rotateScreen:NO];
-//        self.fullscreenBtn.enabled =NO;
-//        [_survey getSurveryContentWithSurveyId:model.surveyId webInarId:_roomId success:^(VHallSurvey *survey) {
-//            weakSelf.fullscreenBtn.enabled =YES;
-//            [weakSelf showSurveyVCWithSruveyModel:survey];
-//        } failed:^(NSDictionary *failedData) {
-//            weakSelf.fullscreenBtn.enabled =YES;
-//            NSString* code = [NSString stringWithFormat:@"%@", failedData[@"code"]];
-//            [UIAlertView popupAlertByDelegate:nil title:failedData[@"content"] message:code];
-//        }];
-        
-        //如果未升级SDK，但是需要使用webView的方式展示问卷，使用以下方式加载。如不使用webView的方式仍使用以上方法即可。
-        NSURL *surveyURL = [self surveyURLWithRoomId:self.roomId model:model];
-        if (!_surveyController) {
-            _surveyController = [[VHSurveyViewController alloc] init];
-            _surveyController.delegate = self;
-        }
-        _surveyController.view.frame = self.view.bounds;
-        _surveyController.url = surveyURL;
-        [self.view addSubview:_surveyController.view];
-    }
-}
 #pragma mark - 注册通知
 - (void)registerLiveNotification
 {
@@ -544,7 +484,7 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - Lifecycle Method
 - (id)init
 {
-    self = [super initWithNibName:NSStringFromClass([self class]) bundle:meetingResourcesBundle];
+    self = LoadVCNibName;
     if (self) {
         [self initDatas];
     }
@@ -573,29 +513,9 @@ static AnnouncementView* announcementView = nil;
     return YES;
 }
 
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (IOSVersion<8.0)
-    {
-        CGRect frame = self.view.frame;
-        CGRect bounds = [[UIScreen mainScreen]bounds];
-        if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait// UIInterfaceOrientationPortrait
-            || [[UIDevice currentDevice] orientation] == UIDeviceOrientationPortraitUpsideDown) { //UIInterfaceOrientationPortraitUpsideDown
-            //竖屏
-            frame = self.backView.bounds;
-        } else {
-            //横屏
-            frame = CGRectMake(0, 0, bounds.size.height, bounds.size.width);
-        }
-        _moviePlayer.moviePlayerView.frame = frame;
-        _logView.frame = _moviePlayer.moviePlayerView.bounds;
-        _lotteryVC.view.frame = _showView.bounds;
-    }
-}
-
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskPortrait|UIInterfaceOrientationMaskLandscapeLeft|UIInterfaceOrientationMaskLandscapeRight;
+    return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
@@ -814,24 +734,6 @@ static AnnouncementView* announcementView = nil;
     return height;
 }
 
-
-#pragma mark - VHSurveyViewControllerDelegate
-- (void)surveyviewControllerDidCloseed:(UIButton *)sender {
-    [_surveyController.view removeFromSuperview];
-    _surveyController = nil;
-}
-- (void)surveyViewControllerWebViewDidClosed:(VHSurveyViewController *)vc {
-    [_surveyController.view removeFromSuperview];
-    _surveyController = nil;
-}
-//提交成功
-- (void)surveyViewControllerWebViewDidSubmit:(VHSurveyViewController *)vc msg:(NSDictionary *)body {
-    [_surveyController.view removeFromSuperview];
-    _surveyController = nil;
-    [self showMsgInWindow:@"提交成功" afterDelay:2];
-}
-
-
 #pragma mark - VHMoviePlayerDelegate
 - (void)moviePlayer:(VHallMoviePlayer *)player statusDidChange:(int)state
 {
@@ -882,7 +784,7 @@ static AnnouncementView* announcementView = nil;
 
   //  [_startAndStopBtn setTitle:@"停止播放" forState:UIControlStateNormal];
     _startAndStopBtn.selected = YES;
-    [_definitionBtn0 setImage:[UIImage imageNamed:_videoLevePicArray[_moviePlayer.curDefinition]] forState:UIControlStateNormal];
+    [_definitionBtn0 setImage:BundleUIImage(_videoLevePicArray[_moviePlayer.curDefinition]) forState:UIControlStateNormal];
 }
 
 -(void)bufferStart:(VHallMoviePlayer *)moviePlayer info:(NSDictionary *)info
@@ -952,9 +854,7 @@ static AnnouncementView* announcementView = nil;
         {
             msg = @"获取活动信息错误";
             [self detailsButtonClick: nil];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBHUDHelper showWarningWithText:info[@"content"]];
-            });
+            [self showMsgInWindow:info[@"content"] afterDelay:2];
         }
             break;
         default:
@@ -998,7 +898,7 @@ static AnnouncementView* announcementView = nil;
         case VHMovieVideoPlayModeNone:
         case VHMovieVideoPlayModeMedia:
         case VHMovieVideoPlayModeTextAndMedia:
-//            [_playModeBtn0 setImage:[UIImage imageNamed:_videoPlayModelPicArray[0]] forState:UIControlStateNormal];
+//            [_playModeBtn0 setImage:UIImage(_videoPlayModelPicArray[0]) forState:UIControlStateNormal];
             _playModeBtn0.selected = NO;
             _playModeBtn0.enabled=YES;
             break;
@@ -1048,7 +948,7 @@ static AnnouncementView* announcementView = nil;
     VHLog(@"可用分辨率%@ 当前分辨率：%ld",definitionList,(long)_moviePlayer.curDefinition);
     _definitionList = definitionList;
     _definitionBtn0.hidden = NO;
-    [_definitionBtn0 setImage:[UIImage imageNamed:_videoLevePicArray[_moviePlayer.curDefinition]] forState:UIControlStateNormal];
+    [_definitionBtn0 setImage:BundleUIImage(_videoLevePicArray[_moviePlayer.curDefinition]) forState:UIControlStateNormal];
     if (_moviePlayer.curDefinition == VHMovieDefinitionAudio) {
         _playModelTemp=VHMovieVideoPlayModeVoice;
         _playModeBtn0.selected = YES;
@@ -1061,8 +961,8 @@ static AnnouncementView* announcementView = nil;
     [MBProgressHUD hideHUDForView:_moviePlayer.moviePlayerView animated:YES];
     _startAndStopBtn.selected = NO;
     [_moviePlayer stopPlay];
-    UIAlertView*alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"直播已结束" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-    [alert show];
+    
+    [UIAlertController showAlertControllerTitle:@"提示" msg:@"直播已结束" btnTitle:@"确定" callBack:nil];
 }
 // 主持人是否允许举手
 - (void)moviePlayer:(VHallMoviePlayer *)player isInteractiveActivity:(BOOL)isInteractive interactivePermission:(VHInteractiveState)state
@@ -1207,7 +1107,7 @@ static AnnouncementView* announcementView = nil;
         }
         VHallChatModel* model = [msgs objectAtIndex:0];
         BarrageDescriptor * descriptor = [[BarrageDescriptor alloc]init];
-        descriptor.spriteName = NSStringFromClass([BarrageWalkImageTextSprite class]);
+        descriptor.spriteName = NSStringFromClass([BarrageWalkTextSprite class]);
         descriptor.params[@"text"] = model.text;
         descriptor.params[@"textColor"] = MakeColorRGB(0xffffff);//MakeColor(random()%255, random()%255, random()%255, 1);
         //@(100 * (double)random()/RAND_MAX+50) 随机速度
@@ -1215,8 +1115,6 @@ static AnnouncementView* announcementView = nil;
         descriptor.params[@"direction"] = @(BarrageWalkDirectionR2L);
         descriptor.params[@"side"] = @(BarrageWalkSideDefault);
 //        descriptor.params[@"clickAction"] = ^{
-//            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"弹幕被点击" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-//            [alertView show];
 //        };
         [_renderer receive:descriptor];
     }
@@ -1335,7 +1233,7 @@ static AnnouncementView* announcementView = nil;
     [self showMsgInWindow:@"签到结束" afterDelay:2];
 }
 
-#pragma mark VHallSurveyDelegate
+#pragma mark - 收到问卷回调 VHallSurveyDelegate
 /*flsh活动，发布问卷以下两个方法都会回调。如果使用webView的方式加载问卷，在-receivedSurveyWithURL:处理，如果仍保留旧版加载问卷方式，在-receiveSurveryMsgs:方法处理，处理方式不变。H5活动发布问卷，只回调-receivedSurveyWithURL：。
  */
 
@@ -1343,7 +1241,7 @@ static AnnouncementView* announcementView = nil;
 {
     VHallSurveyModel *model = [[VHallSurveyModel alloc] init];
     model.surveyURL = surveyURL;
-    [_chatDataArray addObject:model];
+    [_chatDataArray addObject:model];//添加问卷消息到聊天列表
 
     if (_chatBtn.selected) {
         [_chatView reloadData];
@@ -1351,16 +1249,83 @@ static AnnouncementView* announcementView = nil;
     }
 }
 
-//-(void)receiveSurveryMsgs:(NSArray*)msgs
-//{
-//    if (msgs.count > 0) {
-//        [_chatDataArray addObjectsFromArray:msgs];
-//        if (_chatBtn.selected) {
-//            [_chatView reloadData];
-//            [_chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_chatDataArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//        }
-//    }
-//}
+-(void)receiveSurveryMsgs:(NSArray*)msgs
+{
+}
+
+#pragma mark 显示问卷详情
+-(void)clickSurvey:(id)mode
+{
+    if (![VHallApi isLoggedIn]) {
+        [self showMsgInWindow:@"请登录" afterDelay:2];
+        return;
+    }
+    
+    VHallSurveyModel *model =mode;
+    //获取问卷详情，使用原生绘制问卷，可通过此接口获取问卷详情数据，更具问卷文档解析数据
+    [_survey getSurveryRequestWithSurveyId:model.surveyId webInarId:_roomId success:^(NSDictionary *result) {
+        NSLog(@"问卷数据 %@",result);
+        if ([result[@"code"] integerValue] == 200) {
+            
+        } else {
+            
+        }
+    } failed:^(NSDictionary *failedData) {
+        
+    }];
+    
+    
+    //v4.0.0 及已上线 使用webview 加载h5问卷详情
+    if (model.surveyURL)
+    {
+        if (!_surveyController) {
+            _surveyController = [[VHSurveyViewController alloc] init];
+            _surveyController.delegate = self;
+        }
+        _surveyController.view.frame = self.view.bounds;
+        _surveyController.url = model.surveyURL;
+        [self.view addSubview:_surveyController.view];
+    }
+    // v4.0.0 版本以下
+    else
+    {
+//        __weak typeof(self) weakSelf =self;
+//        [self rotateScreen:NO];
+//        self.fullscreenBtn.enabled =NO;
+//        [_survey getSurveryContentWithSurveyId:model.surveyId webInarId:_roomId success:^(VHallSurvey *survey) {
+//            weakSelf.fullscreenBtn.enabled =YES;
+//            [weakSelf showSurveyVCWithSruveyModel:survey];
+//        } failed:^(NSDictionary *failedData) {
+//            weakSelf.fullscreenBtn.enabled =YES;
+//            NSString* code = [NSString stringWithFormat:@"%@", failedData[@"code"]];
+//        }];
+        
+        //如果未升级SDK，但是需要使用webView的方式展示问卷，使用以下方式加载。如不使用webView的方式仍使用以上方法即可。
+        NSURL *surveyURL = [self surveyURLWithRoomId:self.roomId model:model];
+        if (!_surveyController) {
+            _surveyController = [[VHSurveyViewController alloc] init];
+            _surveyController.delegate = self;
+        }
+        _surveyController.view.frame = self.view.bounds;
+        _surveyController.url = surveyURL;
+        [self.view addSubview:_surveyController.view];
+    }
+}
+#pragma mark 问卷详情回调 VHSurveyViewControllerDelegate
+- (void)surveyviewControllerDidCloseed:(UIButton *)sender {
+    [_surveyController.view removeFromSuperview];
+    _surveyController = nil;
+}
+- (void)surveyViewControllerWebViewDidClosed:(VHSurveyViewController *)vc {
+    [_surveyController.view removeFromSuperview];
+    _surveyController = nil;
+}
+//提交成功
+- (void)surveyViewControllerWebViewDidSubmit:(VHSurveyViewController *)vc msg:(NSDictionary *)body {
+    [_surveyController.view removeFromSuperview];
+    _surveyController = nil;
+    [self showMsgInWindow:@"提交成功" afterDelay:2];
+}
 
 #pragma mark - UIPanGestureRecognizer
 -(void)handlePan:(UIPanGestureRecognizer*)pan
@@ -1529,7 +1494,6 @@ static AnnouncementView* announcementView = nil;
             NSString* code = [NSString stringWithFormat:@"%@,%@", failedData[@"content"], failedData[@"code"]];
             NSLog(@"%@",code);
 //            [ws showMsgInWindow:code afterDelay:1.5];
-//            [UIAlertView popupAlertByDelegate:nil title:failedData[@"content"] message:code];
             
         }];
         _isReciveHistory = YES;
@@ -1587,8 +1551,6 @@ static AnnouncementView* announcementView = nil;
         default:
             break;
     }
-//    UIAlertView*alert = [[UIAlertView alloc]initWithTitle:@"提示" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//    [alert show];
     [self showMsgInWindow:message afterDelay:1];
 }
 
@@ -1621,7 +1583,7 @@ static AnnouncementView* announcementView = nil;
     [MBProgressHUD showHUDAddedTo:_moviePlayer.moviePlayerView animated:YES];
     [_moviePlayer setCurDefinition:_leve];
     _playModeBtn0.selected = NO;
-    [_definitionBtn0 setImage:[UIImage imageNamed:_videoLevePicArray[_moviePlayer.curDefinition]] forState:UIControlStateNormal];
+    [_definitionBtn0 setImage:BundleUIImage(_videoLevePicArray[_moviePlayer.curDefinition]) forState:UIControlStateNormal];
     _playModelTemp=_moviePlayer.playMode;
 }
 
@@ -1633,12 +1595,12 @@ static AnnouncementView* announcementView = nil;
     {
         _playModelTemp=VHMovieVideoPlayModeVoice;
         _playModeBtn0.selected = YES;
-//        [_playModeBtn0 setImage:[UIImage imageNamed:_videoPlayModelPicArray[1]] forState:UIControlStateNormal];
+//        [_playModeBtn0 setImage:UIImage(_videoPlayModelPicArray[1]) forState:UIControlStateNormal];
     }else
     {
         _playModeBtn0.selected = NO;
         _playModelTemp=VHMovieVideoPlayModeMedia;
-//        [_playModeBtn0 setImage:[UIImage imageNamed:_videoPlayModelPicArray[0]] forState:UIControlStateNormal];
+//        [_playModeBtn0 setImage:UIImage(_videoPlayModelPicArray[0]) forState:UIControlStateNormal];
     }
     
     
@@ -1655,7 +1617,7 @@ static AnnouncementView* announcementView = nil;
         _definitionBtn0.hidden = NO;
         self.liveTypeLabel.text = @"";
     }
-    [_definitionBtn0 setImage:[UIImage imageNamed:_videoLevePicArray[_moviePlayer.curDefinition]] forState:UIControlStateNormal];
+    [_definitionBtn0 setImage:BundleUIImage(_videoLevePicArray[_moviePlayer.curDefinition]) forState:UIControlStateNormal];
 }
 
 #pragma mark 弹幕开关
@@ -1701,7 +1663,6 @@ static AnnouncementView* announcementView = nil;
         } failed:^(NSDictionary *failedData) {
             
             NSString* code = [NSString stringWithFormat:@"%@ %@", failedData[@"code"],failedData[@"content"]];
-//            [UIAlertView popupAlertByDelegate:nil title:failedData[@"content"] message:code];
             [wf showMsgInWindow:code afterDelay:2];
         }];
         
@@ -1766,7 +1727,7 @@ static AnnouncementView* announcementView = nil;
 {
     if(isLandscapeRight && self.view.width>self.view.height)return;
     if(!isLandscapeRight && self.view.width<self.view.height)return;
-    
+
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)])
     {
         NSNumber *num = [[NSNumber alloc] initWithInt:(isLandscapeRight?UIInterfaceOrientationLandscapeRight:UIInterfaceOrientationPortrait)];
@@ -1794,17 +1755,24 @@ static AnnouncementView* announcementView = nil;
 -(DLNAView *)dlnaView
 {
     if (!_dlnaView) {
-        _dlnaView = [[DLNAView alloc] init];
-        [_dlnaView setFrame:CGRectMake(0, 0, _showView.width, _showView.height)];
+        _dlnaView = [[DLNAView alloc] initWithFrame:self.view.bounds];
     }
     return _dlnaView;
 }
 - (IBAction)DlNAClick:(id)sender
 {
-    id control = self.dlnaView.control;
+    if(![self.dlnaView showInView:self.view moviePlayer:_moviePlayer])
+    {
+        [self showMsg:@"投屏功能暂不可用" afterDelay:1];
+        return;
+    }
+    
     [_moviePlayer pausePlay];
-    [_moviePlayer dlnaMappingObject:control];
-    [_showView insertSubview:self.dlnaView atIndex:10];
+    
+    __weak typeof(self)wf = self;
+    self.dlnaView.closeBlock = ^{
+        [wf.moviePlayer reconnectPlay];
+    };
 }
 - (IBAction)customMsgBtnClick:(id)sender
 {
@@ -1816,7 +1784,6 @@ static AnnouncementView* announcementView = nil;
         } failed:^(NSDictionary *failedData) {
             
             NSString* code = [NSString stringWithFormat:@"%@ %@", failedData[@"code"],failedData[@"content"]];
-            //            [UIAlertView popupAlertByDelegate:nil title:failedData[@"content"] message:code];
             [wf showMsgInWindow:code afterDelay:2];
         }];
     }

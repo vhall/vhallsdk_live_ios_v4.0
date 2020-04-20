@@ -63,7 +63,7 @@
 
 -(void)loadFaceDic
 {
-    _faceDic = [NSDictionary dictionaryWithContentsOfFile:[meetingResourcesBundle pathForResource:@"faceExpression" ofType:@"plist"]];
+    _faceDic = [NSDictionary dictionaryWithContentsOfFile:[UIModelBundle pathForResource:@"faceExpression" ofType:@"plist"]];
 }
 
 
@@ -78,7 +78,7 @@
     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [deleteButton setBackgroundColor:[UIColor clearColor]];
     [deleteButton setFrame:CGRectMake((maxCol - 1) * itemWidth, (maxRow - 1) * itemHeight, itemWidth, itemHeight)];
-    [deleteButton setImage:[UIImage imageNamed:@"UIModel.bundle/faceDelete"] forState:UIControlStateNormal];
+    [deleteButton setImage:BundleUIImage(@"faceDelete") forState:UIControlStateNormal];
     deleteButton.tag = 10000;
     [deleteButton addTarget:self action:@selector(selected:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:deleteButton];
@@ -135,8 +135,7 @@
                                                   FaceSizeHeight)];
             
             if (i*7+x+1 ==21) {
-                [expressionButton setImage:[UIImage imageNamed:@"UIModel.bundle/faceDelete"]
-                                            forState:UIControlStateNormal];
+                [expressionButton setImage:BundleUIImage(@"faceDelete") forState:UIControlStateNormal];
                 //   expressionButton.tag = 10000;
                 
                 //加一个虚按钮   便于删除按钮灵活
@@ -155,9 +154,9 @@
                 
                 
             }else{
-                NSString *imageStr = [NSString stringWithFormat:@"UIModel.bundle/Expression_%d",
+                NSString *imageStr = [NSString stringWithFormat:@"Expression_%ld",
                                       index*20+i*7+x+1];
-                [expressionButton setImage:[UIImage imageNamed:imageStr]
+                [expressionButton setImage:BundleUIImage(imageStr)
                                             forState:UIControlStateNormal];
 
                 

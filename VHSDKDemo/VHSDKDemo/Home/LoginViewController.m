@@ -8,7 +8,7 @@
 
 #import "LoginViewController.h"
 #import "VHHomeViewController.h"
-#import "WHDebugToolManager.h"
+//#import "WHDebugToolManager.h"
 
 @interface LoginViewController ()<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *versionLabel;
@@ -52,14 +52,17 @@
     
     DEMO_Setting.account  = _accountTextField.text;
     DEMO_Setting.password = _passwordTextField.text;
+    DEMO_Setting.nickName = @"";
     __weak typeof(self) weekself = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [VHallApi loginWithAccount:DEMO_Setting.account password:DEMO_Setting.password success:^{
         
         weekself.loginBtn.selected = [VHallApi isLoggedIn];
-        [MBProgressHUD hideAllHUDsForView:weekself.view animated:YES];
+        DEMO_Setting.nickName =[VHallApi currentUserNickName];
+        [MBProgressHUD hideHUDForView:weekself.view animated:YES];
         VHLog(@"Account: %@ userID:%@",[VHallApi currentAccount],[VHallApi currentUserID]);
         [weekself showMsg:@"登录成功" afterDelay:1.5];
+        
         VHHomeViewController *homeVC=[[VHHomeViewController alloc] init];
         homeVC.modalPresentationStyle = UIModalPresentationFullScreen;
         [weekself presentViewController:homeVC animated:YES completion:nil];
@@ -69,7 +72,7 @@
         VHLog(@"登录失败%@",error);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-             [MBProgressHUD hideAllHUDsForView:weekself.view animated:YES];
+             [MBProgressHUD hideHUDForView:weekself.view animated:YES];
             [weekself showMsg:error.domain afterDelay:1.5];
         });
     }];
@@ -110,7 +113,7 @@
     [self initViews];
     
     //测试工具
-    [[WHDebugToolManager sharedInstance] toggleWith:DebugToolTypeMemory | DebugToolTypeCPU | DebugToolTypeFPS];
+//    [[WHDebugToolManager sharedInstance] toggleWith:DebugToolTypeMemory | DebugToolTypeCPU | DebugToolTypeFPS];
 }
 
 - (void)didReceiveMemoryWarning {

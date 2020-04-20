@@ -7,7 +7,6 @@
 //
 
 #import "VHStystemSetting.h"
-#import <objc/message.h>
 
 @implementation VHStystemSetting
 
@@ -71,9 +70,6 @@ static VHStystemSetting *pub_sharedSetting = nil;
         
         _account        = [standardUserDefaults objectForKey:@"VHaccount"];      //账号
         _password       = [standardUserDefaults objectForKey:@"VHpassword"];     //密码
-        
-        _appKey         = [standardUserDefaults objectForKey:@"VHappKey"];
-        _appSecretKey   = [standardUserDefaults objectForKey:@"VHappSecretKey"];
 
         if(_activityID == nil)
         {
@@ -136,23 +132,8 @@ static VHStystemSetting *pub_sharedSetting = nil;
             self.isOpenNoiseSuppresion = YES;
         self.beautifyFilterEnable = [standardUserDefaults boolForKey:@"VHbeautifyFilterEnable"];
         
-        if(_appKey.length>0 && _appSecretKey.length>0)
-        {
-            [VHallApi registerApp:_appKey SecretKey:_appSecretKey];
-        }
-        else
-        {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"VHappKey"];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"VHappSecretKey"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            _appKey = nil;
-            _appSecretKey = nil;
-            [VHallApi registerApp:DEMO_AppKey SecretKey:DEMO_AppSecretKey];
-         
-            
-            NSString *pushRe = [standardUserDefaults objectForKey:@"VHInteractivePushResolution"];
-            _pushResolution = (pushRe)?pushRe:@"3";
-        }
+        NSString *pushRe = [standardUserDefaults objectForKey:@"VHInteractivePushResolution"];
+        _pushResolution = (pushRe)?pushRe:@"3";
     }
     return self;
 }
@@ -200,7 +181,12 @@ static VHStystemSetting *pub_sharedSetting = nil;
 - (void)setNickName:(NSString*)nickName
 {
     if(nickName == nil || nickName.length == 0)
+    {
+        _nickName = [UIDevice currentDevice].name;
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"VHnickName"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         return;
+    }
     
     _nickName = nickName;
     [[NSUserDefaults standardUserDefaults] setObject:_nickName forKey:@"VHnickName"];
@@ -312,37 +298,6 @@ static VHStystemSetting *pub_sharedSetting = nil;
     [[NSUserDefaults standardUserDefaults] setInteger:bufferTimes forKey:@"VHbufferTimes"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
-
-- (void)setAppKey:(NSString *)appKey
-{
-    _appKey = appKey;
-    [[NSUserDefaults standardUserDefaults] setObject:_appKey forKey:@"VHappKey"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    if(_appKey.length>0 && _appSecretKey.length>0)
-    {
-        [VHallApi registerApp:_appKey SecretKey:_appSecretKey];
-    }
-    else
-    {
-        [VHallApi registerApp:DEMO_AppKey SecretKey:DEMO_AppSecretKey];
-    }
-}
-
-- (void)setAppSecretKey:(NSString *)appSecretKey
-{
-    _appSecretKey = appSecretKey;
-    [[NSUserDefaults standardUserDefaults] setObject:_appSecretKey forKey:@"VHappSecretKey"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    if(_appKey.length>0 && _appSecretKey.length>0)
-    {
-        [VHallApi registerApp:_appKey SecretKey:_appSecretKey];
-    }
-    else
-    {
-        [VHallApi registerApp:DEMO_AppKey SecretKey:DEMO_AppSecretKey];
-    }
-}
-
 
 - (void)setPushResolution:(NSString *)pushResolution {
     _pushResolution = pushResolution;

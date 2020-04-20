@@ -70,6 +70,9 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 @interface VHCommentModel : VHallMsgModels
 @property (nonatomic, copy) NSString * text;            //评论内容
 @property(nonatomic,copy)   NSString *commentId;        //评论ID
+@property (nonatomic, strong) VHallChatModel *replyMsg; //回复消息
+@property (nonatomic, copy) NSArray  * imageUrls;       //图片消息url列表
+@property (nonatomic, copy)   NSArray  * atList;        //@人列表
 @end
 
 /**

@@ -7,7 +7,6 @@
 //
 
 #import "BaseViewController.h"
-#import "MBHUDHelper.h"
 
 @interface BaseViewController ()
 
@@ -82,22 +81,26 @@
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = msg;
+    hud.label.text = msg;
+    hud.label.textColor = [UIColor whiteColor];
     hud.margin = 10.f;
+    //背景颜色
+    hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.bezelView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
     //            hud.yOffset = 150.f;
     hud.removeFromSuperViewOnHide = YES;
-    [hud hide:YES afterDelay:delay];
+    [hud hideAnimated:YES afterDelay:delay];
 }
 
 -(void) showRendererMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = msg;
+    hud.label.text = msg;
     hud.margin = 30.f;
     //            hud.yOffset = 150.f;
     hud.removeFromSuperViewOnHide = YES;
-    [hud hide:YES afterDelay:delay];
+    [hud hideAnimated:YES afterDelay:delay];
 }
 
 @end

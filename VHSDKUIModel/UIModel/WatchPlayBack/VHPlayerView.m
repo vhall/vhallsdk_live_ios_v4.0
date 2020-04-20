@@ -82,8 +82,8 @@
         _playButton = [[UIButton alloc] init];
         _playButton.frame = CGRectMake(0, 0, 30, 30);
         // VHPlayBtn
-        [_playButton setImage:[UIImage imageNamed:@"UIModel.bundle/VHPlayBtn"] forState:UIControlStateNormal];
-        [_playButton setImage:[UIImage imageNamed:@"UIModel.bundle/VHPauseBtn"] forState:UIControlStateSelected];
+        [_playButton setImage:BundleUIImage(@"VHPlayBtn") forState:UIControlStateNormal];
+        [_playButton setImage:BundleUIImage(@"VHPauseBtn") forState:UIControlStateSelected];
         [_playButton addTarget:self action:@selector(Vh_playerButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _playButton;
@@ -94,8 +94,8 @@
     if (_fullButton == nil){
         _fullButton = [[UIButton alloc] init];
         _fullButton.frame = CGRectMake(0, 0, 35, 35);
-        [_fullButton setImage:[UIImage imageNamed:@"video-player-screen"] forState:UIControlStateNormal];
-        [_fullButton setImage:[UIImage imageNamed:@"video-player-screen"] forState:UIControlStateSelected];
+        [_fullButton setImage:BundleUIImage(@"fullscreen") forState:UIControlStateNormal];
+        [_fullButton setImage:BundleUIImage(@"unfullscreen") forState:UIControlStateSelected];
         [_fullButton addTarget:self action:@selector(Vh_fullScreenButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _fullButton;
@@ -144,7 +144,7 @@
     
     if (!_proSlider){
         _proSlider = [[UISlider alloc] init];
-        [_proSlider setThumbImage:[UIImage imageNamed:@"video-player-point"] forState:UIControlStateNormal];
+        [_proSlider setThumbImage:BundleUIImage(@"video-player-point") forState:UIControlStateNormal];
         _proSlider.minimumTrackTintColor = [UIColor whiteColor];
         _proSlider.maximumTrackTintColor = [UIColor lightGrayColor];
         _proSlider.value = 0.f;
