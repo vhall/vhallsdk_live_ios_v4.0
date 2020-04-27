@@ -26,6 +26,11 @@ pod 'VHallSDK_Live'<br>
 pod 'VHallSDK_Interactive'<br>
 
 ### 版本更新信息
+#### 版本 v4.2.0 更新时间：2020.04.27
+更新内容：<br>
+1、支持投屏功能<br>
+2、日志上报优化<br>
+
 #### 版本 v4.1.2 更新时间：2020.04.20
 更新内容：<br>
 1、demo优化<br>

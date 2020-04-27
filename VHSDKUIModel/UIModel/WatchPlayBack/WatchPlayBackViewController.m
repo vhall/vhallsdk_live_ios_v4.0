@@ -20,7 +20,7 @@
 #define RATEARR @[@1.0,@1.25,@1.5,@2.0,@0.5,@0.67,@0.8]//倍速播放循环顺序
 
 static AnnouncementView* announcementView = nil;
-@interface WatchPlayBackViewController ()<VHallMoviePlayerDelegate,UITableViewDelegate,UITableViewDataSource,VHPlayerViewDelegate>
+@interface WatchPlayBackViewController ()<VHallMoviePlayerDelegate,UITableViewDelegate,UITableViewDataSource,VHPlayerViewDelegate,DLNAViewDelegate>
 {
     VHallComment*_comment;
     int  _bufferCount;
@@ -63,6 +63,8 @@ static AnnouncementView* announcementView = nil;
 @property (weak, nonatomic) IBOutlet UIButton *rateBtn;
 @property (nonatomic,strong) UITableView * tableView;
 @property (nonatomic,assign) int  pageNum;
+/// 投屏权限
+@property (nonatomic , assign) BOOL   isCast_screen;
 @end
 
 @implementation WatchPlayBackViewController
@@ -112,12 +114,10 @@ static AnnouncementView* announcementView = nil;
         _topConstraint.constant = 20;
         if(iPhoneX)
             _topConstraint.constant = 35;
-        _dlnaBtn.hidden = NO;
     }
     else
     {
         _topConstraint.constant = 0;
-        _dlnaBtn.hidden = YES;
     }
 }
 
@@ -619,6 +619,10 @@ static AnnouncementView* announcementView = nil;
 {
     [self monitorVideoPlayback];
 }
+- (void)moviePlayer:(VHallMoviePlayer *)player isCast_screen:(BOOL)isCast_screen
+{
+    self.isCast_screen = isCast_screen;
+}
 
 #pragma mark - ObserveValueForKeyPath
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -717,6 +721,10 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - messageToolViewDelegate
 - (void)didSendText:(NSString *)text
 {
+    if ([text isEqualToString:@""]) {
+        [self showMsgInWindow:@"发送的消息不能为空" afterDelay:2];
+        return;
+    }
     __weak typeof(self) weakSelf=self;
     if(text.length>0)
     {
@@ -846,17 +854,23 @@ static AnnouncementView* announcementView = nil;
     if (!_dlnaView) {
         _dlnaView = [[DLNAView alloc] initWithFrame:self.view.bounds];
         _dlnaView.type = 1;
+        _dlnaView.delegate = self;
     }
     return _dlnaView;
 }
 
 - (IBAction)dlnaClick:(id)sender {
-    if(![self.dlnaView showInView:self.view moviePlayer:_moviePlayer])
-    {
-        [self showMsg:@"投屏功能暂不可用" afterDelay:1];
+
+    if (!self.isCast_screen) {
+        [self showMsg:@"无投屏权限，如需使用请咨询您的销售人员或拨打客服电话：400-888-9970" afterDelay:1];
         return;
     }
-    
+    if(![self.dlnaView showInView:self.view moviePlayer:_moviePlayer])
+    {
+        [self showMsg:@"投屏失败，投屏前请确保当前视频正在播放" afterDelay:1];
+        return;
+    }
+
     [_moviePlayer pausePlay];
     
     __weak typeof(self)wf = self;
@@ -864,7 +878,11 @@ static AnnouncementView* announcementView = nil;
         [wf.moviePlayer reconnectPlay];
     };
 }
-
+#pragma mark - 如果投屏功能出错回调走这里
+- (void)dlnaControlState:(DLNAControlStateType)type errormsg:(NSString *)msg
+{
+    [self showMsg:msg afterDelay:1];
+}
 #pragma mark - 旋转
 -(BOOL)shouldAutorotate
 {

@@ -80,6 +80,7 @@
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeText;
+    hud.label.numberOfLines = 0;
     hud.label.text = msg;
     hud.margin = 10.f;
     //            hud.yOffset = 150.f;

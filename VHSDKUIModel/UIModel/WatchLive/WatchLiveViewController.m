@@ -36,7 +36,7 @@
 # define DebugLog(fmt, ...) NSLog((@"\n[文件名:%s]\n""[函数名:%s]\n""[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
 
 static AnnouncementView* announcementView = nil;
-@interface WatchLiveViewController ()<VHallMoviePlayerDelegate, VHallChatDelegate, VHallQADelegate, VHallLotteryDelegate,VHallSignDelegate,VHallSurveyDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,VHMessageToolBarDelegate,MicCountDownViewDelegate,VHInvitationAlertDelegate,VHSurveyViewControllerDelegate>
+@interface WatchLiveViewController ()<VHallMoviePlayerDelegate, VHallChatDelegate, VHallQADelegate, VHallLotteryDelegate,VHallSignDelegate,VHallSurveyDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,VHMessageToolBarDelegate,MicCountDownViewDelegate,VHInvitationAlertDelegate,VHSurveyViewControllerDelegate,DLNAViewDelegate>
 {
     __weak IBOutlet UIView *_showView;
 
@@ -57,6 +57,8 @@ static AnnouncementView* announcementView = nil;
     BOOL _fullScreentBtnClick;
     BOOL _isVr;
     BOOL _isRender;//
+    BOOL _isQuestion_status;
+    
     NSMutableArray    *_QADataArray;
     NSArray           *_videoLevePicArray;//视频质量等级图片
     NSMutableArray    *_videoPlayModel;//播放模式
@@ -118,7 +120,9 @@ static AnnouncementView* announcementView = nil;
 
 //v4.0.0 新版问卷功能类
 @property (nonatomic, strong) VHSurveyViewController *surveyController;
-
+/// 投屏权限
+@property (nonatomic , assign) BOOL   isCast_screen;
+;
 @end
 
 @implementation WatchLiveViewController
@@ -218,6 +222,7 @@ static AnnouncementView* announcementView = nil;
 
     self.textLabel.center=CGPointMake(self.docAreaView.width/2, self.docAreaView.height/2);
     [self.docAreaView insertSubview:self.textLabel atIndex:0];
+        
 }
 
 - (void)initBarrageRenderer
@@ -568,13 +573,11 @@ static AnnouncementView* announcementView = nil;
         if(iPhoneX)
             _topConstraint.constant = 35;
         _fullscreenBtn.selected = NO;
-        _dlnaBtn.hidden = NO;
     }
     else
     {
         _topConstraint.constant = 0;
         _fullscreenBtn.selected = YES;
-        _dlnaBtn.hidden = YES;
     }
     
     if (_isVr && _GyroBtn.selected) {
@@ -1005,7 +1008,14 @@ static AnnouncementView* announcementView = nil;
     
     [self kickOut];
 }
-
+- (void)moviePlayer:(VHallMoviePlayer *)player isCast_screen:(BOOL)isCast_screen
+{
+    self.isCast_screen = isCast_screen;
+}
+- (void)moviePlayer:(VHallMoviePlayer *)player isQuestion_status:(BOOL)isQuestion_status
+{
+    _isQuestion_status = isQuestion_status;
+}
 - (void)moviePlayer:(VHallMoviePlayer*)player isHaveDocument:(BOOL)isHave isShowDocument:(BOOL)isShow
 {
     if(isHave)
@@ -1144,18 +1154,16 @@ static AnnouncementView* announcementView = nil;
 - (void)vhallQAndADidOpened:(VHallQAndA *)QA
 {
     [self showMsgInWindow:@"主播开启了问答" afterDelay:2];
-    if (self.cueSelectedButton == self.QABtn) {
-        [self QAButtonClick:self.QABtn];
-    }
+    _isQuestion_status = YES;
 }
 //主播关闭问答
 - (void)vhallQAndADidClosed:(VHallQAndA *)QA
 {
     [self showMsgInWindow:@"主播关闭了问答" afterDelay:2];
-    if (self.cueSelectedButton == self.QABtn) {
-        [self QAButtonClick:self.QABtn];
-    }
+    [self chatButtonClick: self.chatBtn];
+    _isQuestion_status = NO;
 }
+//发送问答
 - (void)reciveQAMsg:(NSArray *)msgs
 {
     for (VHallQAModel * qaModel in msgs) {
@@ -1502,6 +1510,12 @@ static AnnouncementView* announcementView = nil;
 
 #pragma mark - 问答
 - (IBAction)QAButtonClick:(UIButton *)sender {
+    
+    if (!_isQuestion_status) {
+        [self showMsgInWindow:@"主播关闭了问答" afterDelay:2];
+        return;
+    }
+
     self.docConentView.hidden = YES;
     self.chatView.hidden = NO;
     self.bottomView.hidden = NO;
@@ -1656,6 +1670,10 @@ static AnnouncementView* announcementView = nil;
 #pragma mark messageToolViewDelegate
 - (void)didSendText:(NSString *)text
 {
+    if ([text isEqualToString:@""]) {
+        [self showMsgInWindow:@"发送的消息不能为空" afterDelay:2];
+        return;
+    }
     __weak typeof(self) wf = self;
     if (self.cueSelectedButton == _chatBtn) {
         [_chat sendMsg:text success:^{
@@ -1756,14 +1774,19 @@ static AnnouncementView* announcementView = nil;
 {
     if (!_dlnaView) {
         _dlnaView = [[DLNAView alloc] initWithFrame:self.view.bounds];
+        _dlnaView.delegate = self;
     }
     return _dlnaView;
 }
 - (IBAction)DlNAClick:(id)sender
 {
+    if (!self.isCast_screen) {
+        [self showMsg:@"无投屏权限，如需使用请咨询您的销售人员或拨打客服电话：400-888-9970" afterDelay:1];
+        return;
+    }
     if(![self.dlnaView showInView:self.view moviePlayer:_moviePlayer])
     {
-        [self showMsg:@"投屏功能暂不可用" afterDelay:1];
+        [self showMsg:@"投屏失败，投屏前请确保当前视频正在播放" afterDelay:1];
         return;
     }
     
@@ -1773,6 +1796,11 @@ static AnnouncementView* announcementView = nil;
     self.dlnaView.closeBlock = ^{
         [wf.moviePlayer reconnectPlay];
     };
+}
+#pragma mark - 如果投屏功能出错回调走这里
+- (void)dlnaControlState:(DLNAControlStateType)type errormsg:(NSString *)msg
+{
+    [self showMsg:msg afterDelay:1];
 }
 - (IBAction)customMsgBtnClick:(id)sender
 {

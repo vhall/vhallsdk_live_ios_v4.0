@@ -309,4 +309,16 @@
  */
 - (void)moviePlayer:(VHallMoviePlayer*)player currentTime:(NSTimeInterval)currentTime;
 
+/**
+ *  是否包含投屏功能
+ *  * cast_screen 1有投屏功能 0没有投屏功能
+ */
+- (void)moviePlayer:(VHallMoviePlayer *)player isCast_screen:(BOOL)isCast_screen;
+
+/**
+ *  是否包含投屏功能
+ *  * cast_screen 1有投屏功能 0没有投屏功能
+ */
+- (void)moviePlayer:(VHallMoviePlayer *)player isQuestion_status:(BOOL)isQuestion_status;
+
 @end
