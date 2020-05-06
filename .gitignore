@@ -41,5 +41,7 @@ xcuserdata
 # Carthage/Checkouts
 
 Carthage/Build
+
+./UIModel
  
-UIModel
+
