@@ -610,6 +610,8 @@ static AnnouncementView* announcementView = nil;
         case VHPlayerStateStreamStoped:
             _playMaskView.playButton.selected  = NO;
             break;
+        case VHPlayerStateComplete:/// 回放播放完成
+            _playMaskView.playButton.selected  = NO;
         default:
             break;
     }

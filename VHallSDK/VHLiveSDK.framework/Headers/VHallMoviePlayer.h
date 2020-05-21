@@ -316,8 +316,8 @@
 - (void)moviePlayer:(VHallMoviePlayer *)player isCast_screen:(BOOL)isCast_screen;
 
 /**
- *  是否包含投屏功能
- *  * cast_screen 1有投屏功能 0没有投屏功能
+ *  是否开启问答功能
+ *  * cast_screen 1有问答功能 0没有问答功能
  */
 - (void)moviePlayer:(VHallMoviePlayer *)player isQuestion_status:(BOOL)isQuestion_status;
 

@@ -113,6 +113,7 @@ typedef NS_ENUM(NSInteger,VHPlayerState) {
     VHPlayerStatePlaying                = 2,    //播放中 可调用stopPlay pausePlay 状态转为VHallPlayerStateStoped/VHallPlayerStatePaused
     VHPlayerStateStreamStoped           = 3,    //直播流停止 暂停pausePlay/流连接错误触发 可调用stopPlay reconnectPlay状态转为VHallPlayerStateStoped/VHallPlayerStatePlaying
     VHPlayerStatePause                  = 4,    //回放暂停状态
+    VHPlayerStateComplete               = 5,    //回放播放完成
 };
 
 /**

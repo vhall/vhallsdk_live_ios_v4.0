@@ -35,17 +35,33 @@ typedef NS_ENUM(NSInteger,VHDLNADeviceState) {
 @property(nonatomic,assign) NSInteger curTime;//当前播放时间
 @property(nonatomic,assign) NSInteger volume;//设备声音
 
-
-
-
-
-
+/**
+ *  播放初始化开始播放
+ */
 -(void)startSuccess:(void (^)(void))successBlock failure:(void (^)(NSError * error))failureBlock;
+/**
+ *  开始播放
+ */
 -(void)playSuccess:(void (^)(void))successBlock failure:(void (^)(NSError * error))failureBlock;
+/**
+ *  暂停播放
+ */
 -(void)pauseSuccess:(void (^)(void))successBlock failure:(void (^)(NSError * error))failureBlock;
+/**
+ *  停止播放
+ */
 -(void)stopSuccess:(void (^)(void))successBlock failure:(void (^)(NSError * error))failureBlock;
+/**
+ *  拖拽到指定进度播放
+ */
 -(void)seek:(NSInteger)seekpos success:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock;
+/**
+ *  更新播放进度
+ */
 -(void)getPositionInfoSuccess:(void(^)(NSString *currentDuration, NSString *totalDuration))successBlock failure:(void(^)(NSError *error))failureBlock;
+/**
+ *  音量
+ */
 -(void)setVolume:(NSInteger)volume success:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock;
 -(void)getVolumeSuccess:(void(^)(NSInteger volume))successBlock failure:(void(^)(NSError *error))failureBlock;
 
@@ -61,9 +77,15 @@ typedef NS_ENUM(NSInteger,VHDLNADeviceState) {
 
 
 @protocol VHDLNAControlDelegate <NSObject>
+/**
+ *  获取投屏设备列表
+ */
 -(void)deviceList:(NSArray<VHDLNADevice *>*)deviceList;
 
 @optional
+/**
+ *  获取播放器状态
+ */
 -(void)deviceStateChange:(VHDLNADeviceState)deviceState;
 @end
 

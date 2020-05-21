@@ -363,8 +363,9 @@
     if (deviceList.count >0 ) {
         [_deviceTableView reloadData];
     }
-    else
+    else{
         [_deviceNameBtn setTitle:@"未选择设备" forState:UIControlStateNormal];
+    }
 }
 -(void)deviceStateChange:(VHDLNADeviceState)deviceState
 {

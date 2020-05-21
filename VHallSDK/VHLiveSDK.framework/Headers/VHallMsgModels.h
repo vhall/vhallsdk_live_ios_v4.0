@@ -12,11 +12,11 @@
  *  聊天消息
  */
 typedef NS_ENUM(NSInteger,ChatMsgType) {
-    ChatMsgTypeText     = 0,
-    ChatMsgTypeImage    = 1,
-    ChatMsgTypeLink     = 2,
-    ChatMsgTypeVideo    = 3,
-    ChatMsgTypeVoice    = 4,
+    ChatMsgTypeText     = 0, // 文本
+    ChatMsgTypeImage    = 1, // 图片
+    ChatMsgTypeLink     = 2, // 链接
+    ChatMsgTypeVideo    = 3, // 视频
+    ChatMsgTypeVoice    = 4, // 音频
 };
 
 
@@ -49,14 +49,18 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 @property (nonatomic, assign) NSInteger device_type;   //设备类型
 @end
 
+/**
+*  聊天消息
+*/
 @interface VHallChatModel : VHallMsgModels
 @property (nonatomic, copy) NSString * text;            //聊天消息
 @property (nonatomic, assign) ChatMsgType type;         //聊天消息类型
 @property (nonatomic, copy) NSArray  * imageUrls;       //图片消息url列表
-
 @property (nonatomic, strong) VHallChatModel *replyMsg; //回复消息
 @property (nonatomic, copy)   NSArray  * atList;        //@人列表
 @end
+
+
 /**
  *  自定义消息
  */
