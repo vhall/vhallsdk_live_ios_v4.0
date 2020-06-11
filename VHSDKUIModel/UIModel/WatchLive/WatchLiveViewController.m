@@ -390,7 +390,7 @@ static AnnouncementView* announcementView = nil;
     }
     else if (_moviePlayer.playerState == VHPlayerStateStoped)
     {
-        [_moviePlayer reconnectPlay];
+        [self startPlayer];
     }
     
 //    if (_moviePlayer.playerState == VHPlayerStateStoped || _moviePlayer.playerState == VHPlayerStateStreamStoped)
@@ -520,7 +520,7 @@ static AnnouncementView* announcementView = nil;
 
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+    return UIInterfaceOrientationMaskLandscapeRight | UIInterfaceOrientationMaskPortrait;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
@@ -534,7 +534,17 @@ static AnnouncementView* announcementView = nil;
     // Do any additional setup after loading the view from its nib.
     
     [self initViews];
-    [self startPlayer];
+//    [self startPlayer];
+    //预加载视频
+    NSMutableDictionary * param = [[NSMutableDictionary alloc]init];
+    param[@"id"] =  _roomId;
+    param[@"name"] = [UIDevice currentDevice].name;
+    param[@"email"] = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    if (_kValue&&_kValue.length>0) {
+        param[@"pass"] = _kValue;
+    }
+    [_moviePlayer preLoadRoomWithParam:param];
+    [self chatButtonClick:self.chatBtn];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -738,6 +748,15 @@ static AnnouncementView* announcementView = nil;
 }
 
 #pragma mark - VHMoviePlayerDelegate
+- (void)preLoadVideoFinish:(VHallMoviePlayer*)moviePlayer activeState:(VHMovieActiveState)activeState error:(NSError*)error
+{
+    if(activeState == VHMovieActiveStateLive)
+        [self startPlayer];
+    else{
+        [UIAlertController showAlertControllerTitle:@"提示" msg:@"当前活动未在直播" btnTitle:@"确定" callBack:nil];
+    }
+}
+
 - (void)moviePlayer:(VHallMoviePlayer *)player statusDidChange:(int)state
 {
     
@@ -956,6 +975,18 @@ static AnnouncementView* announcementView = nil;
         _playModelTemp=VHMovieVideoPlayModeVoice;
         _playModeBtn0.selected = YES;
     }
+}
+
+- (void)LiveStart{
+    VHLog(@"LiveStart");
+    
+    __weak typeof(self) wf = self;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [UIAlertController showAlertControllerTitle:@"提示" msg:@"直播已开始" btnTitle:@"确定" callBack:^{
+            [wf startPlayer];
+        }];
+    });
 }
 
 - (void)LiveStoped

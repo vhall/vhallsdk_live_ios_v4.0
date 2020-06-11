@@ -166,6 +166,17 @@ static AnnouncementView* announcementView = nil;
     }
     
     [self textButtonClick:nil];
+    
+//    //预加载视频
+//    NSMutableDictionary * param = [[NSMutableDictionary alloc]init];
+//    param[@"id"] =  _roomId;
+//    param[@"name"] = [UIDevice currentDevice].name;
+//    param[@"email"] = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//    if (_kValue&&_kValue.length>0) {
+//        param[@"pass"] = _kValue;
+//    }
+//    [_moviePlayer preLoadRoomWithParam:param];
+
 }
 #pragma mark - Private Method
 - (void)initViews
@@ -610,8 +621,8 @@ static AnnouncementView* announcementView = nil;
         case VHPlayerStateStreamStoped:
             _playMaskView.playButton.selected  = NO;
             break;
-        case VHPlayerStateComplete:/// 回放播放完成
-            _playMaskView.playButton.selected  = NO;
+//        case VHPlayerStateComplete:/// 回放播放完成
+//            _playMaskView.playButton.selected  = NO;
         default:
             break;
     }
@@ -898,7 +909,7 @@ static AnnouncementView* announcementView = nil;
 
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskPortrait|UIInterfaceOrientationMaskLandscapeLeft|UIInterfaceOrientationMaskLandscapeRight;
+    return UIInterfaceOrientationMaskLandscapeRight | UIInterfaceOrientationMaskPortrait;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation

@@ -96,7 +96,7 @@
     _contentView.backgroundColor = MakeColorRGB(0xE2E8EB);
     _contentView.layer.cornerRadius = 10;
     [self addSubview:_contentView];
-    
+        
     _deviceNameBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, _contentView.width, 40)];
     [_deviceNameBtn setTitle:@"未选择设备" forState:UIControlStateNormal];
     if(self.control.curDevice)
@@ -188,6 +188,8 @@
 
 -(void)layoutSubviews
 {
+    UIView *window = [UIApplication sharedApplication].delegate.window;
+    self.contentView.center = window.center;
 }
 #pragma mark - contorl
 - (void)play

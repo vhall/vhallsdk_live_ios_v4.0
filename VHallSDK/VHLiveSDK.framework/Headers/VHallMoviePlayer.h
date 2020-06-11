@@ -40,6 +40,11 @@
 @property(nonatomic,assign)VHMovieDefinition curDefinition;
 
 /**
+ * 当前活动状态
+ */
+@property(nonatomic,assign,readonly)VHMovieActiveState activeState;
+
+/**
  * 以下属性 点播/回放播放时使用 直播无效
  */
 @property (nonatomic, readonly) NSTimeInterval          duration;           //视频时长
@@ -53,6 +58,18 @@
  *  @return   返回VHMoviePlayer的一个实例
  */
 - (instancetype)initWithDelegate:(id <VHallMoviePlayerDelegate>)delegate;
+
+
+/**
+ *  预加载视频信息 进入页面即需要使用此方法后 startPlay和startPlayback传参不再有效，只是有开始播放功能，更换房间时需要停止上个房间播放
+ *  此方法可以提供播放前操作聊天等功能
+ *  @param param
+ *  param[@"id"]    = 活动Id 必传
+ *  param[@"name"]  = 如已登录可以不传
+ *  param[@"email"] = 如已登录可以不传
+ *  param[@"pass"]  = 活动如果有K值或密码需要传
+*/
+- (void)preLoadRoomWithParam:(NSDictionary*)param;
 
 /**
  *  观看直播视频
@@ -171,6 +188,13 @@
 @protocol VHallMoviePlayerDelegate <NSObject>
 @optional
 /**
+ *  视频预加载完成可以调用播放接口
+ *  activeState 预加载完成是活动状态
+ *  error 为空视频预加载完成
+ */
+- (void)preLoadVideoFinish:(VHallMoviePlayer*)moviePlayer activeState:(VHMovieActiveState)activeState error:(NSError*)error;
+
+/**
  *  播放连接成功
  */
 - (void)connectSucceed:(VHallMoviePlayer*)moviePlayer info:(NSDictionary*)info;
@@ -240,6 +264,13 @@
  *  @param definitionList  支持的清晰度列表
  */
 - (void)VideoDefinitionList:(NSArray*)definitionList;
+
+/**
+ *  主播开始推流消息
+ *
+ *  注意：H5和互动 活动 收到此消息后建议延迟 5s 开始播放
+ */
+- (void)LiveStart;
 /**
  *  直播结束消息
  *

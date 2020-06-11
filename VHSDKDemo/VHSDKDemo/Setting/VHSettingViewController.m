@@ -382,7 +382,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     VHSettingGroup *group=self.groups [indexPath.section];
-    if(indexPath.section == 1 && indexPath.row == group.items.count)
+    if(indexPath.section == 1 && (indexPath.row == 6 || indexPath.row == 7))
     {
         return;
     }

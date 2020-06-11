@@ -85,7 +85,7 @@
     }
     else{
         [pic sd_setImageWithURL:[NSURL URLWithString:_model.avatar] placeholderImage:BundleUIImage(@"head50")];
-        lblNickName.text = [_model.user_name stringByAppendingFormat:@"[%@]%@",_model.role,[_model.account_id isEqualToString:[VHallApi currentUserID]]?@"(myself)":@""];
+        lblNickName.text = [_model.user_name stringByAppendingFormat:@"[%@-%ld]%@",_model.role,(long)_model.role_name,[_model.account_id isEqualToString:[VHallApi currentUserID]]?@"(myself)":@""];
         lblTime.text = _model.time;
         lblNickName.textColor = [UIColor blackColor];
         //内容
