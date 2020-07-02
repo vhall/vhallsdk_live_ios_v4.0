@@ -988,7 +988,10 @@ static AnnouncementView* announcementView = nil;
         }];
     });
 }
-
+- (void)LiveStartDefinition
+{
+    
+}
 - (void)LiveStoped
 {
     VHLog(@"直播已结束");

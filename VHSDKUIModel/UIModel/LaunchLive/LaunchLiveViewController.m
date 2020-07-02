@@ -658,7 +658,7 @@
                 role = @"观众";
             }
             
-            msg.text = [NSString stringWithFormat:@"%@\n[%@] %@房间:%@ 在线:%@ 参会:%@",m.time,role,event,m.join_id, m.concurrent_user, m.attend_count];
+            msg.text = [NSString stringWithFormat:@"%@\n[%@] %@房间:%@ 在线:%@ 参会:%@",m.time,role,event,msg.actId, m.concurrent_user, m.attend_count];
             [_chatDataArray addObject:msg];
         }
         [_chatView update];
