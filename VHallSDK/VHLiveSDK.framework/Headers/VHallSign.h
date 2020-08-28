@@ -38,6 +38,7 @@
 @property (nonatomic, assign) id <VHallSignDelegate> delegate;
 /**
  *  签到
+ *  isStop 成功后是否结束倒计时 YES结束(则不执行签到结束的回调) NO等待倒计时结束
  *  成功回调成功Block
  *  失败回调失败Block
  *  		失败Block中的字典结构如下：
@@ -51,7 +52,7 @@
  * 10814 	用户名称不能为空
  * 10815 	当前用户已签到
  */
-- (BOOL)signSuccess:(void(^)())success failed:(void (^)(NSDictionary* failedData))reslutFailedCallback;
+- (BOOL)signSuccessIsStop:(BOOL)isStop success:(void(^)())success failed:(void (^)(NSDictionary* failedData))reslutFailedCallback;
 
 /**
  *  取消签到

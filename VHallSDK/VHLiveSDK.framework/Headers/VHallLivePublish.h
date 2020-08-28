@@ -81,8 +81,11 @@
  */
 - (BOOL)swapCameras:(AVCaptureDevicePosition)captureDevicePosition;
 
-//手动对焦
+/**
+ * 手动对焦
+ */
 -(void)setFoucsFoint:(CGPoint)newPoint;
+
 /**
  *  变焦
  *  @param zoomSize 变焦的比例

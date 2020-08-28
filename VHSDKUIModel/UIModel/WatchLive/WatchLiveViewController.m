@@ -467,6 +467,12 @@ static AnnouncementView* announcementView = nil;
 #pragma mark 发送聊天按钮
 - (IBAction)sendChatBtnClick:(id)sender
 {
+    if(_chat.isAllSpeakBlocked)
+    {
+        [self showMsgInWindow:@"已开启全体禁言" afterDelay:1];
+        return;
+    }
+
     if(_chat.isSpeakBlocked)
     {
         [self showMsgInWindow:@"您已被禁言" afterDelay:1];
@@ -1254,7 +1260,7 @@ static AnnouncementView* announcementView = nil;
 - (void)SignBtnClicked
 {
     __weak typeof(self) weakSelf = self;
-    [_sign signSuccess:^{
+    [_sign signSuccessIsStop:NO success:^{
       [SignView close];
       [weakSelf showMsgInWindow:@"签到成功" afterDelay:2];
     } failed:^(NSDictionary *failedData) {
@@ -1266,7 +1272,7 @@ static AnnouncementView* announcementView = nil;
 
 - (void)signRemainingTime:(NSTimeInterval)remainingTime
 {
-//    NSLog(@"距结束%d秒",(int)remainingTime);
+    NSLog(@"距结束%d秒",(int)remainingTime);
     [SignView remainingTime:remainingTime];
 }
 

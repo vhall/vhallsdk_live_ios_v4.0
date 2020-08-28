@@ -46,6 +46,12 @@
 @property (nonatomic, assign,readonly) BOOL isSpeakBlocked;
 
 /**
+ * 是否全体被禁言
+ */
+
+@property (nonatomic, assign,readonly) BOOL isAllSpeakBlocked;
+
+/**
  * 发送聊天内容
  * 在进入直播活动后调用
  * 成功回调成功Block
