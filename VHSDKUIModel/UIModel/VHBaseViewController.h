@@ -13,5 +13,7 @@
 
 - (void)showMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay;
 - (void)showMsgInWindow:(NSString*)msg afterDelay:(NSTimeInterval)delay;
+- (void)showMsgInWindow:(NSString*)msg afterDelay:(NSTimeInterval)delay offsetY:(CGFloat)offsetY;
 -(void) showRendererMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay;
+
 @end

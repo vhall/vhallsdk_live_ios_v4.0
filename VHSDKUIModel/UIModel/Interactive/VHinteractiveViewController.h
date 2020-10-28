@@ -7,11 +7,34 @@
 //
 
 #import "VHBaseViewController.h"
+@class VHinteractiveViewController;
+
+@protocol VHinteractiveViewControllerDelegate <NSObject>
+@optional;
+//代理对象来关闭互动控制器  kickOut:是否被踢出
+- (void)interactiveViewClose:(VHinteractiveViewController *_Nonnull)controller byKickOut:(BOOL)kickOut;
+@end
 
 @interface VHinteractiveViewController : VHBaseViewController
 
+/** 代理 */
+@property (nonatomic, weak) id<VHinteractiveViewControllerDelegate> _Nullable delegate;
+
 @property (nonnull,nonatomic, copy) NSString *roomId;//互动房间id
 
-@property(nonatomic, assign)int      pushResolution;  //互动分辨率
+/** 互动工具view */
+@property (nonatomic, strong , readonly) UIView * _Nullable toolView;
+
+//192x144 = 0
+//240x160 = 1
+//320x240 = 2
+//480x360 = 3
+//570x432 = 4
+//640x480 = 5
+@property(nonatomic, assign)int pushResolution;  //互动分辨率
+
 @property(nonatomic, assign)BOOL     inavBeautifyFilterEnable;//互动美颜开关
+
+//下麦退出
+- (void)closeButtonClick:(UIButton *_Nullable)sender;
 @end

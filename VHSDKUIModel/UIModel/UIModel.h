@@ -17,6 +17,7 @@
 #import "WatchPlayBackViewController.h"
 #import "LaunchLiveViewController.h"
 #import "VHinteractiveViewController.h"
+#import "UIModelTools.h"
 
 
 #ifdef  UIModel_Lib //独立打 UIModel 静态库 需要在工程设置 Preprocessor Macros选项中添加 UIModel_Lib=1
@@ -38,12 +39,30 @@
 #define CustomEmojiRegex    @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]"
 
 
+
 #define iPhoneX \
 ({BOOL isPhoneX = NO;\
 if ([[[UIDevice currentDevice] systemVersion] floatValue]>=11.0) {\
 isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bottom > 0.0;\
 }\
 (isPhoneX);})
+
+// 刘海屏系列 底部操作条高度
+#define VH_KBottomSafeMargin    (iPhoneX ? 34.f : 0.f)
+// 状态栏高度
+#define VH_KStatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
+//导航栏高度（不含状态栏）
+#define VH_KSystemNavBarHeight 44.0
+//TabBar标签栏高度 (不含底部安全区域)
+#define VH_KSystemTabBarHeight 49.0
+//导航栏 + 状态栏高度
+#define VH_KNavBarHeight (VH_KSystemNavBarHeight + VH_KStatusBarHeight)
+//TabBar标签栏高度 + 底部操作条高度
+#define VH_KTabBarHeight (VH_KSystemTabBarHeight + VH_KBottomSafeMargin)
+
+
+//是否为横屏显示
+#define VH_KScreenIsLandscape UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication.statusBarOrientation)
 
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.

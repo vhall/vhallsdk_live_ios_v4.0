@@ -77,6 +77,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0375075D251AFA7200DBDF24 /* VHPortraitWatchLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveViewController.h; sourceTree = "<group>"; };
 		2F6B05B61E94FF800010E0C7 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		2FA3F1A71F564C9900E2E436 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
 		C000AA3E1E66E053005DFB7C /* VHSDKDemo4.x.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VHSDKDemo4.x.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -357,6 +358,7 @@
 		C0443CA124286FDD0063FB0D /* UIModel */ = {
 			isa = PBXGroup;
 			children = (
+				0375075D251AFA7200DBDF24 /* VHPortraitWatchLiveViewController.h */,
 				C0443CA324286FDD0063FB0D /* WatchLiveViewController.h */,
 				C0443CA224286FDD0063FB0D /* WatchPlayBackViewController.h */,
 				C0443CAF24286FDD0063FB0D /* LaunchLiveViewController.h */,
@@ -690,7 +692,7 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 4.3.4;
+				MARKETING_VERSION = 5.0.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo4.x;
@@ -722,7 +724,7 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 4.3.4;
+				MARKETING_VERSION = 5.0.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo4.x;

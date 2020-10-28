@@ -24,14 +24,11 @@
 #import "DLNAView.h"
 #import "MicCountDownView.h"
 #import "VHinteractiveViewController.h"
-
 #import "VHInvitationAlert.h"
-
 #import "VHSurveyViewController.h"
-
 #import "LaunchLiveViewController.h"
-
 #import "UIAlertController+ITTAdditionsUIModel.h"
+#import "MJRefresh.h"
 
 # define DebugLog(fmt, ...) NSLog((@"\n[文件名:%s]\n""[函数名:%s]\n""[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
 
@@ -58,6 +55,7 @@ static AnnouncementView* announcementView = nil;
     BOOL _isVr;
     BOOL _isRender;//
     BOOL _isQuestion_status;
+    BOOL _docShow;  //文档是否显示
     
     NSMutableArray    *_QADataArray;
     NSArray           *_videoLevePicArray;//视频质量等级图片
@@ -67,6 +65,7 @@ static AnnouncementView* announcementView = nil;
      NSMutableDictionary *announcementContentDic;//公告内容
     
     NSArray* _definitionList;
+    NSInteger _chatListPage; //聊天记录页码，默认1
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *bufferCountLabel;
@@ -202,7 +201,9 @@ static AnnouncementView* announcementView = nil;
 //    _videoPlayModelPicArray=@[@"单视频",@"单音频"];
     _videoPlayModel=[NSMutableArray array];
 
-    if ([self.chatView  respondsToSelector:@selector(setLayoutMargins:)]) {
+    //聊天记录上拉刷新，下拉加载更多 (数据更新存在不及时，刚发的消息，需要等几秒才能刷新出来)
+//    [self configChatListRefresh];
+    if ([self.chatView respondsToSelector:@selector(setLayoutMargins:)]) {
         [self.chatView setLayoutMargins:UIEdgeInsetsZero];
     }
     
@@ -222,9 +223,51 @@ static AnnouncementView* announcementView = nil;
 
     self.textLabel.center=CGPointMake(self.docAreaView.width/2, self.docAreaView.height/2);
     [self.docAreaView insertSubview:self.textLabel atIndex:0];
-        
+    self.docAreaView.userInteractionEnabled = YES;
+}
+#pragma mark - 放大手势
+- (void)changeImageSize:(UIPinchGestureRecognizer *)pinch
+{
+    //获取比例
+    CGFloat scale=pinch.scale;
+    //通过仿射变换实现缩放
+      _moviePlayer.documentView.transform=CGAffineTransformScale(_moviePlayer.documentView.transform, scale, scale);
+    //防止比例叠加
+      pinch.scale=1;
+}
+-(void)panAction:(UIPanGestureRecognizer *) pan
+{
+    //获取移动的大小
+    CGPoint point=[pan translationInView:pan.view];
+    //更改视图的中心点坐标
+    CGPoint points=_moviePlayer.documentView.center;
+    points.x+=point.x;
+    points.y+=point.y;
+    _moviePlayer.documentView.center=points;
+    //每次都清空一下，消除坐标叠加
+    [pan setTranslation:CGPointZero inView:pan.view];
 }
 
+- (void)configChatListRefresh {
+    __weak typeof(self) weakSelf = self;
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf loadHistoryChatWithPage:_chatListPage + 1 completion:nil];
+    }];
+    [header setTitle:@"下拉加载更多" forState:MJRefreshStateIdle];
+    [header setTitle:@"松开立即加载更多" forState:MJRefreshStatePulling];
+    [header setTitle:@"暂无更多" forState:MJRefreshStateNoMoreData];
+    [header setTitle:@"正在加载更多的数据中..." forState:MJRefreshStateRefreshing];
+    header.lastUpdatedTimeLabel.hidden = YES;
+    self.chatView.mj_header = header;
+
+    MJRefreshBackNormalFooter *footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf loadHistoryChatWithPage:1 completion:nil];
+    }];
+    [footer setTitle:@"上拉刷新" forState:MJRefreshStateIdle];
+    [footer setTitle:@"松开立即刷新" forState:MJRefreshStatePulling];
+    [footer setTitle:@"正在刷新数据中..." forState:MJRefreshStateRefreshing];
+    self.chatView.mj_footer = footer;
+}
 - (void)initBarrageRenderer
 {
     _renderer = [[BarrageRenderer alloc]init];
@@ -325,6 +368,19 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - UIButton Event
 //申请上麦按钮事件
 - (void)micUpClick:(UIButton *)sender {
+    
+    if(_chat.isAllSpeakBlocked)
+    {
+        [self showMsgInWindow:@"已开启全体禁言" afterDelay:1];
+        return;
+    }
+
+    if(_chat.isSpeakBlocked)
+    {
+        [self showMsgInWindow:@"您已被禁言" afterDelay:1];
+        return;
+    }
+
     sender.selected = !sender.selected;
     
     __weak typeof(self) wf = self;
@@ -334,9 +390,8 @@ static AnnouncementView* announcementView = nil;
         [_moviePlayer microApplyWithType:1 finish:^(NSError *error) {
             if(error)
             {
-                NSString *msg = [NSString stringWithFormat:@"申请上麦失败 %@",error.description];
+                NSString *msg = [NSString stringWithFormat:@"申请上麦失败：%@",error.description];
                 [wf showMsgInWindow:msg afterDelay:2];
-                NSLog(@"%@",msg);
             }
             else
             {
@@ -351,9 +406,8 @@ static AnnouncementView* announcementView = nil;
         [_moviePlayer microApplyWithType:0 finish:^(NSError *error) {
             if(error)
             {
-                NSString *msg = [NSString stringWithFormat:@"申请上麦失败 %@",error.description];
-                NSLog(@"取消申请上麦失败 %@",msg);
-                [wf showMsgInWindow:@"取消失败" afterDelay:2];
+                NSString *msg = [NSString stringWithFormat:@"取消上麦失败：%@",error.description];
+                [wf showMsgInWindow:msg afterDelay:2];
             }
             else
             {
@@ -550,7 +604,6 @@ static AnnouncementView* announcementView = nil;
         param[@"pass"] = _kValue;
     }
     [_moviePlayer preLoadRoomWithParam:param];
-    [self chatButtonClick:self.chatBtn];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -756,10 +809,17 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - VHMoviePlayerDelegate
 - (void)preLoadVideoFinish:(VHallMoviePlayer*)moviePlayer activeState:(VHMovieActiveState)activeState error:(NSError*)error
 {
-    if(activeState == VHMovieActiveStateLive)
-        [self startPlayer];
-    else{
-        [UIAlertController showAlertControllerTitle:@"提示" msg:@"当前活动未在直播" btnTitle:@"确定" callBack:nil];
+    if(error) {
+        NSLog(@"视频预加载失败---error = %@   活动状态 = %zd",error,activeState);
+        [UIAlertController showAlertControllerTitle:@"视频预加载失败" msg:error.localizedDescription btnTitle:@"确定" callBack:nil];
+    }else {
+        if(activeState == VHMovieActiveStateLive) {
+            [self startPlayer];
+        } else {
+            [UIAlertController showAlertControllerTitle:@"提示" msg:@"当前活动未在直播" btnTitle:@"确定" callBack:nil];
+        }
+        //刷新聊天历史
+        [self performSelector:@selector(chatButtonClick:) withObject:self.chatBtn afterDelay:1];
     }
 }
 
@@ -1029,6 +1089,8 @@ static AnnouncementView* announcementView = nil;
         //进入互动
         VHinteractiveViewController *controller = [[VHinteractiveViewController alloc] init];
         controller.roomId = self.roomId;
+        controller.pushResolution = self.interactResolution;
+        controller.inavBeautifyFilterEnable = self.interactBeautifyEnable;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:controller animated:YES completion:^{
             
@@ -1060,8 +1122,10 @@ static AnnouncementView* announcementView = nil;
 {
     if(isHave)
     {
-        [self showMsgInWindow:isShow?@"主持人打开文档":@"主持人关闭文档" afterDelay:1];
-        
+        if(_docShow != isShow) {
+            [self showMsgInWindow:isShow ? @"主持人打开文档" : @"主持人关闭文档" afterDelay:1];
+            _docShow = isShow;
+        }
         self.textLabel.center=CGPointMake(self.docAreaView.width/2, self.docAreaView.height/2);
         [self.docAreaView insertSubview:self.textLabel atIndex:0];
         
@@ -1069,6 +1133,17 @@ static AnnouncementView* announcementView = nil;
         [self.docAreaView addSubview:_moviePlayer.documentView];
     }
     _moviePlayer.documentView.hidden = !isShow;
+    
+    _moviePlayer.documentView.userInteractionEnabled = YES;
+    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panAction:)];
+    [_moviePlayer.documentView addGestureRecognizer:pan];
+    UIPinchGestureRecognizer *pin = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(changeImageSize:)];
+    [_moviePlayer.documentView addGestureRecognizer:pin];
+}
+
+//返回文档延迟时间
+- (NSTimeInterval)documentDelayTime:(VHallMoviePlayer *)player {
+    return player.realityBufferTime / 1000.0 + 3;
 }
 
 #pragma mark - VHInvitationAlertDelegate
@@ -1087,6 +1162,8 @@ static AnnouncementView* announcementView = nil;
         //进入互动
         VHinteractiveViewController *controller = [[VHinteractiveViewController alloc] init];
         controller.roomId = self.roomId;
+        controller.pushResolution = self.interactResolution;
+        controller.inavBeautifyFilterEnable = self.interactBeautifyEnable;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:controller animated:YES completion:^{
             
@@ -1526,26 +1603,41 @@ static AnnouncementView* announcementView = nil;
     
     if (!_isReciveHistory)
     {
-        __weak typeof(self) ws = self;
-        [_chat getHistoryWithType:YES success:^(NSArray * msgs) {
-            
-            if (msgs.count > 0) {
-                [ws.chatDataArray addObjectsFromArray:msgs];
-                if (ws.chatBtn.selected) {
-                    [ws.chatView reloadData];
-                    [ws.chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:ws.chatDataArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                }
+        __weak typeof(self) weakSelf = self;
+        [self loadHistoryChatWithPage:1 completion:^{
+            if(_chatDataArray.count > 0) {
+                [weakSelf.chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_chatDataArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             }
-            
-        } failed:^(NSDictionary *failedData) {
-            
-            NSString* code = [NSString stringWithFormat:@"%@,%@", failedData[@"content"], failedData[@"code"]];
-            NSLog(@"%@",code);
-//            [ws showMsgInWindow:code afterDelay:1.5];
-            
         }];
         _isReciveHistory = YES;
     }
+}
+
+//获取历史聊天记录
+- (void)loadHistoryChatWithPage:(NSInteger)page completion:(void(^)(void))completion{
+    __weak typeof(self) ws = self;
+    [_chat getHistoryWithStartTime:nil pageNum:page pageSize:20 success:^(NSArray <VHallChatModel *> *msgs) {
+        if(page == 1) {
+            ws.chatDataArray = [NSMutableArray arrayWithArray:msgs];
+            _chatListPage = 1;
+        }else {
+            if (msgs.count > 0) {
+                _chatListPage ++;
+                NSMutableIndexSet *indexes = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, msgs.count)];
+                [ws.chatDataArray insertObjects:msgs atIndexes:indexes];
+            }
+        }
+        [ws.chatView reloadData];
+        [ws.chatView.mj_header endRefreshing];
+        [ws.chatView.mj_footer endRefreshing];
+        completion ? completion() : nil;
+    } failed:^(NSDictionary *failedData) {
+        NSString* errorInfo = [NSString stringWithFormat:@"%@---%@", failedData[@"content"], failedData[@"code"]];
+        NSLog(@"获取历史聊天记录失败：%@",errorInfo);
+        [ws.chatView.mj_footer endRefreshing];
+        [ws.chatView.mj_header endRefreshing];
+        completion ? completion() : nil;
+    }];
 }
 
 #pragma mark - 问答
@@ -1844,10 +1936,15 @@ static AnnouncementView* announcementView = nil;
 }
 - (IBAction)customMsgBtnClick:(id)sender
 {
-    NSString *text = @"{\"key\":\"value\",\"key1\":0.12,\"key2\":1,\"key3\":\"汉语\"}";
+    NSMutableDictionary * json = [NSMutableDictionary dictionary];
+    json[@"key"] = @"value";
+    json[@"num"] = @"0.12";
+    json[@"name"] = @"小明";
+    NSString * jsonStr = [self jsonStringWithObject:json];
+//    NSString *jsonStr = @"{\"key\":\"value\",\"name\":\"小明\",\"phone\":18300001111}";
     __weak typeof(self) wf = self;
     if (_chatBtn.selected == YES) {
-        [_chat sendCustomMsg:text success:^{
+        [_chat sendCustomMsg:jsonStr success:^{
             [wf showMsgInWindow:@"发送成功" afterDelay:1];
         } failed:^(NSDictionary *failedData) {
             
@@ -1908,6 +2005,25 @@ static AnnouncementView* announcementView = nil;
     NSString *domain = [NSString stringWithFormat:@"https://e.vhall.com&webinar_id=%@&r=%@",roomId,timeStamp];
     NSString *string1 = [NSString stringWithFormat:@"%@survey_id=%@&user_id=%@&domain=%@",string,model.surveyId,model.joinId,domain];
     return [NSURL URLWithString:string1];
+}
+// 字典转json字符串方法
+- (NSString *)jsonStringWithObject:(id)dict
+{
+    if(!dict) return @"";
+    if([dict isKindOfClass:[NSString class]])return dict;
+    
+    NSString *jsonString = @"";
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                       options:0
+                                                         error:&error];
+    if (error) {
+        VHLog(@"%@",error);
+        return @"";
+    }else{
+        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+    return (jsonString.length>0)?jsonString:@"";
 }
 
 @end

@@ -16,9 +16,9 @@
 @property(nonatomic,assign)int timeout;                         //链接的超时时间 默认6000毫秒，单位为毫秒  MP4点播 最小10000毫秒
 //@property(nonatomic,assign)int reConnectTimes;                //RTMP 断开后的重连次数 默认 2次
 @property(nonatomic,assign)int bufferTime;                      //RTMP 的缓冲时间 默认 6秒 单位为秒 必须>0 值越小延时越小,卡顿增加
-@property(assign,readonly)int realityBufferTime;                //获取RTMP播放实际的缓冲时间
+@property(assign,readonly)int realityBufferTime;                //获取RTMP播放实际的缓冲时间，单位毫秒
 @property(nonatomic,assign,readonly)VHPlayerState playerState;  //播放器状态
-@property(nonatomic,strong,readonly)UIView * documentView;      //文档view，当前活动如果没有文档次View 为 nil 可以从回调中获取此活动是否又文档
+@property(nonatomic,strong,readonly)UIView * documentView;      //文档view，当前活动如果没有文档次View 为 nil 可以从回调中获取此活动是否有文档
 
 /**
  *  当前视频观看模式
@@ -62,7 +62,7 @@
 
 /**
  *  预加载视频信息 进入页面即需要使用此方法后 startPlay和startPlayback传参不再有效，只是有开始播放功能，更换房间时需要停止上个房间播放
- *  此方法可以提供播放前操作聊天等功能
+ *  此方法可以提供播放前操作聊天等功能 （在预加载完成回调后，可调用startPlay开播，或使用聊天等功能）
  *  @param param
  *  param[@"id"]    = 活动Id 必传
  *  param[@"name"]  = 如已登录可以不传
@@ -189,13 +189,13 @@
 @optional
 /**
  *  视频预加载完成可以调用播放接口
- *  activeState 预加载完成是活动状态
- *  error 为空视频预加载完成
+ *  activeState 预加载完成时活动状态
+ *  error 为空时频预加载完成
  */
 - (void)preLoadVideoFinish:(VHallMoviePlayer*)moviePlayer activeState:(VHMovieActiveState)activeState error:(NSError*)error;
 
 /**
- *  播放连接成功
+ *  播放连接成功 
  */
 - (void)connectSucceed:(VHallMoviePlayer*)moviePlayer info:(NSDictionary*)info;
 
@@ -233,7 +233,7 @@
 - (void)playError:(VHSaasLivePlayErrorType)livePlayErrorType info:(NSDictionary*)info;
 
 /**
- *  获取视频活动状态
+ *  视频活动状态回调
  *
  *  @param activeState  视频活动状态
  */
@@ -314,7 +314,7 @@
  *  @param player player
  *  @param isKickout 被踢出 取消踢出后需要重新进入
  */
-- (void)moviePlayer:(VHallMoviePlayer*)player isKickout:(BOOL)isKickout;
+- (void)moviePlayer:(VHallMoviePlayer *)player isKickout:(BOOL)isKickout;
 
 /**
  *  主持人显示/隐藏文档
@@ -322,7 +322,13 @@
  *  @param isHave  YES 此活动有文档演示
  *  @param isShow  YES 主持人显示观看端文档，NO 主持人隐藏观看端文档
  */
-- (void)moviePlayer:(VHallMoviePlayer*)player isHaveDocument:(BOOL)isHave isShowDocument:(BOOL)isShow;
+- (void)moviePlayer:(VHallMoviePlayer *)player isHaveDocument:(BOOL)isHave isShowDocument:(BOOL)isShow;
+
+/**
+*  直播文档同步，直播文档有延迟，指定需要延迟的秒数，默认为直播缓冲时间
+*/
+- (NSTimeInterval)documentDelayTime:(VHallMoviePlayer *)player;
+
 #pragma mark - 点播
 /**
  *  statusDidChange
@@ -330,7 +336,7 @@
  *  @param player player
  *  @param state  VHPlayerState
  */
-- (void)moviePlayer:(VHallMoviePlayer *)player statusDidChange:(int)state;
+- (void)moviePlayer:(VHallMoviePlayer *)player statusDidChange:(VHPlayerState)state;
 
 /**
  *  currentTime

@@ -10,18 +10,27 @@
 #import <VHInteractive/VHRoom.h>
 #import <VHLiveSDK/VHallApi.h>
 #import "UIAlertController+ITTAdditionsUIModel.h"
+#import "Masonry.h"
 
 #define iconSize 34
 
 @interface VHinteractiveViewController ()<VHRoomDelegate>
-{
-    UIButton *_micBtn;//麦克风按钮
-    UIButton *_cameraBtn;//摄像头按钮
-}
+
 @property (nonatomic, strong) VHRoom *interactiveRoom;//互动房间
 @property (nonatomic, strong) VHLocalRenderView *cameraView;//本地摄像头
 
 @property (nonatomic, strong) NSMutableArray *views;
+/** 摄像头切换按钮 */
+@property (nonatomic, strong) UIButton *swapBtn;
+/** 摄像头开关按钮 */
+@property (nonatomic, strong) UIButton *cameraBtn;
+/** 麦克风按钮 */
+@property (nonatomic, strong) UIButton *micBtn;
+/** 下麦按钮 */
+@property (nonatomic, strong) UIButton *closeBtn;
+
+/** 互动工具view */
+@property (nonatomic, strong) UIView *toolView;
 
 @end
 
@@ -46,6 +55,11 @@
 }
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     return UIInterfaceOrientationPortrait;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.cameraView.frame = self.view.bounds;
 }
 
 
@@ -95,39 +109,66 @@
     
     [self setUpTopButtons];
 }
+
 - (void)setUpTopButtons {
+    
+    _toolView = [[UIView alloc] init];
+    [self.view addSubview:_toolView];
+    [_toolView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(iconSize);
+        make.right.mas_equalTo(-12);
+        make.centerY.mas_equalTo(self);
+    }];
+    
     //切换摄像头按钮
     UIButton *swapBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    swapBtn.bounds = CGRectMake(0, 0, iconSize, iconSize);
-    swapBtn.top = self.view.height*0.5-((iconSize+6)*4)*0.5;
-    swapBtn.right = self.view.right-12;
     [swapBtn setBackgroundImage:BundleUIImage(@"icon_video_camera_switching") forState:UIControlStateNormal];
     [swapBtn setBackgroundImage:BundleUIImage(@"icon_video_camera_switching") forState:UIControlStateSelected];
     [swapBtn addTarget:self action:@selector(swapStatusChanged:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:swapBtn];
+    [self.toolView addSubview:swapBtn];
+    _swapBtn = swapBtn;
+    [swapBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.toolView);
+        make.width.centerX.equalTo(self.toolView);
+        make.height.equalTo(swapBtn.mas_width);
+    }];
 
     //开关摄像头按钮
     _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _cameraBtn.frame = CGRectMake(swapBtn.left, swapBtn.bottom+12, iconSize, iconSize);
     [_cameraBtn setBackgroundImage:BundleUIImage(@"icon_video_open_camera") forState:UIControlStateNormal];
     [_cameraBtn setBackgroundImage:BundleUIImage(@"icon_video_close_camera") forState:UIControlStateSelected];
     [_cameraBtn addTarget:self action:@selector(videoStatusChanged:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_cameraBtn];
+    [self.toolView addSubview:_cameraBtn];
+    [_cameraBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.swapBtn.mas_bottom).offset(12);
+        make.width.centerX.equalTo(self.toolView);
+        make.height.equalTo(_cameraBtn.mas_width);
+    }];
 
     //麦克风按钮
     _micBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _micBtn.frame = CGRectMake(_cameraBtn.left, _cameraBtn.bottom+12, iconSize, iconSize);
     [_micBtn setBackgroundImage:BundleUIImage(@"icon_video_open_microphone") forState:UIControlStateNormal];
     [_micBtn setBackgroundImage:BundleUIImage(@"icon_video_close_microphone") forState:UIControlStateSelected];
     [_micBtn addTarget:self action:@selector(micBtnStatusChanged:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_micBtn];
+    [self.toolView addSubview:_micBtn];
+    [_micBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.cameraBtn.mas_bottom).offset(12);
+        make.width.centerX.equalTo(self.toolView);
+        make.height.equalTo(_micBtn.mas_width);
+    }];
 
     //下麦按钮
     UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     closeBtn.frame = CGRectMake(_micBtn.left, _micBtn.bottom+12, iconSize, iconSize);
     [closeBtn setBackgroundImage:BundleUIImage(@"icon_video_lowerwheat") forState:UIControlStateNormal];
     [closeBtn addTarget:self action:@selector(closeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:closeBtn];
+    [self.toolView addSubview:closeBtn];
+    _closeBtn = closeBtn;
+    [closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.micBtn.mas_bottom).offset(12);
+        make.width.centerX.bottom.equalTo(self.toolView);
+        make.height.equalTo(closeBtn.mas_width);
+    }];
 }
 - (void)setUpCameraView {
     //创建本地摄像头视图
@@ -201,7 +242,7 @@
  */
 - (void)leaveInteractiveRoomByHost:(VHRoom *)room
 {
-    [self showMsg:@"您已被主播下麦" afterDelay:3];
+    [UIModelTools showMsgInWindow:@"您已被主播下麦" afterDelay:3 offsetY:100];
     //离开互动房间
     [self closeButtonClick:nil];
 }
@@ -316,14 +357,22 @@
     //离开互动房间
     [_interactiveRoom leaveRoom];
     _interactiveRoom = nil;
+    
     //返回上级页面
-    [self dismissViewControllerAnimated:YES completion:^{}];
-//    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(interactiveViewClose:byKickOut:)]) {
+        [self.delegate interactiveViewClose:self byKickOut:NO];
+    }else {
+        [self dismissViewControllerAnimated:YES completion:^{}];
+    }
 }
 //摄像头切换
 - (void)swapStatusChanged:(UIButton *)sender {
-     AVCaptureDevicePosition position = [_cameraView switchCamera];
-     _cameraView.transform = CGAffineTransformMakeScale((position == AVCaptureDevicePositionFront)?-1:1,1);//镜像
+    _cameraView.hidden = YES;
+    AVCaptureDevicePosition position = [_cameraView switchCamera];
+    _cameraView.transform = CGAffineTransformMakeScale((position == AVCaptureDevicePositionFront)?-1:1,1);//镜像
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        _cameraView.hidden = NO;
+    });
 }
 
 //麦克风按钮事件
@@ -423,15 +472,20 @@
     [_interactiveRoom leaveRoom];
     _interactiveRoom = nil;
     
-    UIViewController *vc = self;
-    Class homeVcClass = NSClassFromString(@"VHHomeViewController");
-    while (![vc isKindOfClass:homeVcClass]) {
-        vc = vc.presentingViewController;
-        NSLog(@"===== %@",vc.class);
+
+    //踢出返回
+    if(self.delegate && [self.delegate respondsToSelector:@selector(interactiveViewClose:byKickOut:)]) {
+        [self.delegate interactiveViewClose:self byKickOut:YES];
+    }else {
+        UIViewController *vc = self;
+        Class homeVcClass = NSClassFromString(@"VHHomeViewController");
+        while (![vc isKindOfClass:homeVcClass]) {
+            vc = vc.presentingViewController;
+        }
+        [vc dismissViewControllerAnimated:YES completion:^{
+            
+        }];
     }
-    [vc dismissViewControllerAnimated:YES completion:^{
-        
-    }];
 }
 
 //#pragma mark 权限

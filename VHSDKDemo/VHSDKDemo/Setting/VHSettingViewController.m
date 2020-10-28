@@ -145,7 +145,7 @@
     _selectArray = @[@"352X288",@"640X480",@"960X540",@"1280X720"];
     
     //0    1 VHPushTypeSD 2 VHPushTypeHD 3 VHPushTypeUHD
-    DEMO_Setting.pushResolution = @"3";//
+//    DEMO_Setting.pushResolution = @"3";//
 
     self.title = @"设置";
     [self setupGroup0];
@@ -386,7 +386,7 @@
     {
         return;
     }
-    if(indexPath.section == 3 && indexPath.row == 0) {
+    if(indexPath.section == 3 && (indexPath.row == 0 || indexPath.row == 1)) {
         return;
     }
     

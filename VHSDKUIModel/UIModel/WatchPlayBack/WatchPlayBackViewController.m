@@ -20,7 +20,7 @@
 #define RATEARR @[@1.0,@1.25,@1.5,@2.0,@0.5,@0.67,@0.8]//倍速播放循环顺序
 
 static AnnouncementView* announcementView = nil;
-@interface WatchPlayBackViewController ()<VHallMoviePlayerDelegate,UITableViewDelegate,UITableViewDataSource,VHPlayerViewDelegate,DLNAViewDelegate>
+@interface WatchPlayBackViewController ()<VHallMoviePlayerDelegate,UITableViewDelegate,UITableViewDataSource,VHPlayerViewDelegate,DLNAViewDelegate,VHMessageToolBarDelegate>
 {
     VHallComment*_comment;
     int  _bufferCount;
@@ -369,7 +369,7 @@ static AnnouncementView* announcementView = nil;
     }
     else
     {
-        if (self.moviePlayer.playerState == VHPlayerStateStoped)
+        if (self.moviePlayer.playerState == VHPlayerStateStoped || self.moviePlayer.playerState == VHPlayerStateComplete)
         {
             [self.moviePlayer setCurrentPlaybackTime:0];
         }
@@ -580,8 +580,10 @@ static AnnouncementView* announcementView = nil;
     [MBProgressHUD hideHUDForView:_moviePlayer.moviePlayerView animated:YES];
 }
 
-- (void)moviePlayer:(VHallMoviePlayer *)player statusDidChange:(int)state
+- (void)moviePlayer:(VHallMoviePlayer *)player statusDidChange:(VHPlayerState)state
 {
+    VHLog(@"播放状态 === %zd",state);
+    
     switch (state) {
         case VHPlayerStateStoped:
             _playMaskView.playButton.selected  = NO;
@@ -712,14 +714,13 @@ static AnnouncementView* announcementView = nil;
 }
 - (IBAction)sendCommentBtnClick:(id)sender
 {
-    
         _toolViewBackView=[[UIButton alloc] initWithFrame:CGRectMake(0, 0, VH_SW, VH_SH)];
         [_toolViewBackView addTarget:self action:@selector(toolViewBackViewClick) forControlEvents:UIControlEventTouchUpInside];
         _messageToolView=[[VHMessageToolView alloc] initWithFrame:CGRectMake(0, _toolViewBackView.height-[VHMessageToolView  defaultHeight], VHScreenWidth, [VHMessageToolView defaultHeight]) type:3];
         _messageToolView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
-        _messageToolView.delegate=self;
-        _messageToolView.hidden=NO;
-        _messageToolView.maxLength=140;
+        _messageToolView.delegate = self;
+        _messageToolView.hidden = NO;
+        _messageToolView.maxLength = 140;
         [_toolViewBackView addSubview:_messageToolView];
         [self.view addSubview:_toolViewBackView];
        [_messageToolView beginTextViewInView];

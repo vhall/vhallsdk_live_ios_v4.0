@@ -70,7 +70,7 @@
  */
 + (void)loginWithAccount:(NSString *)aAccount
                 password:(NSString *)aPassword
-                success:(void (^)())aSuccessBlock
+                success:(void (^)(void))aSuccessBlock
                 failure:(void (^)(NSError *error))aFailureBlock;
 
 /*!
@@ -80,7 +80,7 @@
  *  @param aFailureBlock    失败的回调
  *
  */
-+ (void)logout:(void (^)())aSuccessBlock
++ (void)logout:(void (^)(void))aSuccessBlock
               failure:(void (^)(NSError *error))aFailureBlock;
 
 /*!

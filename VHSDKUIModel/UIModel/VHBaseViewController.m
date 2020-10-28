@@ -91,6 +91,10 @@
 
 - (void)showMsgInWindow:(NSString*)msg afterDelay:(NSTimeInterval)delay
 {
+    [self showMsgInWindow:msg afterDelay:delay offsetY:0];
+}
+
+- (void)showMsgInWindow:(NSString*)msg afterDelay:(NSTimeInterval)delay offsetY:(CGFloat)offsetY {
     UIView *window = [UIApplication sharedApplication].delegate.window;
     if(!window)
         window = self.view;
@@ -98,8 +102,9 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:window animated:YES];
     hud.mode = MBProgressHUDModeText;
     hud.label.text = msg;
+    hud.label.numberOfLines = 0;
     hud.margin = 10.f;
-    //            hud.yOffset = 150.f;
+    hud.offset = CGPointMake(0, offsetY);
     hud.removeFromSuperViewOnHide = YES;
     [hud hideAnimated:YES afterDelay:delay];
 }
@@ -109,6 +114,7 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeText;
     hud.label.text = msg;
+    hud.label.numberOfLines = 0;
     hud.margin = 30.f;
     //            hud.yOffset = 150.f;
     hud.removeFromSuperViewOnHide = YES;
