@@ -1,5 +1,8 @@
 # vhallsdk-live-ios-v4.0
-微吼直播 SaaS SDK for iOS v4.0及以后版本
+微吼直播 SaaS SDK for iOS v4.x版本
+
+微吼直播 SaaS SDK v5.0 及以后版本迁移至 [VHLive_SDK_iOS](https://github.com/vhall/VHLive_SDK_iOS) 给您带来不便请谅解
+[历史版本 v4.0.0 以下版本](https://github.com/vhall/vhallsdk_live_ios)<br>
 
 ### 集成和调用方式
 
@@ -21,9 +24,14 @@
 ### 使用CocoaPods 引入SDK
 pod 'VHallSDK_Live'<br>
 
-
 使用互动功能SDK<br>
 pod 'VHallSDK_Interactive'<br>
+
+注意：v5.x版本 请移步[VHLive_SDK_iOS](https://github.com/vhall/VHLive_SDK_iOS)<br>
+pod集成方式修改为：<br>
+pod 'VHLiveSDK'<br>
+使用互动功能SDK<br>
+pod 'VHLiveSDK_Interactive'<br>
 
 ### 版本更新信息
 #### 版本 v5.0.0 更新时间：2020.10.28
