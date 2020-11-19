@@ -18,6 +18,7 @@
 
 #import "VHStystemSetting.h"
 #import "VHSettingViewController.h"
+#import "VHWebWatchLiveViewController.h"
 
 
 @interface VHHomeViewController ()
@@ -134,18 +135,8 @@
             }
             
             UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-            
-            UIAlertAction *portraitWatch = [UIAlertAction actionWithTitle:@"竖屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                VHPortraitWatchLiveViewController * watchVC  =[[VHPortraitWatchLiveViewController alloc]init];
-                watchVC.roomId      = DEMO_Setting.watchActivityID;
-                watchVC.kValue      = DEMO_Setting.kValue;
-                watchVC.interactResolution = [DEMO_Setting.pushResolution intValue];
-                watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
-                watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
-                [self presentViewController:watchVC animated:YES completion:nil];
-            }];
             UIAlertAction *landscapeWatch = [UIAlertAction actionWithTitle:@"横屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                WatchLiveViewController * watchVC  =[[WatchLiveViewController alloc]init];
+                WatchLiveViewController * watchVC  = [[WatchLiveViewController alloc]init];
                 watchVC.roomId      = DEMO_Setting.watchActivityID;
                 watchVC.kValue      = DEMO_Setting.kValue;
                 watchVC.bufferTimes = DEMO_Setting.bufferTimes;
@@ -155,9 +146,27 @@
                 [self presentViewController:watchVC animated:YES completion:nil];
             }];
             
+            UIAlertAction *portraitWatch = [UIAlertAction actionWithTitle:@"竖屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                VHPortraitWatchLiveViewController * watchVC = [[VHPortraitWatchLiveViewController alloc]init];
+                watchVC.roomId      = DEMO_Setting.watchActivityID;
+                watchVC.kValue      = DEMO_Setting.kValue;
+                watchVC.interactResolution = [DEMO_Setting.pushResolution intValue];
+                watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
+                watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
+                [self presentViewController:watchVC animated:YES completion:nil];
+            }];
+            
+            UIAlertAction *webWatch = [UIAlertAction actionWithTitle:@"web观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                VHWebWatchLiveViewController *watchVC = [[VHWebWatchLiveViewController alloc] init];
+                watchVC.roomId = DEMO_Setting.watchActivityID;
+                watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
+                [self presentViewController:watchVC animated:YES completion:nil];
+            }];
+            
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
             [alertController addAction:landscapeWatch];
             [alertController addAction:portraitWatch];
+            [alertController addAction:webWatch];
             [alertController addAction:cancelAction];
             [self presentViewController:alertController animated:YES completion:nil];
 

@@ -13,6 +13,8 @@
 		03750761251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0375075F251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.m */; };
 		0375079B251B526500DBDF24 /* UIModelTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 0375079A251B526500DBDF24 /* UIModelTools.m */; };
 		0375079C251B553300DBDF24 /* UIModelTools.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03750799251B526500DBDF24 /* UIModelTools.h */; };
+		03D099A7254A9301001F0F36 /* VHWebWatchLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D099A6254A9301001F0F36 /* VHWebWatchLiveViewController.m */; };
+		03D099A8254A93CB001F0F36 /* VHWebWatchLiveViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03D099A5254A9301001F0F36 /* VHWebWatchLiveViewController.h */; };
 		C0443B5E242839550063FB0D /* VHBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A18242839530063FB0D /* VHBaseViewController.m */; };
 		C0443B5F242839550063FB0D /* LaunchLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A1A242839530063FB0D /* LaunchLiveViewController.m */; };
 		C0443B61242839550063FB0D /* VHChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A1D242839530063FB0D /* VHChatTableViewCell.m */; };
@@ -299,6 +301,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				03D099A8254A93CB001F0F36 /* VHWebWatchLiveViewController.h in CopyFiles */,
 				0375079C251B553300DBDF24 /* UIModelTools.h in CopyFiles */,
 				C0A270962430AD59000D8708 /* UIView+ITTAdditionsUIModel.h in CopyFiles */,
 				C0443C2A242839550063FB0D /* UIModel.h in CopyFiles */,
@@ -322,6 +325,8 @@
 		0375075F251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHPortraitWatchLiveChatTableViewCell.m; sourceTree = "<group>"; };
 		03750799251B526500DBDF24 /* UIModelTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIModelTools.h; sourceTree = "<group>"; };
 		0375079A251B526500DBDF24 /* UIModelTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIModelTools.m; sourceTree = "<group>"; };
+		03D099A5254A9301001F0F36 /* VHWebWatchLiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHWebWatchLiveViewController.h; sourceTree = "<group>"; };
+		03D099A6254A9301001F0F36 /* VHWebWatchLiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHWebWatchLiveViewController.m; sourceTree = "<group>"; };
 		C0443A18242839530063FB0D /* VHBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHBaseViewController.m; sourceTree = "<group>"; };
 		C0443A1A242839530063FB0D /* LaunchLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchLiveViewController.m; sourceTree = "<group>"; };
 		C0443A1C242839530063FB0D /* VHLiveChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHLiveChatView.h; sourceTree = "<group>"; };
@@ -1004,6 +1009,8 @@
 				C0443B22242839540063FB0D /* WatchLiveViewController.h */,
 				C0443B5D242839550063FB0D /* WatchLiveViewController.m */,
 				C0443B29242839540063FB0D /* WatchLiveViewController.xib */,
+				03D099A5254A9301001F0F36 /* VHWebWatchLiveViewController.h */,
+				03D099A6254A9301001F0F36 /* VHWebWatchLiveViewController.m */,
 				C0443B2A242839540063FB0D /* View */,
 				033CE48125199678001BBA7F /* PortraitWatch */,
 			);
@@ -1561,6 +1568,7 @@
 				C0443B62242839550063FB0D /* VHActMsg.m in Sources */,
 				C0443B61242839550063FB0D /* VHChatTableViewCell.m in Sources */,
 				0375079B251B526500DBDF24 /* UIModelTools.m in Sources */,
+				03D099A7254A9301001F0F36 /* VHWebWatchLiveViewController.m in Sources */,
 				C0443C7F242839550063FB0D /* SignView.m in Sources */,
 				C0443C56242839550063FB0D /* VHinteractiveViewController.m in Sources */,
 				C0443C87242839550063FB0D /* WatchLiveViewController.m in Sources */,

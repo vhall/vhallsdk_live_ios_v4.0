@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C000AA3D1E66E053005DFB7C"
-               BuildableName = "VHSDKDemo4.x.app"
+               BuildableName = "VHSDKDemo5.x.app"
                BlueprintName = "VHSDKDemo4.x"
                ReferencedContainer = "container:VHSDKDemo.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C000AA3D1E66E053005DFB7C"
-            BuildableName = "VHSDKDemo4.x.app"
+            BuildableName = "VHSDKDemo5.x.app"
             BlueprintName = "VHSDKDemo4.x"
             ReferencedContainer = "container:VHSDKDemo.xcodeproj">
          </BuildableReference>
@@ -63,7 +63,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C000AA3D1E66E053005DFB7C"
-            BuildableName = "VHSDKDemo4.x.app"
+            BuildableName = "VHSDKDemo5.x.app"
             BlueprintName = "VHSDKDemo4.x"
             ReferencedContainer = "container:VHSDKDemo.xcodeproj">
          </BuildableReference>
