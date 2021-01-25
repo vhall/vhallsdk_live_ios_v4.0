@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../VHallSDKSRC/VHallSDK.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:VHSDKUIModel/UIModel.xcodeproj">
    </FileRef>
    <FileRef

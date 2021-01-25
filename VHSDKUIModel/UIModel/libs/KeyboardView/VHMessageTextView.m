@@ -105,7 +105,7 @@
                                          blue:80.0f/255.0f
                                         alpha:1.0f];
     
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.scrollIndicatorInsets = UIEdgeInsetsMake(10, 0, 10, 8);
     self.contentInset = UIEdgeInsetsZero;
     self.scrollEnabled = YES;

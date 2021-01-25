@@ -51,7 +51,7 @@
                                 <constraint firstAttribute="height" constant="28" id="oaF-3a-tcv"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                            <state key="normal" image="返回">
+                            <state key="normal" image="返回.png">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -89,7 +89,7 @@
                                 <constraint firstAttribute="height" constant="28" id="v3d-j2-rav"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                            <state key="normal" image="语音开启">
+                            <state key="normal" image="语音开启.png">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="selected" image="语音关闭"/>
@@ -104,7 +104,7 @@
                                 <constraint firstAttribute="width" constant="28" id="qBr-X2-3Jd"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                            <state key="normal" image="相机翻转">
+                            <state key="normal" image="相机翻转.png">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -118,7 +118,7 @@
                                 <constraint firstAttribute="width" constant="28" id="ep9-Vt-Xag"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                            <state key="normal" image="美颜">
+                            <state key="normal" image="美颜.png">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -132,10 +132,10 @@
                                 <constraint firstAttribute="height" constant="28" id="Vbl-OW-kg8"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                            <state key="normal" image="闪光关闭">
+                            <state key="normal" image="闪光关闭.png">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
-                            <state key="selected" image="闪光开启"/>
+                            <state key="selected" image="闪光开启.png"/>
                             <connections>
                                 <action selector="torchBtnClick:" destination="-1" eventType="touchUpInside" id="Mnv-mq-kdP"/>
                             </connections>
@@ -147,7 +147,7 @@
                                 <constraint firstAttribute="width" constant="60" id="EMb-1A-rNs"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                            <state key="normal" image="开始直播">
+                            <state key="normal" image="开始直播.png">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="selected" image="结束直播"/>
@@ -195,10 +195,10 @@
                                 <action selector="hideKey:" destination="-1" eventType="touchUpInside" id="m9h-VQ-I27"/>
                             </connections>
                         </button>
-                        <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mDN-RT-jVL">
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mDN-RT-jVL">
                             <rect key="frame" x="232" y="556" width="69" height="103"/>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                            <state key="normal" image="bcStartLive">
+                            <state key="normal" image="bcStartLive.png">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -358,16 +358,16 @@
         <swipeGestureRecognizer direction="right" id="IoC-8W-dt2" userLabel="Swipe View Right"/>
     </objects>
     <resources>
-        <image name="bcStartLive" width="69" height="103"/>
+        <image name="bcStartLive.png" width="69" height="103"/>
         <image name="vhallLogo.png" width="120" height="120"/>
-        <image name="开始直播" width="60" height="60"/>
-        <image name="相机翻转" width="30" height="30"/>
+        <image name="开始直播.png" width="60" height="60"/>
+        <image name="相机翻转.png" width="30" height="30"/>
         <image name="结束直播" width="60" height="60"/>
-        <image name="美颜" width="30" height="30"/>
+        <image name="美颜.png" width="30" height="30"/>
         <image name="语音关闭" width="30" height="30"/>
-        <image name="语音开启" width="30" height="30"/>
-        <image name="返回" width="28" height="28"/>
-        <image name="闪光关闭" width="30" height="30"/>
-        <image name="闪光开启" width="30" height="30"/>
+        <image name="语音开启.png" width="30" height="30"/>
+        <image name="返回.png" width="28" height="28"/>
+        <image name="闪光关闭.png" width="30" height="30"/>
+        <image name="闪光开启.png" width="30" height="30"/>
     </resources>
 </document>

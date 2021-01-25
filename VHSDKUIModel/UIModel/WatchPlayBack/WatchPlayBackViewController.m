@@ -123,8 +123,10 @@ static AnnouncementView* announcementView = nil;
 
 - (void)viewDidLayoutSubviews
 {
-    if ([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortrait)
+    if ([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortrait){
         _tableView.frame = _historyCommentTableView.bounds;
+    }
+    _backView.frame = _backView.frame;
     _moviePlayer.moviePlayerView.frame = _backView.bounds;
     _playMaskView.frame = _moviePlayer.moviePlayerView.bounds;
     [self.backView addSubview:_moviePlayer.moviePlayerView];
@@ -648,6 +650,13 @@ static AnnouncementView* announcementView = nil;
         _moviePlayer.moviePlayerView.frame = self.backView.bounds;
         //[self.backView addSubview:self.hlsMoviePlayer.view];
         [self.backView sendSubviewToBack:self.moviePlayer.moviePlayerView];
+        
+        //更新键盘工具view的frame
+        _toolViewBackView.frame = CGRectMake(0, 0, VHScreenWidth, VHScreenHeight);
+        [_messageToolView updateFrame];
+        if(_messageToolView.activityButtomView) {
+            [_toolViewBackView removeFromSuperview];
+        }
     }
 }
 
@@ -714,16 +723,14 @@ static AnnouncementView* announcementView = nil;
 }
 - (IBAction)sendCommentBtnClick:(id)sender
 {
-        _toolViewBackView=[[UIButton alloc] initWithFrame:CGRectMake(0, 0, VH_SW, VH_SH)];
-        [_toolViewBackView addTarget:self action:@selector(toolViewBackViewClick) forControlEvents:UIControlEventTouchUpInside];
-        _messageToolView=[[VHMessageToolView alloc] initWithFrame:CGRectMake(0, _toolViewBackView.height-[VHMessageToolView  defaultHeight], VHScreenWidth, [VHMessageToolView defaultHeight]) type:3];
-        _messageToolView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
-        _messageToolView.delegate = self;
-        _messageToolView.hidden = NO;
-        _messageToolView.maxLength = 140;
-        [_toolViewBackView addSubview:_messageToolView];
-        [self.view addSubview:_toolViewBackView];
-       [_messageToolView beginTextViewInView];
+    _toolViewBackView=[[UIButton alloc] initWithFrame:CGRectMake(0, 0, VH_SW, VH_SH)];
+    [_toolViewBackView addTarget:self action:@selector(toolViewBackViewClick) forControlEvents:UIControlEventTouchUpInside];
+    _messageToolView=[[VHMessageToolView alloc] initWithFrame:CGRectMake(0, _toolViewBackView.height-[VHMessageToolView  defaultHeight], VHScreenWidth, [VHMessageToolView defaultHeight])];
+    _messageToolView.delegate = self;
+    _messageToolView.maxLength = 140;
+    [_toolViewBackView addSubview:_messageToolView];
+    [self.view addSubview:_toolViewBackView];
+    [_messageToolView beginTextViewInView];
 }
 
 #pragma mark - 点击聊天输入框蒙版

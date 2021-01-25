@@ -135,7 +135,7 @@
             }
             
             UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-            UIAlertAction *landscapeWatch = [UIAlertAction actionWithTitle:@"横屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIAlertAction *landscapeWatch = [UIAlertAction actionWithTitle:@"半屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 WatchLiveViewController * watchVC  = [[WatchLiveViewController alloc]init];
                 watchVC.roomId      = DEMO_Setting.watchActivityID;
                 watchVC.kValue      = DEMO_Setting.kValue;
@@ -146,7 +146,7 @@
                 [self presentViewController:watchVC animated:YES completion:nil];
             }];
             
-            UIAlertAction *portraitWatch = [UIAlertAction actionWithTitle:@"竖屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIAlertAction *portraitWatch = [UIAlertAction actionWithTitle:@"全屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 VHPortraitWatchLiveViewController * watchVC = [[VHPortraitWatchLiveViewController alloc]init];
                 watchVC.roomId      = DEMO_Setting.watchActivityID;
                 watchVC.kValue      = DEMO_Setting.kValue;
@@ -156,7 +156,7 @@
                 [self presentViewController:watchVC animated:YES completion:nil];
             }];
             
-            UIAlertAction *webWatch = [UIAlertAction actionWithTitle:@"web观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIAlertAction *webWatch = [UIAlertAction actionWithTitle:@"H5嵌入观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 VHWebWatchLiveViewController *watchVC = [[VHWebWatchLiveViewController alloc] init];
                 watchVC.roomId = DEMO_Setting.watchActivityID;
                 watchVC.modalPresentationStyle = UIModalPresentationFullScreen;

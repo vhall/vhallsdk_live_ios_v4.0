@@ -533,13 +533,11 @@ static AnnouncementView* announcementView = nil;
         return;
     }
     
-    _toolViewBackView=[[UIButton alloc] initWithFrame:CGRectMake(0, 0, VH_SW, VH_SH)];
-    _toolViewBackView.backgroundColor=[UIColor clearColor];
+    _toolViewBackView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, VH_SW, VH_SH)];
+    _toolViewBackView.backgroundColor = [UIColor clearColor];
     [_toolViewBackView addTarget:self action:@selector(toolViewBackViewClick) forControlEvents:UIControlEventTouchUpInside];
-    _messageToolView=[[VHMessageToolView alloc] initWithFrame:CGRectMake(0, _toolViewBackView.height-[VHMessageToolView  defaultHeight], VHScreenWidth, [VHMessageToolView defaultHeight]) type:3];
-    _messageToolView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
+    _messageToolView = [[VHMessageToolView alloc] initWithFrame:CGRectMake(0, _toolViewBackView.height - [VHMessageToolView  defaultHeight], VHScreenWidth, [VHMessageToolView defaultHeight])];
     _messageToolView.delegate=self;
-    _messageToolView.hidden=NO;
     _messageToolView.maxLength=140;
     [_toolViewBackView addSubview:_messageToolView];
     [self.view addSubview:_toolViewBackView];
@@ -1484,6 +1482,13 @@ static AnnouncementView* announcementView = nil;
         _logView.frame = _moviePlayer.moviePlayerView.bounds;
         _lotteryVC.view.frame = _showView.bounds;
         [SignView layoutView:self.view.bounds];
+        
+        //更新键盘工具view的frame
+        _toolViewBackView.frame = CGRectMake(0, 0, VHScreenWidth, VHScreenHeight);
+        [_messageToolView updateFrame];
+        if(_messageToolView.activityButtomView) {
+            [_toolViewBackView removeFromSuperview];
+        }
     }
 }
 

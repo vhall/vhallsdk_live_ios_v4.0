@@ -83,12 +83,12 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
  *  提问消息
  */
 @interface VHallQuestionModel : NSObject
-@property (nonatomic, copy) NSString * type;            //类型
+@property (nonatomic, copy) NSString * type;             //类型
 @property (nonatomic, copy) NSString * question_id;     //问题ID
-@property (nonatomic, copy) NSString * nick_name;       //昵称
-@property (nonatomic, copy) NSString * content;         //提问内容
+@property (nonatomic, copy) NSString * content;         //提问/回答内容
 @property (nonatomic, copy) NSString * join_id;         //参会id
-@property (nonatomic, copy) NSString * created_at;      //提问时间
+@property (nonatomic, copy) NSString * created_at;      //提问/回答时间
+@property (nonatomic, copy) NSString * nick_name;       //昵称
 @property (nonatomic, copy) NSString * avatar;          //头像
 @end
 
@@ -99,7 +99,6 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 @property (nonatomic, copy) NSString * answer_id;       //回答ID
 @property (nonatomic, copy) NSString * role_name;       //角色
 @property (nonatomic, assign)BOOL      is_open;         //是否公开回答
-@property (nonatomic, copy) NSString * avatar;
 @end
 
 /**

@@ -30,13 +30,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //        _facialView = [[FacialView alloc] initWithFrame: CGRectMake(5, 5, frame.size.width - 10, self.bounds.size.height - 10)];
-        //        [_facialView loadFacialView:1 size:CGSizeMake(30, 30)];
-        //        _facialView.delegate = self;
-        //        [self addSubview:_facialView];
-        
-        
-        
         _faceScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, self.bounds.size.height)];
         _faceScrollView.backgroundColor = [UIColor colorWithRed:247.0f/255.0f
                                                           green:247.0f/255.0f
@@ -63,7 +56,7 @@
         _facePageControl.numberOfPages = Pages;
         _facePageControl.currentPage   = 0;
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 0.5)];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 0.5)];
         lineView.backgroundColor = [UIColor colorWithRed:216.0f/255.0f
                                                    green:216.0f/255.0f
                                                     blue:216.0f/255.0f
@@ -72,6 +65,7 @@
     }
     return self;
 }
+
 
 #pragma mark  scrollView Delegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView

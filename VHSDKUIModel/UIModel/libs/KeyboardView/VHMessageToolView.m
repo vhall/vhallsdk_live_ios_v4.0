@@ -9,215 +9,167 @@
 #import "VHMessageToolView.h"
 #define CellColor       MakeColor(25, 24, 29, 1)
 
-@implementation VHMessageToolView
-
-- (id)initWithFrame:(CGRect)frame type:(NSInteger)type
+@interface VHMessageToolView ()<DXFaceDelegate>
 {
-    if (frame.size.height < (kVerticalPadding * 2 + kInputTextViewMinHeight)) {
-        frame.size.height = kVerticalPadding * 2 + kInputTextViewMinHeight;
+    CGFloat _previousTextViewContentHeight;//上一次inputTextView的contentSize.height
+}
+@property (nonatomic,strong) UIButton *sendButton;  //发送按钮
+@property (nonatomic,nonatomic) UIButton *emojiButton; //表情键盘切换按钮
+@property (nonatomic,strong) VHMessageTextView *msgTextView; //输入框视图
+@property (nonatomic,assign) CGFloat maxTextInputViewHeight; //最大输入高度
+@property (strong, nonatomic) UIView *toolBackGroundView; //表情切换按钮、输入框、发送按钮父视图
+@property (strong, nonatomic) DXFaceView *faceView; //表情view
+@end
+
+@implementation VHMessageToolView
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (instancetype)init
+{
+    return [self initWithFrame:CGRectMake(0, VHScreenHeight , VHScreenWidth, [VHMessageToolView defaultHeight])];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    if (frame.size.height < [VHMessageToolView defaultHeight]) {
+        frame.size.height = [VHMessageToolView defaultHeight];
     }
     
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        
-        _type = type;
         [self setupConfigure];
+        _maxLength = 70;
+        self.maxTextInputViewHeight = 68; //输入框最大高度
+        return self;
     }
-    _maxLength = 70;
     return self;
 }
 
-- (void)setFrame:(CGRect)frame
-{
-    if (frame.size.height < (kVerticalPadding * 2 + kInputTextViewMinHeight)) {
-        frame.size.height = kVerticalPadding * 2 + kInputTextViewMinHeight;
-    }
-    [super setFrame:frame];
+- (void)layoutSubviews {
+    [super layoutSubviews];
     self.toolBackGroundView.width = self.width;
-    _cancelButton.left = CGRectGetWidth(self.bounds) - 55;
+    CGFloat safeMargin = iPhoneX ? 30 : 0;
+    if([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) { //设备右转
+        self.emojiButton.frame = CGRectMake(10, 10, 30, 30);
+        self.sendButton.frame = CGRectMake(self.frame.size.width - 50 - safeMargin, kVerticalPadding, 50, kInputTextViewMinHeight);
+        self.msgTextView.frame = CGRectMake(self.emojiButton.right + 10, kVerticalPadding, self.width - (self.emojiButton.right + 10) - (self.sendButton.width + safeMargin) , self.msgTextView.size.height);
+    }else if([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight) { //设备左转
+        self.emojiButton.frame = CGRectMake(safeMargin + 10, 10, 30, 30);
+        self.sendButton.frame = CGRectMake(self.frame.size.width - 50, kVerticalPadding, 50, kInputTextViewMinHeight);
+        self.msgTextView.frame = CGRectMake(self.emojiButton.right + 10, kVerticalPadding, self.width - (self.emojiButton.right + 10) - self.sendButton.width, self.msgTextView.size.height);
+    }else if([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) { //设备竖屏
+        self.emojiButton.frame = CGRectMake(10, 10, 30, 30);
+        self.sendButton.frame = CGRectMake(self.frame.size.width - 50, kVerticalPadding, 50, kInputTextViewMinHeight);
+        self.msgTextView.frame = CGRectMake(self.emojiButton.right + 10, kVerticalPadding, self.width - (self.emojiButton.right + 10) - self.sendButton.width, self.msgTextView.size.height);
+    }
+    
+    [self willShowInputTextViewToHeight:[self getTextViewContentH:self.msgTextView]];
 }
 
-- (void)setupConfigure
-{
-    
-    self.activityButtomView = nil;
-    self.isShowButtomView = NO;
-    
-    
-    self.toolBackGroundView = [[UIView alloc] init];
-    self.toolBackGroundView.frame = CGRectMake(0, 0,
-                                               self.frame.size.width,
-                                               kVerticalPadding*2+kInputTextViewMinHeight);
-    if (_type == 1)
-    {
-        self.toolBackGroundView.backgroundColor = CellColor;
-    }
-    else if(_type == 2)
-    {
-        self.toolBackGroundView.backgroundColor = [UIColor whiteColor];
-    }else if (_type==3)
-    {
-        self.toolBackGroundView.backgroundColor=MakeColorRGB(0xf3f4f6);
-    }
-    
+- (void)setupConfigure {
+    //父视图
+    self.toolBackGroundView.frame = CGRectMake(0, 0,self.frame.size.width,[VHMessageToolView defaultHeight]);
     [self addSubview:self.toolBackGroundView];
     
-    //初始化输入框
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    if(/*[VH_Device_OS_ver floatValue] < 8.0 && */orientation != UIInterfaceOrientationPortrait)
-    {  _msgTextView = nil;
-        CGFloat textViewWidth= VH_SH - 100;
-        _msgTextView = [[VHMessageTextView alloc] initWithFrame:CGRectMake(kHorizontalPadding, kVerticalPadding, textViewWidth, kInputTextViewMinHeight)];
-        //        NSLog(@"sfsdfsd +++%f",VHScreenHeight- 100);
-        self.maxTextInputViewHeight = 5*4+16*3;
-    }
-    else {
-        _msgTextView = [[VHMessageTextView alloc] initWithFrame:CGRectMake(kHorizontalPadding, kVerticalPadding, self.width - 100, kInputTextViewMinHeight)];
-        self.maxTextInputViewHeight = 5*4+16*3;
-        
-    }
-    //    _msgTextView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    //    self.inputTextView.contentMode = UIViewContentModeCenter;
-    _msgTextView.scrollEnabled = YES;
-    _msgTextView.returnKeyType = UIReturnKeySend;
-    _msgTextView.enablesReturnKeyAutomatically = YES;
-    _msgTextView.backgroundColor = [UIColor whiteColor];
-    _msgTextView.layer.borderColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
-    _msgTextView.layer.borderWidth = 0.65f;
-    _msgTextView.layer.cornerRadius = 6.0f;
-    _msgTextView.delegate = self;
-    [self.toolBackGroundView addSubview:_msgTextView];
+    //表情按钮
+    [self.toolBackGroundView addSubview:self.emojiButton];
+    //发送按钮
+    [self.toolBackGroundView addSubview:self.sendButton];
     
-    _previousTextViewContentHeight = [self getTextViewContentH:_msgTextView];
+    //输入框
+    self.msgTextView.frame = CGRectMake(kHorizontalPadding, kVerticalPadding, self.frame.size.width - 100, kInputTextViewMinHeight);
+    [self.toolBackGroundView addSubview:self.msgTextView];
     
-    _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_cancelButton setTitle:@"发送" forState:UIControlStateNormal];
-    _cancelButton.titleLabel.font = [UIFont systemFontOfSize:16];
-     [_cancelButton setUserInteractionEnabled:NO];
+    _previousTextViewContentHeight = [self getTextViewContentH:self.msgTextView];
     
-    if (_type ==3) {
-        [_cancelButton setTitleColor:MessageTool_SendBtnColor forState:UIControlStateNormal];
-          [_cancelButton setUserInteractionEnabled:YES];
-    }else
-    {
-        [_cancelButton setTitleColor:MessageTool_SendBtnColor forState:UIControlStateNormal];
-    }
     
-    _cancelButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - 55 ,
-                                     kVerticalPadding,
-                                     50,
-                                     kInputTextViewMinHeight);
-    [_cancelButton addTarget:self
-                      action:@selector(sendButtonTouchUpInside:)
-            forControlEvents:UIControlEventTouchUpInside];
-    [self.toolBackGroundView addSubview:_cancelButton];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
 
-    _smallButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (_type ==3) {
-        [_smallButton setBackgroundImage: BundleUIImage(@"message_emoji") forState:UIControlStateNormal];
-    }else
-    {
-        [_smallButton setBackgroundImage: BundleUIImage(@"message_emoji") forState:UIControlStateNormal];
-    }
-    
-    
-    [_smallButton setBackgroundImage: BundleUIImage(@"live_keyboard") forState:UIControlStateSelected];
-    [_smallButton addTarget:self
-                     action:@selector(buttonAction:)
-           forControlEvents:UIControlEventTouchUpInside];
-    [_smallButton setFrame:CGRectMake(13, 10, 30, 30)];
-    [self.toolBackGroundView addSubview:_smallButton];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillChangeFrame:)
-                                                 name:UIKeyboardWillChangeFrameNotification
-                                               object:nil];
+
+- (void)updateFrame {
+    self.top = CGFLOAT_MAX;
+    self.width = VHScreenWidth;
+    [self layoutSubviews];
 }
--(UIView *)faceView
+
+//开始文本输入
+- (void)beginTextViewInView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.msgTextView becomeFirstResponder];
+    });
+}
+
+
+//是否显示表情键盘
+- (void)willShowBottomView:(UIView *)bottomView
 {
-    DXFaceView *faceView = [[DXFaceView alloc] initWithFrame:CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), self.frame.size.width, 170)];
-    [faceView setDelegate:self];
-    faceView.backgroundColor = [UIColor lightGrayColor];
-    faceView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    return faceView;
+    if (![self.activityButtomView isEqual:bottomView]) {
+        
+        if (self.activityButtomView) {
+            [self.activityButtomView removeFromSuperview];
+        }
+        self.activityButtomView = bottomView;
+    }
+    if(bottomView) {
+        self.emojiButton.selected = YES;
+    }else {
+        self.emojiButton.selected = NO;
+        _faceView = nil;
+    }
 }
-- (void)buttonAction:(id)sender
+
+
+//重置聊天框高度
+- (void)resetMessageTextHeight
+{
+    [self willShowInputTextViewToHeight:[self getTextViewContentH:_msgTextView]];;
+}
+
+#pragma mark - UI 点击事件
+//发送按钮点击
+- (void)sendButtonAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(didSendText:)]) {
+        [self.delegate didSendText:_msgTextView.text];
+        self.msgTextView.text = @"";
+        [self willShowInputTextViewToHeight:[self getTextViewContentH:self.msgTextView]];;
+    }
+}
+
+//键盘切换按钮点击
+- (void)emojiButtonAction:(id)sender
 {
     UIButton *button = (UIButton *)sender;
     button.selected = !button.selected;
-    
-    if (button.selected)
-    {
-        
-        [_msgTextView resignFirstResponder];
-        
-        
+    if (button.selected) { //输入表情
         [self willShowBottomView:self.faceView];
-        _msgTextView.hidden = !button.selected;
-
-//        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-//            _msgTextView.hidden = !button.selected;
-//        } completion:^(BOOL finished) {
-//            
-//        }];
-    }
-    else
-    {
-        
-        [_msgTextView becomeFirstResponder];
-        
-        //   [self willShowBottomView:nil];
-        
-    }
-}
-
--(void)beginTextViewInView
-{
-   
-    
-    if (_smallButton.selected)
-    {
         [_msgTextView resignFirstResponder];
-        
-        [self willShowBottomView:self.faceView];
-        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            _msgTextView.hidden = !_smallButton.selected;
-        } completion:^(BOOL finished) {
-            
-        }];
-    }
-    else
-    {
+    } else { //输入文字
         [_msgTextView becomeFirstResponder];
     }
 }
 
-
--(void)beginFaceViewInView
+//结束编辑
+- (BOOL)endEditing:(BOOL)force;
 {
-    _smallButton.selected = !_smallButton.selected;
-    
-    if (_smallButton.selected)
-    {
-        [_msgTextView resignFirstResponder];
-        
-        [self willShowBottomView:self.faceView];
-        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            _msgTextView.hidden = !_smallButton.selected;
+    BOOL endEdit = [super endEditing:YES];
+    if(self.activityButtomView) {
+        [UIView animateWithDuration:0.25 animations:^{
+            self.top = VHScreenHeight;
         } completion:^(BOOL finished) {
-          
+            [self willShowBottomView:nil];
         }];
     }
-    else
-    {
-        [_msgTextView becomeFirstResponder];
-    }
+    return endEdit;
 }
 
 #pragma mark - DXFaceDelegate
-
 - (void)selectedFacialView:(NSString *)str isDelete:(BOOL)isDelete
 {
     if (![self textView:_msgTextView shouldChangeTextInRange:NSMakeRange(_msgTextView.text.length, str.length) replacementText:str]) {
@@ -227,10 +179,7 @@
     
     if (!isDelete && str.length > 0) {
         _msgTextView.text = [NSString stringWithFormat:@"%@%@",chatText,str];
-    }
-    else {
-        
-        
+    } else {
         if (chatText.length >= 2)
         {
             NSInteger toIndex = 0;
@@ -243,7 +192,6 @@
                 findSatrFace = YES;
             }
             
-            
             for (NSInteger i=[chatText length]-1; i>=0; i--)
             {
                 NSString *temp = [chatText substringWithRange:NSMakeRange(i, 1)];
@@ -254,193 +202,68 @@
                     break;
                 }
             }
-            
-            
             if (findSatrFace && findEndFace)
             {
                 _msgTextView.text = [chatText substringToIndex:toIndex];
                 return;
             }
-            
-            //            NSString *subStr = [chatText substringFromIndex:chatText.length-2];
-            //            if ([(DXFaceView *)self.faceView stringIsFace:subStr]) {
-            //                _msgTextView.text = [chatText substringToIndex:chatText.length-2];
-            //
-            //                return;
-            //            }
         }
-        
         if (chatText.length > 0) {
             _msgTextView.text = [chatText substringToIndex:chatText.length-1];
         }
     }
-    
     [self textViewDidChange:_msgTextView];
 }
 
-- (void)sendFace
+#pragma mark - 键盘事件
+
+//键盘弹出
+- (void)keyboardWillShow:(NSNotification *)notification
 {
-    NSString *chatText = _msgTextView.text;
-    if (chatText.length > 0) {
-        if ([self.delegate respondsToSelector:@selector(didSendText:)]) {
-            [self.delegate didSendText:chatText];
-            _msgTextView.text = @"";
-            [_msgTextView resignFirstResponder];
-            [self willShowInputTextViewToHeight:[self getTextViewContentH:_msgTextView]];;
-        }
-    }
+    NSDictionary *userInfo = [notification userInfo];
+    NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGFloat keyboardHeight = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+
+    [self willShowBottomView:nil]; //移除表情键盘
+    
+    CGFloat toHeight = self.toolBackGroundView.height + keyboardHeight;
+    [UIView animateWithDuration:duration animations:^{
+        self.height = toHeight;
+        self.top = VHScreenHeight - self.height;
+    } completion:^(BOOL finished) {
+
+    }];
 }
 
-
-- (void)willShowBottomView:(UIView *)bottomView
+//键盘消失
+- (void)keyboardWillHide:(NSNotification *)notification
 {
-    if (![self.activityButtomView isEqual:bottomView]) {
-        CGFloat bottomHeight = bottomView ? bottomView.frame.size.height : 0;
-        [self willShowBottomHeight:bottomHeight];
-        
-        if (bottomView) {
-            CGRect rect = bottomView.frame;
-            rect.origin.y = CGRectGetMaxY(self.toolBackGroundView.frame);
-            bottomView.frame = rect;
-            [self addSubview:bottomView];
+    NSDictionary *userInfo = [notification userInfo];
+    NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+
+    if(self.activityButtomView) { //表情键盘存在
+        //切换表情输入
+        CGFloat toHeight = self.toolBackGroundView.height + self.activityButtomView.height;
+        [UIView animateWithDuration:duration animations:^{
+            self.height = toHeight;
+            self.top = VHScreenHeight - self.height;
+            //添加表情键盘
+            self.activityButtomView.top = self.toolBackGroundView.height;
+            [self addSubview:self.activityButtomView];
             
-            _faceRect = rect;
-        }
-        
-        if (self.activityButtomView) {
-            [self.activityButtomView removeFromSuperview];
-        }
-        self.activityButtomView = bottomView;
+        } completion:^(BOOL finished) {
+
+        }];
+    }else { //不存在表情键盘
+        [UIView animateWithDuration:duration animations:^{
+            self.top = VHScreenHeight;
+//            NSLog(@"两件事消失：%@",NSStringFromCGRect(self.frame));
+        } completion:nil];
     }
 }
 
-- (void)sendButtonTouchUpInside:(id)sender
-{
-    //    if (_delegate && [_delegate respondsToSelector:@selector(cancelTextView)])
-    //    {
-    //        [_delegate cancelTextView];
-    //    }
-    
-    if ([self.delegate respondsToSelector:@selector(didSendText:)]) {
-        [self.delegate didSendText:_msgTextView.text];
-        self.msgTextView.text = @"";
-        [self endEditing:NO];
-        [_cancelButton setTitleColor:MessageTool_SendBtnColor forState:UIControlStateNormal];
-        [_cancelButton setUserInteractionEnabled:NO];
-        if (_type == 3) {
-             [_cancelButton setUserInteractionEnabled:YES];
-        }
-        
-        [self willShowInputTextViewToHeight:[self getTextViewContentH:self.msgTextView]];;
-    }
-}
-
-#pragma mark - UIKeyboardNotification
-
-- (void)keyboardWillChangeFrame:(NSNotification *)notification
-{
-    NSDictionary *userInfo = notification.userInfo;
-    CGRect endFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect beginFrame = [userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    CGFloat duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    UIViewAnimationCurve curve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    if([VH_Device_OS_ver floatValue] < 8.0 && orientation != UIInterfaceOrientationPortrait)
-    {
-        endFrame = CGRectMake(endFrame.origin.y, endFrame.origin.x, endFrame.size.height, endFrame.size.width);
-        beginFrame = CGRectMake(beginFrame.origin.y, beginFrame.origin.x, beginFrame.size.height, beginFrame.size.width);
-    }
-    
-    void(^animations)() = ^{
-        [self willShowKeyboardFromFrame:beginFrame toFrame:endFrame];
-    };
-    
-    void(^completion)(BOOL) = ^(BOOL finished){
-    };
-    
-    [UIView animateWithDuration:duration delay:0.0f options:(curve << 16 | UIViewAnimationOptionBeginFromCurrentState) animations:animations completion:completion];
-}
-
-- (void)willShowKeyboardFromFrame:(CGRect)beginFrame toFrame:(CGRect)toFrame
-{
-    if (beginFrame.origin.y == [[UIScreen mainScreen] bounds].size.height)
-    {
-        [self willShowBottomHeight:toFrame.size.height];
-        
-        if (self.activityButtomView) {
-            [self.activityButtomView removeFromSuperview];
-        }
-        self.activityButtomView = nil;
-    }
-    else if (toFrame.origin.y == [[UIScreen mainScreen] bounds].size.height)
-    {
-        [self willShowBottomHeight:beginFrame.size.height];
-    }
-    else
-    {
-        [self willShowBottomHeight:toFrame.size.height];
-    }
-}
-
-#pragma mark - change frame
-
-- (void)willShowBottomHeight:(CGFloat)bottomHeight
-{
-    CGRect fromFrame = self.frame;
-    CGFloat toHeight = self.toolBackGroundView.frame.size.height + bottomHeight;
-    CGRect toFrame = CGRectMake(fromFrame.origin.x, fromFrame.origin.y + (fromFrame.size.height - toHeight), fromFrame.size.width, toHeight);
-    
-    if(bottomHeight == 0 && self.frame.size.height == self.toolBackGroundView.frame.size.height)
-    {
-        return;
-    }
-    
-    if (bottomHeight == 0) {
-        self.isShowButtomView = NO;
-    }
-    else{
-        self.isShowButtomView = YES;
-    }
-    
-    
-    self.frame = toFrame;
-    
-    if (_delegate && [_delegate respondsToSelector:@selector(didChangeFrameToHeight:)]) {
-        [_delegate didChangeFrameToHeight:toHeight];
-    }
-}
-
-- (void)setMaxTextInputViewHeight:(CGFloat)maxTextInputViewHeight
-{
-    if (maxTextInputViewHeight > kInputTextViewMaxHeight) {
-        maxTextInputViewHeight = kInputTextViewMaxHeight;
-    }
-    _maxTextInputViewHeight = maxTextInputViewHeight;
-}
 
 #pragma mark - UITextViewDelegate
-
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
-{
-    return YES;
-}
-
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-    [_smallButton setSelected:NO];
-    [textView becomeFirstResponder];
-    
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    [textView resignFirstResponder];
-    if (!_smallButton.selected && _delegate && [_delegate respondsToSelector:@selector(cancelTextView)])
-    {
-        [_delegate cancelTextView];
-    }
-}
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
@@ -468,8 +291,6 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    
-
     if (textView.text.length > 0)
     {
         if ([VHMessageToolView isHaveEmoji:textView.text]) {
@@ -478,54 +299,17 @@
         }
         if (textView.text.length >_maxLength)
         {
-            textView.text=[textView.text substringToIndex:_maxLength];
+            textView.text = [textView.text substringToIndex:_maxLength];
             [textView.undoManager removeAllActions];
         }
-        
-        
-        
-        if (_type == 1)
-        {
-            [_cancelButton setTitleColor:MessageTool_SendBtnColor
-                                forState:UIControlStateNormal];
-        }
-        else if(_type == 2)
-        {
-            [_cancelButton setTitleColor:MessageTool_SendBtnColor forState:UIControlStateNormal];
-        }else if (_type ==3)
-        {
-            [_cancelButton setTitleColor:MessageTool_SendBtnColor forState:UIControlStateNormal];
-        }
-        
-        
-        
-        
-        
-        [_cancelButton setUserInteractionEnabled:YES];
     }
-    else
-    {
-        [_cancelButton setTitleColor: MessageTool_SendBtnColor forState:UIControlStateNormal];
-         [_cancelButton setUserInteractionEnabled:NO];
-        
-        if (_type ==3) {//私信输入框 无内容时可以点击
-            
-            [_cancelButton setTitleColor:MessageTool_SendBtnColor forState:UIControlStateNormal];
-            [_cancelButton setUserInteractionEnabled:YES];
-        }
-        
-       
-    }
-    
     [self willShowInputTextViewToHeight:[self getTextViewContentH:textView]];
 }
 
-- (void)resetMessageTextHeight
-{
-    [self willShowInputTextViewToHeight:[self getTextViewContentH:_msgTextView]];;
-}
+
 - (void)willShowInputTextViewToHeight:(CGFloat)toHeight
 {
+//    NSLog(@"输入文字高度：%f",toHeight);
     if (toHeight < kInputTextViewMinHeight) {
         toHeight = kInputTextViewMinHeight;
     }
@@ -533,111 +317,28 @@
         toHeight = self.maxTextInputViewHeight;
     }
     
-    
-    if (toHeight == _previousTextViewContentHeight)
-    {
-        if (toHeight <=36) {
-            
-            self.msgTextView.frame = CGRectMake(kHorizontalPadding, kVerticalPadding, self.msgTextView.frame.size.width, kInputTextViewMinHeight);
-            self.msgTextView.contentSize = CGSizeMake(self.msgTextView.contentSize.width, kInputTextViewMinHeight);
-            [self.msgTextView setContentOffset:CGPointMake(0.0f, 0.0f ) animated:YES];
-
-
-        }
-        else
-        {
-            [self.msgTextView setContentOffset:CGPointMake(0.0f, (self.msgTextView.contentSize.height - self.msgTextView.frame.size.height)-5 ) animated:YES];
-
-        }
-
-        return;
-    }
-    else{
+    if (toHeight != _previousTextViewContentHeight) {
         CGFloat changeHeight = toHeight - _previousTextViewContentHeight;
-        
-        CGRect rect = self.frame;
-        rect.size.height += changeHeight;
-        rect.origin.y -= changeHeight;
-        self.frame = rect;
-        
-        rect = self.toolBackGroundView.frame;
-        rect.size.height += changeHeight;
-        self.toolBackGroundView.frame = rect;
-        
-        
-        _previousTextViewContentHeight = toHeight;
-        
-        if (rect.size.height-18<=kInputTextViewMinHeight) {
-            self.msgTextView.frame = CGRectMake(kHorizontalPadding, kVerticalPadding, self.msgTextView.frame.size.width, kInputTextViewMinHeight);
-            
-            
-        }
-        else
-        {
-            self.msgTextView.frame = CGRectMake(kHorizontalPadding, kVerticalPadding, self.msgTextView.frame.size.width, rect.size.height-20);
-            
-        }
-        [self.msgTextView setContentOffset:CGPointMake(0.0f, (self.msgTextView.contentSize.height - self.msgTextView.frame.size.height) / 2) animated:YES];
-
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(didChangeFrameToHeight:)]) {
-            [_delegate didChangeFrameToHeight:self.frame.size.height];
-        }
+        self.msgTextView.height += changeHeight;
+        self.top -= changeHeight;
+        self.toolBackGroundView.height += changeHeight;
+        _faceView.top += changeHeight;
     }
+    _previousTextViewContentHeight = toHeight;
 }
 
+//计算文字高度
 - (CGFloat)getTextViewContentH:(UITextView *)textView
 {
     return ceilf([textView sizeThatFits:textView.frame.size].height);
 }
 
+
+//最小高度（输入框最小高度+上下间距）
 + (CGFloat)defaultHeight
 {
-    return kVerticalPadding * 2 + kInputTextViewMinHeight;
+    return kInputTextViewMinHeight + kVerticalPadding * 2;
 }
-
-/*
- // Only override drawRect: if you perform custom drawing.
- // An empty implementation adversely affects performance during animation.
- - (void)drawRect:(CGRect)rect
- {
- // Drawing code
- }
- */
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-    _delegate = nil;
-    _msgTextView.delegate = nil;
-    _msgTextView = nil;
-}
-
-
-- (BOOL)endEditing:(BOOL)force
-{
-    BOOL result = [super endEditing:force];
-    
-    _smallButton.selected = NO;
-    [self willShowBottomView:nil];
-    
-    return result;
-}
-
-- (void)addKeyBoardNoti
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillChangeFrame:)
-                                                 name:UIKeyboardWillChangeFrameNotification
-                                               object:nil];
-}
-
-- (void)removeKeyBoardNoti
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-    [self endEditing:NO];
-}
-
 
 
 + (BOOL)isHaveEmoji:(NSString *)text
@@ -663,5 +364,76 @@
     NSCharacterSet *doNotWant = [NSCharacterSet characterSetWithCharactersInString:@"‍"];
     modifiedString = [[modifiedString componentsSeparatedByCharactersInSet: doNotWant]componentsJoinedByString: @""];
     return modifiedString;
+}
+
+#pragma mark - 懒加载
+//表情切换按钮、输入框、发送按钮父视图
+- (UIView *)toolBackGroundView
+{
+    if (!_toolBackGroundView)
+    {
+        _toolBackGroundView = [[UIView alloc] init];
+        _toolBackGroundView.backgroundColor = MakeColorRGB(0xf3f4f6);
+    }
+    return _toolBackGroundView;
+}
+
+//输入框视图
+- (VHMessageTextView *)msgTextView
+{
+    if (!_msgTextView)
+    {
+        _msgTextView = [[VHMessageTextView alloc] init];
+        _msgTextView.scrollEnabled = YES;
+        _msgTextView.returnKeyType = UIReturnKeySend;
+        _msgTextView.enablesReturnKeyAutomatically = YES;
+        _msgTextView.backgroundColor = [UIColor whiteColor];
+        _msgTextView.layer.borderColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
+        _msgTextView.layer.borderWidth = 0.65f;
+        _msgTextView.layer.cornerRadius = 6.0f;
+        _msgTextView.delegate = self;
+    }
+    return _msgTextView;
+}
+
+//发送按钮
+- (UIButton *)sendButton
+{
+    if (!_sendButton)
+    {
+        _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_sendButton setTitle:@"发送" forState:UIControlStateNormal];
+        _sendButton.titleLabel.font = [UIFont systemFontOfSize:16];
+        _sendButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+        [_sendButton addTarget:self action:@selector(sendButtonAction:)
+                forControlEvents:UIControlEventTouchUpInside];
+        [_sendButton setTitleColor:MessageTool_SendBtnColor forState:UIControlStateNormal];
+    }
+    return _sendButton;
+}
+
+//表情切换按钮
+- (UIButton *)emojiButton
+{
+    if (!_emojiButton)
+    {
+        _emojiButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_emojiButton setBackgroundImage: BundleUIImage(@"message_emoji") forState:UIControlStateNormal];
+        [_emojiButton setBackgroundImage: BundleUIImage(@"live_keyboard") forState:UIControlStateSelected];
+        [_emojiButton addTarget:self action:@selector(emojiButtonAction:)
+               forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _emojiButton;
+}
+
+//表情键盘view
+-(DXFaceView *)faceView
+{
+    if(!_faceView) {
+        _faceView = [[DXFaceView alloc] initWithFrame:CGRectMake(0, ([VHMessageToolView defaultHeight]), self.frame.size.width, 170)];
+        [_faceView setDelegate:self];
+        _faceView.backgroundColor = [UIColor lightGrayColor];
+    }
+    return _faceView;
 }
 @end

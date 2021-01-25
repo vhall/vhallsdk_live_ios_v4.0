@@ -49,11 +49,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *closeBtn;
 @property (weak, nonatomic) IBOutlet UIView *infoView;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
-@property (weak, nonatomic) IBOutlet UIButton *hideKeyBtn;
+@property (weak, nonatomic) IBOutlet UIButton *hideKeyBtn;  //用来点击移除输入工具、美颜级别view或其他弹窗视图的全屏按钮
 
 @property (nonatomic, strong) VHLiveChatView *chatView;
 @property (nonatomic, strong) NSMutableArray *chatDataArray;
-@property (nonatomic,strong) VHMessageToolView * messageToolView;  //输入框
+@property (nonatomic,strong) VHMessageToolView * messageToolView;  //输入工具view
 @property (weak, nonatomic) IBOutlet UIView *noiseView;
 @property (weak, nonatomic) IBOutlet UILabel *noiseLabel;
 
@@ -165,13 +165,13 @@
         return UIInterfaceOrientationMaskLandscapeLeft;
     }
 }
+
+
 #pragma mark - Lifecycle(Private)
 
 - (void)registerLiveNotification
 {
     [self.view addObserver:self forKeyPath:kViewFramePath options:NSKeyValueObservingOptionNew context:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LaunchLiveWillResignActive)name:UIApplicationWillResignActiveNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LaunchLiveDidBecomeActive)name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LaunchLiveWillResignActive)name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LaunchLiveDidBecomeActive)name:UIApplicationWillEnterForegroundNotification object:nil];
 }
@@ -238,31 +238,11 @@
 {
     if([keyPath isEqualToString:kViewFramePath])
     {
-        CGRect frame = [[change objectForKey:NSKeyValueChangeNewKey]CGRectValue];
+        CGRect frame = [[change objectForKey:NSKeyValueChangeNewKey] CGRectValue];
         self.engine.displayView.frame = frame;
-        if(self.interfaceOrientation == UIInterfaceOrientationPortrait)
-        {
-            if(_messageToolView==nil && frame.size.width <frame.size.height)
-            {
-                _messageToolView = [[VHMessageToolView alloc] initWithFrame:CGRectMake(0, frame.size.height - [VHMessageToolView defaultHeight], frame.size.width, [VHMessageToolView defaultHeight]) type:3];
-                
-                _messageToolView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
-                _messageToolView.delegate = self;
-                _messageToolView.hidden = YES;
-                [self.view addSubview:_messageToolView];
-            }
-        }
-        else if(frame.size.width >frame.size.height)
-        {
-            if(_messageToolView==nil)
-            {
-                _messageToolView = [[VHMessageToolView alloc] initWithFrame:CGRectMake(0, frame.size.height - [VHMessageToolView defaultHeight], frame.size.width, [VHMessageToolView defaultHeight]) type:3];
-                
-                _messageToolView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
-                _messageToolView.delegate = self;
-                _messageToolView.hidden = YES;
-                [self.view addSubview:_messageToolView];
-            }
+        [_messageToolView updateFrame];//更新键盘工具view的frame
+        if(_messageToolView.activityButtomView) {//更新键盘工具view的frame后，表情键盘实际存在，但已经看不到了，所以不需要hideKeyBtn的显示了
+            self.hideKeyBtn.hidden = YES;
         }
     }
 }
@@ -619,11 +599,9 @@
     }
 }
 
+//点击"我来说两句"
 - (IBAction)sendMsgButtonClick:(UIButton *)sender {
-    _messageToolView.hidden = NO;
-    _messageToolView.msgTextView.hidden = NO;
-    [_messageToolView.msgTextView becomeFirstResponder];
-    [self.view addSubview:_messageToolView];
+    [self.messageToolView beginTextViewInView];
     _hideKeyBtn.hidden = NO;
 }
 
@@ -664,6 +642,7 @@
         [_chatView update];
     }
 }
+
 
 - (void)reciveChatMsg:(NSArray *)msgs
 {
@@ -707,21 +686,18 @@
 }
 
 - (IBAction)hideKey:(id)sender {
+    //关闭键盘输入
     [_messageToolView endEditing:YES];
  
     _hideKeyBtn.hidden = YES;
+    
+    //关闭美颜级别弹窗
     _filterBtn.selected = NO;
     [UIView animateWithDuration:0.3f animations:^{
         _filterView.alpha = 0.0f;
     }];
-    
-    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 0.2);
-    dispatch_after(time, dispatch_get_main_queue(), ^{
-        _messageToolView.hidden = YES;
-        _messageToolView.msgTextView.hidden = YES;
-        [_messageToolView removeFromSuperview];
-    });
 }
+
 - (IBAction)noiseSliderValueVhange:(UISlider *)sender {
     _noiseLabel.text = [NSString stringWithFormat:@"音频增益：%f",sender.value];
     [_engine setVolumeAmplificateSize:sender.value];
@@ -743,9 +719,17 @@
         [super showMsg:error afterDelay:2];
     }];
 }
-- (void)cancelTextView
+
+
+- (VHMessageToolView *)messageToolView
 {
-    [self hideKey:nil];
+    if (!_messageToolView)
+    {
+        _messageToolView = [[VHMessageToolView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height , self.view.bounds.size.width, [VHMessageToolView defaultHeight])];
+        _messageToolView.delegate = self;
+        [self.view addSubview:self.messageToolView];
+    }
+    return _messageToolView;
 }
 
 @end

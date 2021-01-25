@@ -76,8 +76,14 @@ typedef NS_ENUM(int,VHStreamType){
  */
 typedef NS_ENUM(NSInteger,VHPublishConfigType)
 {
-    VHPublishConfigTypeDefault   = 0,//960x540 600K码率
-    VHPublishConfigTypeHD        = 1 //1280x720 800K码率
+    VHPublishConfigTypeDefault   = 0,// 分辨率:960x540  码率:800  帧率:15   默认
+    VHPublishConfigTypeHD        = 1, // 分辨率:1280x720  码率:1300  帧率:15
+    VHPublishConfigType1920x1080 = 2,// 分辨率:1920x1080  码率:1900  帧率:15
+    VHPublishConfigType1920x1080_25 = 3,// 分辨率:1920x1080  码率:2200  帧率:25
+    VHPublishConfigType1280x720_25 = 4, // 分辨率:1280x720  码率:1500  帧率:25
+    VHPublishConfigType960x540_25 = 5, // 分辨率:960x540  码率:1000  帧率:25
+    VHPublishConfigType640x480 = 6, // 分辨率:640x480  码率:500  帧率:15
+    VHPublishConfigType640x480_25 = 7, // 分辨率:640x480  码率:650  帧率:25
 };
 
 /**
@@ -160,6 +166,7 @@ typedef NS_ENUM(NSInteger,VHVideoResolution)
 /**
  * 美颜滤镜开关
  * 默认关闭 NO
+ * 开启器美颜 帧率最好调整为15帧
  */
 @property (nonatomic,assign)BOOL beautifyFilterEnable;
 
