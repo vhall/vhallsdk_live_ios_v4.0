@@ -8,13 +8,28 @@
 
 #import "LoginViewController.h"
 #import "VHHomeViewController.h"
+
 //#import "WHDebugToolManager.h"
 
 @interface LoginViewController ()<UIAlertViewDelegate>
+@property (weak, nonatomic) IBOutlet UIControl *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *versionLabel;
-@property (weak, nonatomic) IBOutlet UITextField *accountTextField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
+//注册账号登录
+@property (weak, nonatomic) IBOutlet UIView *accountLoginView;
+@property (weak, nonatomic) IBOutlet UITextField *accountTextField; //账号
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField; //密码
+
+//免注册登录
+@property (weak, nonatomic) IBOutlet UIView *thirdIdLoginView;
+@property (weak, nonatomic) IBOutlet UITextField *thirdIdTextField; //三方账号id
+@property (weak, nonatomic) IBOutlet UITextField *nameTextField; //昵称
+@property (weak, nonatomic) IBOutlet UITextField *avatarTextField; //头像
+
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
+@property (weak, nonatomic) IBOutlet UIButton *accountLoginBtn;
+@property (weak, nonatomic) IBOutlet UIButton *thirdIdLoginBtn;
+
 @end
 
 @implementation LoginViewController
@@ -29,11 +44,19 @@
 - (void)initViews
 {
     _versionLabel.text      = [NSString stringWithFormat:@"v%@",[VHallApi sdkVersion]];
-    _loginBtn.selected      = [VHallApi isLoggedIn];
     _accountTextField.text  = DEMO_Setting.account;
     _passwordTextField.text = DEMO_Setting.password;
+    [self.contentView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapContentViewAction)]];
+    
+    //测试示例头像
+    self.avatarTextField.text = @"https://www.vhall.com/public/static/images/index/new/logo@2x.png";
 }
 
+- (void)tapContentViewAction {
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+}
+
+//登录
 - (IBAction)loginBtnClick:(id)sender
 {
     [self closeKeyBtnClick:nil];
@@ -43,10 +66,18 @@
         [self showMsg:@"请填写CONSTS.h中的AppKey" afterDelay:1.5];
         return;
     }
+    
+    if(self.accountLoginBtn.selected) {
+        [self accountLogin];
+    }else {
+        [self thirdIdLogin];
+    }
+}
 
-    if(_accountTextField.text.length <= 0 || _passwordTextField.text.length <= 0)
-    {
-        [self showMsg:@"账号或密码为空" afterDelay:1.5];
+//注册账号登录
+- (void)accountLogin{
+    if(_accountTextField.text.length <= 0 || _passwordTextField.text.length <= 0) {
+        [self showMsg:@"账号或密码不能为空" afterDelay:1.5];
         return;
     }
     
@@ -57,8 +88,7 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [VHallApi loginWithAccount:DEMO_Setting.account password:DEMO_Setting.password success:^{
         
-        weekself.loginBtn.selected = [VHallApi isLoggedIn];
-        DEMO_Setting.nickName =[VHallApi currentUserNickName];
+        DEMO_Setting.nickName = [VHallApi currentUserNickName];
         [MBProgressHUD hideHUDForView:weekself.view animated:YES];
         VHLog(@"Account: %@ userID:%@",[VHallApi currentAccount],[VHallApi currentUserID]);
         [weekself showMsg:@"登录成功" afterDelay:1.5];
@@ -68,28 +98,77 @@
         [weekself presentViewController:homeVC animated:YES completion:nil];
         
     } failure:^(NSError * error) {
-        weekself.loginBtn.selected = [VHallApi isLoggedIn];
         VHLog(@"登录失败%@",error);
-        
         dispatch_async(dispatch_get_main_queue(), ^{
              [MBProgressHUD hideHUDForView:weekself.view animated:YES];
             [weekself showMsg:error.domain afterDelay:1.5];
         });
     }];
-
 }
 
-- (IBAction)guestCLick:(id)sender
-{
-    if([DEMO_AppKey isEqualToString:@"替换成您自己的AppKey"])//此处只用于提示信息判断，只替换CONSTS.h中的AppKey即可
+//第三方id登录
+- (void)thirdIdLogin {
+    if(_thirdIdTextField.text.length <= 0)
     {
-        [self showMsg:@"请填写CONSTS.h中的AppKey" afterDelay:1.5];
+        [self showMsg:@"thirdid不能为空" afterDelay:1.5];
         return;
     }
-    VHHomeViewController *homeVC=[[VHHomeViewController alloc] init];
-    homeVC.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:homeVC animated:YES completion:nil];
+
+    NSString *thirdId = self.thirdIdTextField.text;
+    NSString *name = self.nameTextField.text;
+    NSString *avatar = self.avatarTextField.text;
+    DEMO_Setting.nickName = @"";
+    __weak typeof(self) weekself = self;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [VHallApi loaginWithThirdUserId:thirdId nickName:name avatar:avatar success:^{
+
+        DEMO_Setting.nickName = [VHallApi currentUserNickName];
+        [MBProgressHUD hideHUDForView:weekself.view animated:YES];
+        VHLog(@"Account: %@ userID:%@",[VHallApi currentAccount],[VHallApi currentUserID]);
+        [weekself showMsg:@"登录成功" afterDelay:1.5];
+        
+        VHHomeViewController *homeVC=[[VHHomeViewController alloc] init];
+        homeVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        [weekself presentViewController:homeVC animated:YES completion:nil];
+    } failure:^(NSError *error) {
+
+        VHLog(@"登录失败%@",error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+             [MBProgressHUD hideHUDForView:weekself.view animated:YES];
+            [weekself showMsg:error.domain afterDelay:1.5];
+        });
+    }];
 }
+
+//- (IBAction)guestCLick:(id)sender
+//{
+//    if([DEMO_AppKey isEqualToString:@"替换成您自己的AppKey"])//此处只用于提示信息判断，只替换CONSTS.h中的AppKey即可
+//    {
+//        [self showMsg:@"请填写CONSTS.h中的AppKey" afterDelay:1.5];
+//        return;
+//    }
+//
+//    VHHomeViewController *homeVC=[[VHHomeViewController alloc] init];
+//    homeVC.modalPresentationStyle = UIModalPresentationFullScreen;
+//    [self presentViewController:homeVC animated:YES completion:nil];
+//}
+
+//注册账号登录
+- (IBAction)accountLoginBtnClick:(UIButton *)sender {
+    self.accountLoginBtn.selected = YES;
+    self.thirdIdLoginBtn.selected = NO;
+    self.accountLoginView.hidden = NO;
+    self.thirdIdLoginView.hidden = YES;
+}
+
+//第三方id登录
+- (IBAction)thirdIdLoginBtnClick:(UIButton *)sender {
+    self.accountLoginBtn.selected = NO;
+    self.thirdIdLoginBtn.selected = YES;
+    self.accountLoginView.hidden = YES;
+    self.thirdIdLoginView.hidden = NO;
+}
+
 
 - (IBAction)closeKeyBtnClick:(id)sender
 {
@@ -136,7 +215,6 @@
 //        [self.view addSubview:callWebview];
         
         NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"4006826882"];
-        // NSLog(@"str======%@",str);
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }
 }

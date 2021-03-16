@@ -196,12 +196,12 @@
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
 {
     NSLog(@"load finished");
-    //向js注入，隐藏web透视图图片，调整视图高度。此处用户可注入js自定义修改问卷样式。
-    NSString *script = @"document.querySelector('.header').style.backgroundImage='url()';document.querySelector('.header').style.minHeight='30px';";
-    [webView evaluateJavaScript:script completionHandler:^(id object, NSError * _Nullable error) {
-
-        NSLog(@"evaluateJavaScript error : %@",error);
-    }];
+//    //向js注入，隐藏web透视图图片，调整视图高度。此处用户可注入js自定义修改问卷样式。
+//    NSString *script = @"document.querySelector('.header').style.backgroundImage='url()';document.querySelector('.header').style.minHeight='30px';";
+//    [webView evaluateJavaScript:script completionHandler:^(id object, NSError * _Nullable error) {
+//
+//        NSLog(@"evaluateJavaScript error : %@",error);
+//    }];
 }
 
 

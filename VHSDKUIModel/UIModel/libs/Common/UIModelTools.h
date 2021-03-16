@@ -17,6 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)showMsgInWindow:(NSString*)msg afterDelay:(NSTimeInterval)delay offsetY:(CGFloat)offsetY;
 
+//判断字符串是否为空
++ (BOOL)isEmptyStr:(NSString *)str;
+
++ (void)showMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay;
+
+// 字典转json字符串方法
++ (NSString *)jsonStringWithObject:(id)dict;
 @end
 
 NS_ASSUME_NONNULL_END

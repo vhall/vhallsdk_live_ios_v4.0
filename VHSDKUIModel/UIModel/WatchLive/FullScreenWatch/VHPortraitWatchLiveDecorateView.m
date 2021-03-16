@@ -14,7 +14,6 @@
 #import "VHMessageToolView.h"
 @interface VHPortraitWatchLiveDecorateView () <UITableViewDelegate,UITableViewDataSource,VHMessageToolBarDelegate,MicCountDownViewDelegate>
 {
-    UIButton          * _toolViewBackView; //键盘背景遮罩
     VHMessageToolView * _messageToolView;  //输入框
 }
 /** 网速 */
@@ -110,23 +109,11 @@
 #pragma mark - UI事件
 //说点什么
 - (void)chatBtnClick {
-    _toolViewBackView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, VH_SW, VH_SH)];
-    _toolViewBackView.backgroundColor=[UIColor clearColor];
-    [_toolViewBackView addTarget:self action:@selector(toolViewBackViewClick) forControlEvents:UIControlEventTouchUpInside];
-    _messageToolView = [[VHMessageToolView alloc] initWithFrame:CGRectMake(0, _toolViewBackView.height-[VHMessageToolView  defaultHeight], VHScreenWidth, [VHMessageToolView defaultHeight])];
-    _messageToolView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
+    _messageToolView = [[VHMessageToolView alloc] init];
     _messageToolView.delegate = self;
-    _messageToolView.hidden = NO;
     _messageToolView.maxLength = 140;
-    [_toolViewBackView addSubview:_messageToolView];
-    [self addSubview:_toolViewBackView];
     [_messageToolView beginTextViewInView];
-}
-
-//点击键盘背景关闭键盘
-- (void)toolViewBackViewClick {
-    [_messageToolView endEditing:YES];
-    [_toolViewBackView removeFromSuperview];
+    [[UIApplication sharedApplication].delegate.window addSubview:_messageToolView];
 }
 
 //上麦按钮点击事件
@@ -156,7 +143,6 @@
         [self.delegate decorateView:self sendMessage:text];
     }
     [_messageToolView endEditing:YES];
-    [_toolViewBackView removeFromSuperview];
 }
 
 

@@ -54,10 +54,11 @@
 /**
  *  开始发起直播
  *  @param param
- *  param[@"id"]           = 活动Id 必传
- *  param[@"access_token"] = 必传
+ *  param[@"id"]           = 活动Id，必传
+ *  param[@"access_token"] = 发直播token （新版v3控制台创建的直播活动可不传此值，v6.0修改）
+ *  param[@"nickname"]     = 发起直播更改主播昵称，非必传（v6.0新增）
  */
-- (void)startLive:(NSDictionary*)param;;
+- (void)startLive:(NSDictionary*)param;
 
 /**
  * 结束直播
@@ -135,8 +136,10 @@
 /**
  *  发起直播时的状态
  *  @param liveStatus 直播状态
+ *  @param info 详细信息，字典结构：{code：错误码，content：错误信息}
  */
 -(void)publishStatus:(VHLiveStatus)liveStatus withInfo:(NSDictionary*)info;
+
 @optional
 /**
  *  采集到第一帧的回调

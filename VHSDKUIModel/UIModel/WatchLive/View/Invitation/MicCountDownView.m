@@ -102,16 +102,11 @@
 }
 - (void)hiddenCountView {
     [self stopCountDown];
-    [UIView animateWithDuration:.3 animations:^{
-        
-        self.hidden = YES;
-    }];
+    self.hidden = YES;
 }
+
 - (void)showCountView {
-    [UIView animateWithDuration:.3 animations:^{
-        
-        self.hidden = NO;
-    }];
+    self.hidden = NO;
 }
 
 - (void)stopCountDown {

@@ -66,7 +66,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     [self initSubViews];
     
     if (!self.roomId) {
@@ -353,6 +352,7 @@
     [self removeAllViews];
 
     [_cameraView stopStats];
+    //停止推流
     [_interactiveRoom unpublish];
     //离开互动房间
     [_interactiveRoom leaveRoom];

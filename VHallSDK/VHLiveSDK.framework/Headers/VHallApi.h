@@ -60,7 +60,7 @@
 
 #pragma mark - 使用用户系统相关功能需登录SDK
 /*!
- *  登录 (如使用聊天，问答等功能必须登录)
+ *  账号密码登录
  *
  *  @param aAccount         账号  需服务器调用微吼注册API 注册该用户账号密码
  *  @param aPassword        密码
@@ -73,6 +73,18 @@
                 success:(void (^)(void))aSuccessBlock
                 failure:(void (^)(NSError *error))aFailureBlock;
 
+
+/*!
+ *  三方ID登录，即不需要服务端调用微吼注册API，可直接使用您自身账号体系下的用户id进行登录 （v6.0新增）
+ *
+ *  @param thirdUserId 三方id
+ *  @param nickName 昵称 (非必传)
+ *  @param avatar 头像地址 (非必传)
+ *  @param successBlock 成功
+ *  @param failureBlock 失败
+ */
++ (void)loaginWithThirdUserId:(NSString *)thirdUserId nickName:(NSString *)nickName avatar:(NSString *)avatar success:(void (^)(void))successBlock failure:(void (^)(NSError *error))failureBlock;
+
 /*!
  *  退出当前账号
  *
@@ -82,6 +94,8 @@
  */
 + (void)logout:(void (^)(void))aSuccessBlock
               failure:(void (^)(NSError *error))aFailureBlock;
+
+
 
 /*!
  *  获取当前登录状态

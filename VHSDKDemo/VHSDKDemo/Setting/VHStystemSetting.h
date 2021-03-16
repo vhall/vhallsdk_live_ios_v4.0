@@ -29,9 +29,12 @@
 @property(nonatomic, strong)NSString* liveToken;        //直播令牌 只在发起直播时使用 暂时一天申请一次
 @property(nonatomic, assign)NSInteger videoBitRate;     //发直播视频码率
 @property(nonatomic, assign)NSInteger audioBitRate;     //发直播视频码率
+
 @property(nonatomic, assign)NSInteger videoCaptureFPS;  //发直播视频帧率 ［1～30］ 默认10
 @property(nonatomic, assign)BOOL      isOpenNoiseSuppresion;//开启降噪 默认YES
 @property(nonatomic, assign)BOOL      beautifyFilterEnable;//美颜开关
+@property (nonatomic, copy) NSString *live_nick_name;     ///<发直播昵称
+
 
 //互动设置
 /*

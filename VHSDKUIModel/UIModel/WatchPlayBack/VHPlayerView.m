@@ -225,14 +225,11 @@
 }
 - (void)Vh_fullScreenButtonAction:(UIButton *)button
 {
-     button.selected = !button.selected;
     if (_delegate&&[_delegate respondsToSelector:@selector(Vh_fullScreenButtonAction:)]) {
-        
         [_delegate Vh_fullScreenButtonAction:button];
     }else{
         NSLog(@"没有实现代理或设置代理人");
     }
-
 }
 - (void)Vh_progressSliderTouchBegan:(UISlider *)slider
 {

@@ -5,19 +5,23 @@
 //  Created by vhall on 17/2/14.
 //  Copyright © 2017年 vhall. All rights reserved.
 //
-
+// 问卷
+// !!!!:注意实例方法使用时机，看直播/回放————>在收到"播放连接成功回调"或"视频信息预加载成功回调"以后使用。
 #import <Foundation/Foundation.h>
 #import "VHallBasePlugin.h"
 
 @protocol VHallSurveyDelegate <NSObject>
 
-/*flsh活动，发布问卷以下两个方法都会回调。如果使用webView的方式加载问卷，在-receivedSurveyWithURL:处理，如果仍保留旧版加载问卷方式，在-receiveSurveryMsgs:方法处理，处理方式不变。H5活动发布问卷，只回调-receivedSurveyWithURL：。
+/*  flsh活动，接收到问卷消息，以下两个方法都会回调。
+    H5活动，发布问卷，只回调-receivedSurveyWithURL：。
+    如果使用webView的方式加载问卷，在-receivedSurveyWithURL:处理，如果仍保留旧版加载问卷方式，在-receiveSurveryMsgs:方法处理，处理方式不变。
   */
+
 
 /**
  *  接收问卷消息
  */
--(void)receiveSurveryMsgs:(NSArray*)msg;
+-(void)receiveSurveryMsgs:(NSArray*)msg DEPRECATED_MSG_ATTRIBUTE("建议使用receivedSurveyWithURL方式处理问卷消息");;
 
 /**
  收到问卷 v4.0.0新增
@@ -32,118 +36,34 @@
 @property(nonatomic, weak) id<VHallSurveyDelegate> delegate;
 
 
-@property (nonatomic,copy) NSString   *surveyId;//问卷Id;
+@property (nonatomic,copy) NSString   *surveyId;//问卷Id
+@property (nonatomic,copy) NSString   *liveId;//活动Id
 @property (nonatomic,copy) NSString   *surveyTitle;//问卷标题
 @property (nonatomic,copy) NSArray    *questionArray;//问题列条
-@property (nonatomic,copy) NSString   *liveId;//活动Id
 
-/**
- * 获取Flash活动问卷内容，对H5活动无效
- *
- * @param surveyId              调查问卷Id
- *  @param webId                当前活动Id
- * @param success               成功回调成功Block 返回问卷内容
- * @param reslutFailedCallback  失败回调失败Block
- *                              失败Block中的字典结构如下：
- *                              key:code 表示错误码
- *                              value:content 表示错误信息
- */
-- (void)getSurveryContentWithSurveyId:(NSString*)surveyId webInarId:(NSString*)webId success:(void(^)(VHallSurvey* msgs))success failed:(void (^)(NSDictionary* failedData))reslutFailedCallback;
+//-----------接收问卷建议使用receivedSurveyWithURL方法，嵌入web页面，则无需调用以下接口--------------
 
-/**
- 获取Flash活动问卷内容，对H5活动无效
- 返回参数如下：
- {
- "code": "200",
- "msg": "成功",
- "data": {
- "survey_id": 591,
- "subject": "调查问卷",
- "list": [
- {
- "ques_id": 711,
- "subject": "我是问答题"
- "ordernum": 0,
- "must": 1,
- "type": 0
- },
- {
- "ques_id": 712,
- "subject": "我是单选题",
- "ordernum": 0,
- "must": 0,
- "type": 1,
- "list": [
- {
- "subject": "选项1",
- "type": 0
- },
- {
- "subject": "选项1",
- "type": 0
- },
- {
- "subject": "其他",
- "type": 1
- }
- ]
- },
- {
- "ques_id": 713,
- "subject": "我是多选题",
- "ordernum": 0,
- "must": 0,
- "type": 2,
- "list": [
- {
- "subject": "选项1",
- "type": 0
- },
- {
- "subject": "选项1",
- "type": 0
- },
- {
- "subject": "其他",
- "type": 1
- }
- ]
- },
- {
- "ques_id": 714,
- "subject": "我是城市题",
- "ordernum": 0,
- "must": 0,
- "type": 3
- },
- {
- "ques_id": 715,
- "subject": "我是小节题",
- "ordernum": 0,
- "must": 0,
- "type": 4
- }
- ]
- }
- }
+/// 获取Flash活动问卷内容，返回转换模型后的数据 (H5活动不支持该方法，请使用web嵌入)
+/// @param surveyId 问卷id
+/// @param webInarId 活动id
+/// @param success 成功回调
+/// @param reslutFailedCallback 失败回调
+- (void)getSurveryContentWithSurveyId:(NSString*)surveyId webInarId:(NSString*)webInarId success:(void(^)(VHallSurvey* msgs))success failed:(void (^)(NSDictionary* failedData))reslutFailedCallback;
 
 
- @discussion 异步函数，获取问卷内容，并将原始数据返回。
- */
-- (void)getSurveryRequestWithSurveyId:(NSString *)surveyId webInarId:(NSString *)webId success:(void(^)(NSDictionary *result))success failed:(void (^)(NSDictionary* failedData))failedCallback;
+/// 获取Flash活动问卷内容，返回原始请求数据 (H5活动不支持该方法，请使用web嵌入)
+/// @param surveyId 问卷id
+/// @param webInarId 活动id
+/// @param success 成功回调
+/// @param failedCallback 失败回调
+- (void)getSurveryRequestWithSurveyId:(NSString *)surveyId webInarId:(NSString *)webInarId success:(void(^)(NSDictionary *result))success failed:(void (^)(NSDictionary* failedData))failedCallback;
 
 
-
-/**
- * 发送Flash活动问卷结果，对H5活动无效
- *
- * 成功回调成功Block
- * 失败回调失败Block
- *         失败Block中的字典结构如下：
- *         key:code 表示错误码
- *        value:content 表示错误信息
- */
-- (void)sendMsg:(NSArray *)msg success:(void(^)())success failed:(void (^)(NSDictionary* failedData))reslutFailedCallback;
+/// 发送Flash活动问卷结果，调用请参考demo (H5活动不支持该方法，请使用web嵌入)
+/// @param msg 问卷结果数组
+/// @param success 成功回调
+/// @param reslutFailedCallback 失败回调失败Block 字典结构：{code：错误码，content：错误信息}
+- (void)sendMsg:(NSArray *)msg success:(void(^)(void))success failed:(void (^)(NSDictionary* failedData))reslutFailedCallback;
 
 
 @end

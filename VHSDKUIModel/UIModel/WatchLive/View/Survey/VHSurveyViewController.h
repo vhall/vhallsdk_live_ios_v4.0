@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol VHSurveyViewControllerDelegate <NSObject>
 
 @required
-//关闭按钮时间回调
+//关闭按钮事件回调
 - (void)surveyviewControllerDidCloseed:(UIButton *)sender;
 //web关闭按钮事件回调
 - (void)surveyViewControllerWebViewDidClosed:(VHSurveyViewController *)vc;

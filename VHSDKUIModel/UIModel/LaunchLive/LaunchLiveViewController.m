@@ -58,6 +58,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *noiseLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backbtntopConstraint;
+@property (nonatomic, strong) NSMutableDictionary *publishParam;     ///<发直播参数
 @end
 
 @implementation LaunchLiveViewController
@@ -123,18 +124,17 @@
     
     //允许iOS设备锁屏
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-    [self.view removeObserver:self forKeyPath:kViewFramePath];
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     VHLog(@"%@ dealloc",[[self class]description]);
 }
 
--(void)LaunchLiveWillResignActive
+-(void)LaunchLiveDidEnterBackground
 {
     [_engine disconnect];
     [_engine stopVideoCapture];
 }
 
--(void)LaunchLiveDidBecomeActive
+-(void)LaunchLiveWillEnterForeground
 {
     [_engine startVideoCapture];
     [_engine reconnect];
@@ -171,9 +171,8 @@
 
 - (void)registerLiveNotification
 {
-    [self.view addObserver:self forKeyPath:kViewFramePath options:NSKeyValueObservingOptionNew context:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LaunchLiveWillResignActive)name:UIApplicationDidEnterBackgroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LaunchLiveDidBecomeActive)name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LaunchLiveDidEnterBackground)name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LaunchLiveWillEnterForeground)name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 -(void)initDatas
@@ -218,33 +217,24 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
     __weak __typeof(self) weakself = self;
-    if(!_chatView)
-    {
+    if(!_chatView) {
         _chatView = [[VHLiveChatView alloc] initWithFrame:CGRectMake(10, 0,_chatContainerView.width-10,_chatContainerView.height - 50) msgTotal:^NSInteger{
             return  weakself.chatDataArray.count;
         } msgSource:^VHActMsg *(NSInteger index) {
             return  weakself.chatDataArray[index];
         }action:nil];
-    }
-    else
+    } else {
         _chatView.frame = CGRectMake(10, 0,_chatContainerView.width-10,_chatContainerView.height - 50);
-    [_chatContainerView addSubview:_chatView];
-    if (self.interfaceOrientation == UIInterfaceOrientationPortrait)
-        _backbtntopConstraint.constant = iPhoneX? 40 :20;
-}
-
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if([keyPath isEqualToString:kViewFramePath])
-    {
-        CGRect frame = [[change objectForKey:NSKeyValueChangeNewKey] CGRectValue];
-        self.engine.displayView.frame = frame;
-        [_messageToolView updateFrame];//更新键盘工具view的frame
-        if(_messageToolView.activityButtomView) {//更新键盘工具view的frame后，表情键盘实际存在，但已经看不到了，所以不需要hideKeyBtn的显示了
-            self.hideKeyBtn.hidden = YES;
-        }
     }
+
+    [_chatContainerView addSubview:_chatView];
+    if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
+        _backbtntopConstraint.constant = iPhoneX? 40 :20;
+    }
+    
+    self.engine.displayView.frame = self.view.frame;
 }
 
 #pragma mark - 初始化推流器
@@ -281,11 +271,6 @@
     self.engine.displayView.frame   = _perView.bounds;
     [self.perView insertSubview:_engine.displayView atIndex:0];
     
-//    NSMutableDictionary * param = [[NSMutableDictionary alloc]init];
-//    param[@"id"] =  _roomId;
-//    param[@"access_token"] = _token;
-//    [self.engine startLive:param];
-//
 //    //开始视频采集、并显示预览界面
     [self.engine startVideoCapture];
 
@@ -315,12 +300,8 @@
         [_chatView update];
         [_hud showAnimated:YES];
         _torchBtn.hidden = NO;
-
-        NSMutableDictionary * param = [[NSMutableDictionary alloc]init];
-        param[@"id"] =  _roomId;
-        param[@"access_token"] = _token;
-//        param[@"is_single_audio"] = @"0";    // 0 ：视频， 1：音频
-        [_engine startLive:param];
+        
+        [_engine startLive:self.publishParam];
 
         self.engine.displayView.frame   = _perView.bounds;
         [self.perView insertSubview:_engine.displayView atIndex:0];
@@ -338,6 +319,7 @@
     _logView.hidden = YES;
     //_isVideoStart = !_isVideoStart;
 }
+
 //发起/停止纯音频直播
 - (IBAction)startAudioPlayer
 {
@@ -602,11 +584,10 @@
 //点击"我来说两句"
 - (IBAction)sendMsgButtonClick:(UIButton *)sender {
     [self.messageToolView beginTextViewInView];
-    _hideKeyBtn.hidden = NO;
 }
 
 #pragma mark Chat && QA(VHallChatDelegate)
-- (void)reciveOnlineMsg:(NSArray *)msgs
+- (void)reciveOnlineMsg:(NSArray <VHallOnlineStateModel *> *)msgs
 {
     if (msgs.count > 0) {
         for (VHallOnlineStateModel *m in msgs) {
@@ -644,7 +625,8 @@
 }
 
 
-- (void)reciveChatMsg:(NSArray *)msgs
+
+- (void)reciveChatMsg:(NSArray <VHallChatModel *> *)msgs
 {
     if (msgs.count > 0) {
         for (VHallChatModel *m in msgs) {
@@ -714,6 +696,7 @@
     
     [self hideKey:nil];
     [_chat sendMsg:text success:^{
+        
     } failed:^(NSDictionary *failedData) {
         NSString* error = [NSString stringWithFormat:@"(%@)%@", failedData[@"code"],failedData[@"content"]];
         [super showMsg:error afterDelay:2];
@@ -725,11 +708,24 @@
 {
     if (!_messageToolView)
     {
-        _messageToolView = [[VHMessageToolView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height , self.view.bounds.size.width, [VHMessageToolView defaultHeight])];
+        _messageToolView = [[VHMessageToolView alloc] init];
         _messageToolView.delegate = self;
-        [self.view addSubview:self.messageToolView];
+        _messageToolView.maxLength = 140;
+        [self.view addSubview:_messageToolView];
     }
     return _messageToolView;
+}
+
+- (NSMutableDictionary *)publishParam
+{
+    if (!_publishParam)
+    {
+        _publishParam = [[NSMutableDictionary alloc]init];
+        _publishParam[@"id"] = _roomId;
+        _publishParam[@"access_token"] = _token;
+        _publishParam[@"nickname"] = _nick_name;
+    }
+    return _publishParam;
 }
 
 @end

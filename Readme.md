@@ -1,5 +1,5 @@
-# vhallsdk-live-ios-v4.0
-微吼直播 SaaS SDK for iOS v4.x版本
+# vhallsdk-live-ios
+微吼直播 SaaS SDK 
 
 微吼直播 SaaS SDK v5.0 及以后版本迁移至 [VHLive_SDK_iOS](https://github.com/vhall/VHLive_SDK_iOS) 给您带来不便请谅解
 [历史版本 v4.0.0 以下版本](https://github.com/vhall/vhallsdk_live_ios)<br>
@@ -27,13 +27,29 @@ pod 'VHallSDK_Live'<br>
 使用互动功能SDK<br>
 pod 'VHallSDK_Interactive'<br>
 
-注意：v5.x版本 请移步[VHLive_SDK_iOS](https://github.com/vhall/VHLive_SDK_iOS)<br>
+注意：v5.x及以上版本 请移步[VHLive_SDK_iOS](https://github.com/vhall/VHLive_SDK_iOS)<br>
 pod集成方式修改为：<br>
 pod 'VHLiveSDK'<br>
 使用互动功能SDK<br>
 pod 'VHLiveSDK_Interactive'<br>
 
 ### 版本更新信息
+#### 版本 v6.0.0 更新时间：2021.03.16
+更新内容：<br>
+1、发直播接口，在新版v3控制台创建的直播活动可不传access_token。<br>
+2、抽奖新增接口，仅适用于新版控制台v3创建的直播所发起的抽奖。<br>
+3、看直播/回放播放器，新增活动信息VHWebinarInfo，可获取当前在线人数与活动热度信息。<br>
+4、发直播，可修改主播昵称。<br>
+5、修复部分机型前后台切换，推流失败问题<br>
+6、修复问答，主持人的回答消息昵称错误问题<br>
+7、修复投屏播放过程中，无法切换视频问题<br>
+8、修复播放回放时，无法切换视频问题<br>
+9、修复iOS14下播放回放进入后台暂停后再进入前台无法播放问题<br>
+
+升级v6.0.0注意：
+1、6.0移除了回放评论功能，建议使用聊天代替，若使用了评论功能，升级6.0请务必进行修改，否则评论功能将失效。
+2、移除了游客进入，新增第三方id登录，使用SDK功能必须先登录。
+
 #### 版本 v5.0.2 更新时间：2021.01.25
 更新内容：<br>
 1、消息优化<br>

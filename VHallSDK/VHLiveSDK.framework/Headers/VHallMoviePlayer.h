@@ -7,355 +7,274 @@
 //
 #import <MediaPlayer/MPMoviePlayerController.h>
 #import "VHallConst.h"
+#import "VHWebinarInfo.h"
 
+@class VHDLNAControl;
 @protocol VHallMoviePlayerDelegate;
+
 @interface VHallMoviePlayer : NSObject
+/// 获取播放器view
+@property (nonatomic, strong, readonly) UIView *moviePlayerView;
 
-@property(nonatomic,weak)id <VHallMoviePlayerDelegate> delegate;
-@property(nonatomic,strong,readonly)UIView * moviePlayerView;
-@property(nonatomic,assign)int timeout;                         //链接的超时时间 默认6000毫秒，单位为毫秒  MP4点播 最小10000毫秒
-//@property(nonatomic,assign)int reConnectTimes;                //RTMP 断开后的重连次数 默认 2次
-@property(nonatomic,assign)int bufferTime;                      //RTMP 的缓冲时间 默认 6秒 单位为秒 必须>0 值越小延时越小,卡顿增加
-@property(assign,readonly)int realityBufferTime;                //获取RTMP播放实际的缓冲时间，单位毫秒
-@property(nonatomic,assign,readonly)VHPlayerState playerState;  //播放器状态
-@property(nonatomic,strong,readonly)UIView * documentView;      //文档view，当前活动如果没有文档次View 为 nil 可以从回调中获取此活动是否有文档
+/// 代理对象
+@property (nonatomic, weak) id <VHallMoviePlayerDelegate> delegate;
 
-/**
- *  当前视频观看模式
- */
-@property(nonatomic,assign)VHMovieVideoPlayMode playMode;
-/**
- *  视频View的缩放比例 默认是自适应模式
- */
-@property(nonatomic,assign)VHRTMPMovieScalingMode movieScalingMode;
+/// 设置链接的超时时间 默认6000毫秒，单位为毫秒  MP4点播 最小10000毫秒
+@property (nonatomic, assign) int timeout;
 
-/**
- *  设置默认播放的清晰度 默认原画
- */
-@property(nonatomic,assign)VHMovieDefinition defaultDefinition;
+/// 设置RTMP 的缓冲时间 默认 6秒 单位为秒 必须>0 值越小延时越小,卡顿增加
+@property (nonatomic, assign) int bufferTime;
 
-/**
- * 设置当前要观看的清晰度
- */
-@property(nonatomic,assign)VHMovieDefinition curDefinition;
+/// 设置视频的填充模式 默认是自适应模式：VHRTMPMovieScalingModeAspectFit
+@property (nonatomic, assign) VHRTMPMovieScalingMode movieScalingMode;
 
-/**
- * 当前活动状态
- */
-@property(nonatomic,assign,readonly)VHMovieActiveState activeState;
+/// 设置默认播放的清晰度 默认原画
+@property (nonatomic, assign) VHMovieDefinition defaultDefinition;
 
-/**
- * 以下属性 点播/回放播放时使用 直播无效
- */
-@property (nonatomic, readonly) NSTimeInterval          duration;           //视频时长
-@property (nonatomic, readonly) NSTimeInterval          playableDuration;   //可播放时长
-@property (nonatomic, assign)   NSTimeInterval          currentPlaybackTime;//当前播放时间点
-@property (nonatomic, assign)   float                   rate;//点播倍速播放速率 0.50, 0.67, 0.80, 1.0, 1.25, 1.50, and 2.0
-@property (nonatomic, assign)   NSTimeInterval          initialPlaybackTime;//初始化要播放的位置
-/**
- *  初始化VHMoviePlayer对象
- *  @param delegate 代理
- *  @return   返回VHMoviePlayer的一个实例
- */
+/// 设置当前播放的清晰度
+@property (nonatomic, assign) VHMovieDefinition curDefinition;
+
+/// 获取当前视频观看模式
+@property (nonatomic, assign, readonly) VHMovieVideoPlayMode playMode;
+
+/// 获取RTMP播放实际的缓冲时间，单位毫秒
+@property (nonatomic, assign, readonly) int realityBufferTime;
+
+/// 获取播放器状态
+@property (nonatomic, assign, readonly) VHPlayerState playerState;
+
+/// 获取文档演示view，如果没有文档则为nil (在收到"文档显示/隐藏回调"后获取)
+@property (nonatomic, strong, readonly) UIView *documentView;
+
+
+/// 活动状态 （在收到"视频信息预加载回调"或"播放连接成功回调"后使用）
+@property (nonatomic, assign, readonly) VHMovieActiveState activeState;
+/// 活动相关信息 （在收到"视频信息预加载回调"或"播放连接成功回调"后使用）
+@property (nonatomic, strong, readonly) VHWebinarInfo *webinarInfo;
+
+//---------------以下属性 点播/回放播放时使用 直播无效--------------------
+/// 视频时长
+@property (nonatomic, readonly) NSTimeInterval          duration;
+/// 可播放时长
+@property (nonatomic, readonly) NSTimeInterval          playableDuration;
+/// 当前播放时间点
+@property (nonatomic, assign) NSTimeInterval          currentPlaybackTime;
+/// 点播倍速播放速率 0.50, 0.67, 0.80, 1.0, 1.25, 1.50, and 2.0
+@property (nonatomic, assign) float                   rate;
+/// 初始化要播放的位置
+@property (nonatomic, assign) NSTimeInterval          initialPlaybackTime;
+
+/// 初始化VHMoviePlayer对象
+/// @param delegate 代理对象
 - (instancetype)initWithDelegate:(id <VHallMoviePlayerDelegate>)delegate;
 
+/// 预加载视频信息，在收到"视频信息预加载完成回调"后，即可使用聊天、签到、问答、抽奖等功能，然后择机调用startPlay/startPlayback进行播放，注意使用此方法后，startPlay和startPlayback传参将不再生效（此方法主要用于播放之前需要使用聊天等功能）
+/// @param param 传参信息
+/// param[@"id"]    = 活动Id，必传
+/// param[@"pass"]  = 活动如果有K值或密码，则需要传
+- (void)preLoadRoomWithParam:(NSDictionary *)param;
 
-/**
- *  预加载视频信息 进入页面即需要使用此方法后 startPlay和startPlayback传参不再有效，只是有开始播放功能，更换房间时需要停止上个房间播放
- *  此方法可以提供播放前操作聊天等功能 （在预加载完成回调后，可调用startPlay开播，或使用聊天等功能）
- *  @param param
- *  param[@"id"]    = 活动Id 必传
- *  param[@"name"]  = 如已登录可以不传
- *  param[@"email"] = 如已登录可以不传
- *  param[@"pass"]  = 活动如果有K值或密码需要传
-*/
-- (void)preLoadRoomWithParam:(NSDictionary*)param;
+/// 观看直播视频，在收到"播放连接成功回调"后，才可使用聊天、签到、问答、抽奖等功能
+/// @param param
+/// param[@"id"]    = 活动Id
+/// param[@"pass"]  = 活动如果有K值或密码，则需要传
+- (BOOL)startPlay:(NSDictionary *)param;
 
-/**
- *  观看直播视频
- *  @param param
- *  param[@"id"]    = 活动Id 必传
- *  param[@"name"]  = 如已登录可以不传
- *  param[@"email"] = 如已登录可以不传
- *  param[@"pass"]  = 活动如果有K值或密码需要传
- */
--(BOOL)startPlay:(NSDictionary*)param;
+/// 观看回放/点播视频，在收到"播放连接成功回调"后，才可使用聊天、签到、问答、抽奖等功能
+/// @param param
+/// param[@"id"]    = 活动Id，必传
+/// param[@"pass"]  = 活动如果有K值或密码，则需要传
+- (BOOL)startPlayback:(NSDictionary *)param;
 
-/**
- *  观看回放/点播视频
- *  @param param
- *  param[@"id"]    = 活动Id 必传
- *  param[@"name"]  = 如已登录可以不传
- *  param[@"email"] = 如已登录可以不传
- *  param[@"pass"]  = 活动如果有K值或密码需要传
- */
--(BOOL)startPlayback:(NSDictionary*)param;
+/// 暂停播放 （如果是直播，等同于stopPlay）
+- (void)pausePlay;
 
-/**
- *  暂停播放 （如果是直播，等同于stopPlay）
- */
--(void)pausePlay;
+/// 播放出错/暂停播放后恢复播放
+/// @return NO 播放器不是暂停状态 或者已经结束
+- (BOOL)reconnectPlay;
 
-/**
- *  播放出错/pausePlay后恢复播放
- *  @return NO 播放器不是暂停状态 或者已经结束
- */
--(BOOL)reconnectPlay;
+/// 停止播放
+- (void)stopPlay;
 
-/**
- *  停止播放
- */
--(void)stopPlay;
-
-/**
- *  设置静音
- *  @param mute 是否静音
- */
+/// 设置静音
+/// @param mute 是否静音
 - (void)setMute:(BOOL)mute;
 
-/**
- *  销毁播放器
- */
+/// 销毁播放器
 - (void)destroyMoivePlayer;
 
 #pragma mark - 连麦互动接口
-/**
- *  发送 申请上麦/取消申请 消息
- *  @param type 1举手，0取消举手
- */
+
+/// 发送 申请上麦/取消申请 消息
+/// @param type 1申请上麦，0取消申请上麦
 - (BOOL)microApplyWithType:(NSInteger)type;
 
-/**
- *  发送 申请上麦/取消申请 消息
- *  @param type 1举手，0取消举手
- *  @param finishBlock 消息发送结果
- */
+
+/// 发送 申请上麦/取消申请 消息
+/// @param type 1申请上麦，0取消申请上麦
+/// @param finishBlock finishBlock 消息发送结果
 - (BOOL)microApplyWithType:(NSInteger)type finish:(void(^)(NSError *error))finishBlock;
 
-/**
- *  收到邀请后 是否同意上麦
- *  @param type 1接受，2拒绝，3超时失败
- *  @param finishBlock 结果回调
- */
+
+/// 收到邀请后 是否同意上麦
+/// @param type 1接受，2拒绝，3超时失败
+/// @param finishBlock 结果回调
 - (BOOL)replyInvitationWithType:(NSInteger)type finish:(void(^)(NSError *error))finishBlock;
 
 #pragma mark - 辅助接口
-/**
- *  清空视频剩余的最后一帧画面
- */
+
+/// 清空视频剩余的最后一帧画面
 - (void)cleanLastFrame;
 
-/**
- *  仅播放 VR 活动时有效
- *  是否启用陀螺仪控制画面模式
- */
+/// 是否启用陀螺仪控制画面模式，仅播放 VR 活动时有效
+/// @param usingGyro 是否使用陀螺仪
 - (void)setUsingGyro:(BOOL)usingGyro;
 
-/**
- *  仅播放 VR 活动时，并且 开启陀螺仪模式时 必须设置
- *  设置视频显示的方向 用于陀螺仪方向校对
- */
+/// 设置视频显示的方向，用于陀螺仪方向校对，仅播放 VR 活动时，并且开启陀螺仪模式时，必须设置
+/// @param orientation 方向
 - (void)setUILayoutOrientation:(UIDeviceOrientation)orientation;
 
-/**
- *  更新DLNA 播放地址
- *  参数为 dlnaControl对象
- *  返回值 NO 为不可投屏状态
- */
-- (BOOL)dlnaMappingObject:(id)DLNAobj;
+/// 设置投屏对象 (投屏功能使用步骤：1、设置DLNAobj 2、收到DLNAobj设备列表回调后，设置投屏设备 3、DLNAobj初始化播放。如果播放过程中多个player使用对同一个DLNAobj，则DLNAobj需要重新初始化播放)
+/// @param DLNAobj 投屏VHDLNAControl对象
+/// 返回值  YES 可投屏，NO不可投屏
+- (BOOL)dlnaMappingObject:(VHDLNAControl *)DLNAobj;
 
-/**
- *  重连socket
- */
--(BOOL)reconnectSocket;
+/// 重连socket
+- (BOOL)reconnectSocket;
 
 ///设置音频输出设备
 + (void)audioOutput:(BOOL)inSpeaker;
 
-/**
- *  设置系统声音大小
- *  @param size float  [0.0~1.0]
- */
+/// 设置系统声音大小
+/// @param size 音量范围[0.0~1.0]
 + (void)setSysVolumeSize:(float)size;
 
-/**
- *  获取系统声音大小
- */
+/// 获取系统声音大小
 + (float)getSysVolumeSize;
 @end
 
 
 @protocol VHallMoviePlayerDelegate <NSObject>
+
 @optional
-/**
- *  视频预加载完成可以调用播放接口
- *  activeState 预加载完成时活动状态
- *  error 为空时频预加载完成
- */
-- (void)preLoadVideoFinish:(VHallMoviePlayer*)moviePlayer activeState:(VHMovieActiveState)activeState error:(NSError*)error;
 
-/**
- *  播放连接成功 
- */
-- (void)connectSucceed:(VHallMoviePlayer*)moviePlayer info:(NSDictionary*)info;
+/// 视频信息预加载完成回调，前提需使用方法"preLoadRoomWithParam"，收到此回调后，可以使用聊天、签到、问答、抽奖等功能，择机调用startPlay/startPlayback进行播放（可以实现在调用播放之前使用聊天等功能）
+/// @param moviePlayer 播放器实例
+/// @param activeState 活动状态
+/// @param error    非空即预加载成功
+- (void)preLoadVideoFinish:(VHallMoviePlayer *)moviePlayer activeState:(VHMovieActiveState)activeState error:(NSError*)error;
 
-/**
- *  缓冲开始回调
- */
-- (void)bufferStart:(VHallMoviePlayer*)moviePlayer info:(NSDictionary*)info;
+/// 播放连接成功回调，前提需使用方法"startPlay/startPlayback"，收到此回调后，可以使用聊天、签到、问答、抽奖等功能
+/// @param moviePlayer 播放器实例
+/// @param info 相关信息
+- (void)connectSucceed:(VHallMoviePlayer *)moviePlayer info:(NSDictionary *)info;
 
-/**
- *  缓冲结束回调
- */
--(void)bufferStop:(VHallMoviePlayer*)moviePlayer info:(NSDictionary*)info;
+/// 缓冲开始回调
+/// @param moviePlayer 播放器实例
+/// @param info 相关信息
+- (void)bufferStart:(VHallMoviePlayer *)moviePlayer info:(NSDictionary *)info;
 
-/**
- *  下载速率的回调
- *
- *  @param moviePlayer 播放器实例
- *  @param info        下载速率信息 单位kbps
- */
-- (void)downloadSpeed:(VHallMoviePlayer*)moviePlayer info:(NSDictionary*)info;
+/// 缓冲结束回调
+/// @param moviePlayer 播放器实例
+/// @param info 相关信息
+- (void)bufferStop:(VHallMoviePlayer *)moviePlayer info:(NSDictionary *)info;
 
-/**
- *  Streamtype
- *
- *  @param moviePlayer moviePlayer
- *  @param info        info
- */
-- (void)recStreamtype:(VHallMoviePlayer*)moviePlayer info:(NSDictionary*)info;
+/// 下载速率的回调
+/// @param moviePlayer 播放器实例
+/// @param info 下载速率信息，单位kbps，字典结构：{content：速度}
+- (void)downloadSpeed:(VHallMoviePlayer *)moviePlayer info:(NSDictionary *)info;
 
-/**
- *  播放时错误的回调
- *
- *  @param livePlayErrorType 直播错误类型
- */
-- (void)playError:(VHSaasLivePlayErrorType)livePlayErrorType info:(NSDictionary*)info;
+/// 视频流类型回调
+/// @param moviePlayer 播放器实例
+/// @param info 字典结构：{content：流类型(VHStreamType)}
+- (void)recStreamtype:(VHallMoviePlayer *)moviePlayer info:(NSDictionary *)info;
 
-/**
- *  视频活动状态回调
- *
- *  @param activeState  视频活动状态
- */
+/// 播放时错误的回调
+/// @param livePlayErrorType 直播错误类型
+/// @param info 具体错误信息  字典结构：{code:错误码，content:错误信息} (错误码以及对应含义请前往VhallConst.h查看)
+- (void)playError:(VHSaasLivePlayErrorType)livePlayErrorType info:(NSDictionary *)info;
+
+/// 当前活动状态回调
+/// @param activeState 活动状态
 - (void)ActiveState:(VHMovieActiveState)activeState;
 
-/**
- *  获取当前视频播放模式
- *
- *  @param playMode  视频播放模式
- VHMovieVideoPlayModeNone            = 0,    //不存在
- VHMovieVideoPlayModeMedia           = 1,    //单视频
- VHMovieVideoPlayModeTextAndVoice    = 2,    //文档＋声音
- VHMovieVideoPlayModeTextAndMedia    = 3,    //文档＋视频
- VHMovieVideoPlayModeVoice           = 4,    //单音频
- */
+/// 当前视频播放模式，以及是否为vr活动回调
+/// @param playMode 视频播放模式
+/// @param isVrVideo 是否为vr活动
 - (void)VideoPlayMode:(VHMovieVideoPlayMode)playMode isVrVideo:(BOOL)isVrVideo;
 
-/**
- *  获取当前视频支持的所有播放模式
- *
- *  @param playModeList 视频播放模式列表
- */
-- (void)VideoPlayModeList:(NSArray*)playModeList;
+/// 当前视频支持的播放模式列表回调
+/// @param playModeList VHMovieVideoPlayMode播放模式组合，如@[@(VHMovieVideoPlayModeMedia),@(VHMovieVideoPlayModeVoice)]
+- (void)VideoPlayModeList:(NSArray *)playModeList;
 
-/**
- *  该直播支持的清晰度列表
- *
- *  @param definitionList  支持的清晰度列表
- */
-- (void)VideoDefinitionList:(NSArray*)definitionList;
+/// 当前视频支持的清晰度列表回调
+/// @param definitionList VHDefinition清晰度组合，如@[@(VHDefinitionOrigin),@(VHDefinitionUHD),@(VHDefinitionHD)]
+- (void)VideoDefinitionList:(NSArray *)definitionList;
 
-/**
- *  主播开始推流消息
- *
- *  注意：H5和互动 活动 收到此消息后建议延迟 5s 开始播放
- */
+/// 直播开始推流消息 注意：H5和互动活动 收到此消息后建议延迟 5s 开始播放
 - (void)LiveStart;
-/**
- *  直播结束消息
- *
- *  直播结束消息
- */
+
+/// 直播结束消息
 - (void)LiveStoped;
 
-/**
- *  播主发布公告
- *
- *  播主发布公告消息
- */
+/// 发布公告的回调
+/// @param content 公告内容
+/// @param time 发布时间
 - (void)Announcement:(NSString*)content publishTime:(NSString*)time;
 
-/**
- *  是否允许举手申请上麦 回调。
- *  @param player         VHallMoviePlayer实例
- *  @param isInteractive  当前活动是否支持互动功能
- *  @param state          主持人是否允许举手
- */
+/// 当前活动是否允许举手申请上麦回调
+/// @param player 播放器实例
+/// @param isInteractive 当前活动是否支持互动功能
+/// @param state 主持人是否允许举手
 - (void)moviePlayer:(VHallMoviePlayer *)player isInteractiveActivity:(BOOL)isInteractive interactivePermission:(VHInteractiveState)state;
 
-/**
- *  主持人是否同意上麦申请回调
- *  @param player       VHallMoviePlayer实例
- *  @param attributes   参数 收到的数据
- *  @param error        错误回调 nil 同意上麦 不为空为不同意上麦
- */
+/// 主持人是否同意上麦申请回调
+/// @param player 播放器实例
+/// @param attributes 收到的数据
+/// @param error 错误回调 nil：同意上麦  非nil：不同意上麦
 - (void)moviePlayer:(VHallMoviePlayer *)player microInvitationWithAttributes:(NSDictionary *)attributes error:(NSError *)error;
 
-/**
- *  主持人邀请你上麦
- *  @param player       VHallMoviePlayer实例
- *  @param attributes   参数 收到的数据
- */
+/// 被主持人邀请上麦
+/// @param player 播放器实例
+/// @param attributes 收到的数据
 - (void)moviePlayer:(VHallMoviePlayer *)player microInvitation:(NSDictionary *)attributes;
 
-/**
- *  被踢出
- *
- *  @param player player
- *  @param isKickout 被踢出 取消踢出后需要重新进入
- */
+/// 被踢出
+/// @param player 播放器实例
+/// @param isKickout 被踢出 （取消踢出后需要重新进入）
 - (void)moviePlayer:(VHallMoviePlayer *)player isKickout:(BOOL)isKickout;
 
-/**
- *  主持人显示/隐藏文档
- *
- *  @param isHave  YES 此活动有文档演示
- *  @param isShow  YES 主持人显示观看端文档，NO 主持人隐藏观看端文档
- */
+/// 主持人显示/隐藏文档
+/// @param player 播放器实例
+/// @param isHave YES 此活动有文档演示
+/// @param isShow YES 主持人显示观看端文档，NO 主持人隐藏观看端文档
 - (void)moviePlayer:(VHallMoviePlayer *)player isHaveDocument:(BOOL)isHave isShowDocument:(BOOL)isShow;
 
-/**
-*  直播文档同步，直播文档有延迟，指定需要延迟的秒数，默认为直播缓冲时间
-*/
+/// 直播文档同步，直播文档有延迟，指定需要延迟的秒数 （默认为直播缓冲时间，即：realityBufferTime/1000.0）
+/// @param player 播放器实例
 - (NSTimeInterval)documentDelayTime:(VHallMoviePlayer *)player;
 
-#pragma mark - 点播
-/**
- *  statusDidChange
- *
- *  @param player player
- *  @param state  VHPlayerState
- */
-- (void)moviePlayer:(VHallMoviePlayer *)player statusDidChange:(VHPlayerState)state;
-
-/**
- *  currentTime
- *
- *  @param player player
- *  @param currentTime 回放当前播放时间点 1s 回调一次可用于UI刷新
- */
-- (void)moviePlayer:(VHallMoviePlayer*)player currentTime:(NSTimeInterval)currentTime;
-
-/**
- *  是否包含投屏功能
- *  * cast_screen 1有投屏功能 0没有投屏功能
- */
+/// 当前是否支持投屏功能
+/// @param player 播放器实例
+/// @param isCast_screen 1支持 0不支持
 - (void)moviePlayer:(VHallMoviePlayer *)player isCast_screen:(BOOL)isCast_screen;
 
-/**
- *  是否开启问答功能
- *  * cast_screen 1有问答功能 0没有问答功能
- */
+/// 播放器状态回调
+/// @param player 播放器实例
+/// @param state 播放器状态
+- (void)moviePlayer:(VHallMoviePlayer *)player statusDidChange:(VHPlayerState)state;
+
+/// 当前是否开启问答功能
+/// @param player 播放器实例
+/// @param isQuestion_status 1开启 0关闭
 - (void)moviePlayer:(VHallMoviePlayer *)player isQuestion_status:(BOOL)isQuestion_status;
+
+
+#pragma mark - 点播
+
+/// 当前播放时间回调
+/// @param player 播放器实例
+/// @param currentTime 当前播放时间点 1s回调一次，可用于UI刷新
+- (void)moviePlayer:(VHallMoviePlayer *)player currentTime:(NSTimeInterval)currentTime;
 
 @end

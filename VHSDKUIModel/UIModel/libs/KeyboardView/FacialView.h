@@ -37,7 +37,7 @@
 //
 //@property(strong, nonatomic) UIPageControl *facePageControl;
 
--(void)loadFacialView:(int)page size:(CGSize)size;
+//-(void)loadFacialView:(int)page size:(CGSize)size;
 
 -(void)loadFaceDic;
 

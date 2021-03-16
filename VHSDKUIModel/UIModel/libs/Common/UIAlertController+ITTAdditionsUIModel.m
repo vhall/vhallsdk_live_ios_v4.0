@@ -88,7 +88,7 @@
 + (UIViewController *)getCurrentVC
 {
     UIViewController *result = nil;
-    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
+    UIWindow * window = [[[UIApplication sharedApplication] delegate] window];
     if (window.windowLevel != UIWindowLevelNormal) {
         NSArray *windows = [[UIApplication sharedApplication] windows];
         for(UIWindow * tmpWin in windows) {

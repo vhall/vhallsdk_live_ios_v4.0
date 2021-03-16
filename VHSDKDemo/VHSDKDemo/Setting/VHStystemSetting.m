@@ -61,6 +61,10 @@ static VHStystemSetting *pub_sharedSetting = nil;
         _videoBitRate   = [standardUserDefaults integerForKey:@"VHbitRate"];              //发直播视频码率
         _audioBitRate   = [standardUserDefaults integerForKey:@"VHaudiobitRate"];              //发直播音频码率
         _videoCaptureFPS= [standardUserDefaults integerForKey:@"VHvideoCaptureFPS"];//发直播视频帧率 ［1～30］ 默认10
+        _live_nick_name = [standardUserDefaults valueForKey:@"live_nick_name"]; //发直播昵称
+        if(!_live_nick_name) {
+            _live_nick_name = @"";
+        }
         
         //观看设置
         _bufferTimes    = [standardUserDefaults integerForKey:@"VHbufferTimes"];          //RTMP观看缓冲时间
@@ -100,7 +104,7 @@ static VHStystemSetting *pub_sharedSetting = nil;
         }
         if(_email == nil || _email.length == 0)
         {
-            _email = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+            _email = [NSString stringWithFormat:@"%@@qq.com",[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
             if(_email == nil || _email.length == 0)
             {
                 _email = @"unknown";
@@ -136,6 +140,12 @@ static VHStystemSetting *pub_sharedSetting = nil;
         _pushResolution = (pushRe)?pushRe:@"3";
     }
     return self;
+}
+
+- (void)setLive_nick_name:(NSString *)live_nick_name {
+    _live_nick_name = live_nick_name;
+    [[NSUserDefaults standardUserDefaults] setValue:live_nick_name forKey:@"live_nick_name"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)setActivityID:(NSString*)activityID

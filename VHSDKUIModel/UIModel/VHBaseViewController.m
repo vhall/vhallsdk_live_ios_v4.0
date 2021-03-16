@@ -66,15 +66,38 @@
 {
     return _interfaceOrientation;
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
+//强制旋转屏幕方向
+- (void)forceRotateUIInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    VHLog(@"强制转屏开始");
+    _forceRotating = YES;
+    //方式一：
+    NSNumber *orientationUnknown = [NSNumber numberWithInt:0];
+    [[UIDevice currentDevice] setValue:orientationUnknown forKey:@"orientation"];
+    NSNumber *orientationTarget = [NSNumber numberWithInt:(int)orientation];
+    [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
+    _forceRotating = NO;
+    
+    //    //方式二：
+    ////    UIInterfaceOrientation unknow = UIInterfaceOrientationUnknown;
+    //    UIInterfaceOrientation val = orientation;
+    //    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+    ////        [[UIDevice currentDevice] performSelector:@selector(setOrientation:) withObject:@(unknow)];
+    //        [[UIDevice currentDevice] performSelector:@selector(setOrientation:) withObject:@(val)];
+    //        [UIViewController attemptRotationToDeviceOrientation];
+    //    }
+    //    SEL selector = NSSelectorFromString(@"setOrientation:");
+    //    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+    //    [invocation setSelector:selector];
+    ////    [invocation setTarget:[UIDevice currentDevice]];
+    ////    [invocation setArgument:&unknow atIndex:2];
+    //    [invocation invoke];
+    //    [invocation setArgument:&val atIndex:2];
+    //    [invocation invoke];
+    VHLog(@"强制转屏结束");
 }
-*/
+
 
 - (void)showMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay
 {
@@ -83,7 +106,7 @@
     hud.label.numberOfLines = 0;
     hud.label.text = msg;
     hud.margin = 10.f;
-    //            hud.yOffset = 150.f;
+    //hud.yOffset = 150.f;
     hud.removeFromSuperViewOnHide = YES;
     [hud hideAnimated:YES afterDelay:delay];
 }
@@ -109,7 +132,7 @@
     [hud hideAnimated:YES afterDelay:delay];
 }
 
--(void) showRendererMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay
+- (void) showRendererMsg:(NSString*)msg afterDelay:(NSTimeInterval)delay
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeText;

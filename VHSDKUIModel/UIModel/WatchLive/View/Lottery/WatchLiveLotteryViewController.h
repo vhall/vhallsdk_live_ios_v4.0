@@ -13,9 +13,8 @@
 @interface WatchLiveLotteryViewController : UIViewController
 
 @property (nonatomic, strong) VHallLottery * lottery;
-@property (nonatomic, assign) BOOL lotteryOver;
+@property (nonatomic, strong) VHallStartLotteryModel * startLotteryModel;
 @property (nonatomic, strong) VHallEndLotteryModel * endLotteryModel;
 
-- (void)destory;
 
 @end

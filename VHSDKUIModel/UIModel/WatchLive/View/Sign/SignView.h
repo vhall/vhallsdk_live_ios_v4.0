@@ -11,6 +11,7 @@
 
 
 @interface SignView : UIView
++ (void)showSignWithTitle:(NSString *)title btnClickedBlock:(BOOL(^)())block;
 + (void)showSignBtnClickedBlock:(BOOL(^)())block;
 + (void)close;
 + (void)remainingTime:(NSTimeInterval)remainingTime;

@@ -7,11 +7,14 @@
 //
 
 #import "WatchLiveLotteryTableViewCell.h"
+#import "UIImageView+WebCache.h"
+@interface WatchLiveLotteryTableViewCell ()
+@property (weak, nonatomic) IBOutlet UIImageView *headIcon;
+@property (weak, nonatomic) IBOutlet UILabel *nickName;
+
+@end
 
 @implementation WatchLiveLotteryTableViewCell
-{
-    __weak IBOutlet UILabel *lblShow;
-}
 
 - (id)init
 {
@@ -23,18 +26,14 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
+- (void)setModel:(VHallLotteryResultModel *)model {
+    _model = model;
+    self.nickName.text = _model.nick_name;
+    [self.headIcon sd_setImageWithURL:[NSURL URLWithString:model.avatar] placeholderImage:BundleUIImage(@"head50")];
 }
 
-- (void)layoutSubviews
-{
-    lblShow.text = _model.nick_name;
-}
 
 @end

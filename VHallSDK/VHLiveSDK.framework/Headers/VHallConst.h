@@ -20,21 +20,20 @@ typedef NS_ENUM(NSInteger,VHLogType) {
 
 /**
  * 发直播状态
- *
- * 当kLiveStatusPushConnectError时，content代表出错原因 及具体错误码查看下方错误码定义
+ * 错误详细信息请查看回调info中的code与content信息，对应下方错误码表
  */
 typedef NS_ENUM(NSInteger,VHLiveStatus)
 {
     VHLiveStatusNone                    = -1,
-    VHLiveStatusPushConnectSucceed      = 0,    //直播连接成功
-    VHLiveStatusPushConnectError        = 1,      //直播连接失败
-    VHLiveStatusParamError              = 6,            //参数错误
-    VHLiveStatusSendError               = 8,             //直播发送数据错误
-    VHLiveStatusUploadSpeed             = 9,           //直播上传速率
+    VHLiveStatusPushConnectSucceed      = 0,        //直播连接成功
+    VHLiveStatusPushConnectError        = 1,        //直播连接失败
+    VHLiveStatusParamError              = 6,        //参数错误
+    VHLiveStatusSendError               = 8,        //直播发送数据错误
+    VHLiveStatusUploadSpeed             = 9,        //直播上传速率
     VHLiveStatusAudioRecoderError       = 24,     //音频采集失败，提示用户查看权限或者重新推流，切记此事件会回调多次，直到音频采集正常为止
-    VHLiveStatusUploadNetworkException  = 14,//发起端网络环境差
+    VHLiveStatusUploadNetworkException  = 14,       //发起端网络环境差
     VHLiveStatusUploadNetworkOK         = 15,       //发起端网络环境恢复正常
-    VHLiveStatusGetUrlError             = 99,           //获取推流地址失败
+    VHLiveStatusGetUrlError             = 99,       //获取推流地址失败
 };
 
 /**
@@ -61,14 +60,15 @@ typedef NS_ENUM(NSInteger,VHVideoResolution)
 #pragma mark - 观看端常量定义
 /**
  * 观看端错误事件
- * 当VHLivePlayGetUrlError时， content代表出错原因 及具体错误码查看下方错误码定义
+ * 错误详细信息请查看回调info中的code与content信息，对应下方错误码表
+ *
  */
 typedef NS_ENUM(NSInteger,VHSaasLivePlayErrorType)
 {
     VHSaasLivePlayErrorNone                 = -1,
     VHSaasLivePlayParamError                = 6,      //参数错误
     VHSaasLivePlayRecvError                 = 7,       //接受数据错误
-    VHSaasLivePlayCDNConnectError           = 3, //CDN链接失败
+    VHSaasLivePlayCDNConnectError           = 3,      //CDN链接失败
     VHSaasVodPlayError                      = 98,     //点播播放器错误信息
     VHSaasLivePlayGetUrlError               = 99,     //获取活动信息失败
 };
@@ -78,7 +78,7 @@ typedef NS_ENUM(NSInteger,VHSaasLivePlayErrorType)
  */
 typedef NS_ENUM(NSInteger,VHRTMPMovieScalingMode)
 {
-    VHRTMPMovieScalingModeNone          = 0,    //填充满video显示view
+    VHRTMPMovieScalingModeNone          = 0,    //填充满video显示view，可能变形
     VHRTMPMovieScalingModeAspectFit     = 1,    //在保持长宽比的前提下，缩放图片，使得图片在容器内完整显示出来 可能留有黑边
     VHRTMPMovieScalingModeAspectFill    = 2,    //在保持长宽比的前提下，缩放图片，使图片充满容器
 };
@@ -165,6 +165,15 @@ typedef NS_ENUM(NSInteger,VHInteractiveEvent) {
     VHInteractiveEventCamera
 };
 
+/**
+ *  当前活动直播类型
+ */
+typedef NS_ENUM(NSInteger,VHWebinarLiveType) {
+    VHWebinarLiveType_Audio = 1,        //音频直播
+    VHWebinarLiveType_Video = 2,        //视频直播
+    VHWebinarLiveType_Interactive = 3   //互动直播
+};
+
 
 #endif /* VHallConst_h */
 
@@ -184,7 +193,7 @@ typedef NS_ENUM(NSInteger,VHInteractiveEvent) {
 4010 | 不支持的音频采样率（预留，暂时未使用）
 4011 | 欠费
 
-以下是所有网络接口请求错误的错误码及错误内容
+以下是部分网络接口请求错误码及错误内容
 10010 | 活动不存在
 10011 | 不是该平台下的活动
 10017 | 活动id 不能为空
@@ -215,33 +224,38 @@ typedef NS_ENUM(NSInteger,VHInteractiveEvent) {
 10413 | 获取条目最多为50
 10501 | 用户不存在
 10502 | 登陆密码不正确
+10603 | 15秒内不可提问
 10806 | 内容不能为空
 10807 | 用户id不能为空
 10808 | 当前用户未参会
+10813 | 签名ID不能为空
+10814 | 用户名称不能为空
+10815 | 当前用户已签到
+ 
  
 以下是所有业务逻辑错误
+20000 | 当前活动不支持此功能
 20001 | AppKey 或 SecretKey 未设置
-20002 | 后台接口api错误
 20003 | 当前活动未开始
 20004 | 当前活动已结束
 20005 | 当前活动正在直播
 20006 | 当前活动已为回放/点播
 20007 | 当前活动状态未知
 20008 | 活动id为空
-20009 | 未参会
+20009 | 活动尚未连接成功
 20010 | 未登录状态下email name为空
 20011 | 发直播token为空
-20012 | 结束活动失败
-20013 | 未登录
+20013 | 请先登录
 20014 | 未获取到抽奖ID
 20015 | 未获取到签到ID
 20016 | 签到已结束
-20017 | 未获取到问卷ID
 20018 | 请求参数错误
-20019 | 正在结束活动请稍等
 20020 | 消息中含有禁用关键字
-20021 | 被禁言
+20021 | 您已被禁言
+20022 | 服务器维护中
+20023 | 当前已在其他设备观看
  
+
 以下是网络错误信息
 30001 | 请求参数错误
 30002 | 网络错误

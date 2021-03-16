@@ -5,12 +5,13 @@
 //  Created by liwenlong on 15/10/9.
 //  Copyright (c) 2015年 vhall. All rights reserved.
 //
-
+//发起直播
 #import "VHBaseViewController.h"
 
 @interface LaunchLiveViewController : VHBaseViewController
 @property(nonatomic,copy)   NSString        *roomId;
 @property(nonatomic,copy)   NSString        *token;
+@property(nonatomic,copy)   NSString        *nick_name; //昵称
 @property(nonatomic,assign) NSInteger       videoBitRate;
 @property(nonatomic,assign) NSInteger       audioBitRate;
 @property(nonatomic,assign) NSInteger       videoCaptureFPS;

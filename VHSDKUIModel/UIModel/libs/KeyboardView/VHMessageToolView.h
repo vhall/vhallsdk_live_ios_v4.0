@@ -20,26 +20,15 @@
 - (void)didSendText:(NSString *)text;
 
 @end
-
-@interface VHMessageToolView : UIView<UITextViewDelegate>
-@property (nonatomic,strong) UIView *activityButtomView; //当前底部表情键盘view
+@interface VHMessageToolView : UIView <UITextViewDelegate>
 
 @property (weak, nonatomic) id<VHMessageToolBarDelegate> delegate;
 
-@property(nonatomic,assign) int  maxLength; //最大字符个数，默认70
-
-//最小输入工具高度
-+(CGFloat)defaultHeight;
+@property(nonatomic,assign) int  maxLength; //最大输入字数，默认70
 
 //结束输入（包括文字输入和表情输入）
 - (BOOL)endEditing:(BOOL)force;
 
-//开始文本输入
+//激活键盘，开始文本输入
 -(void)beginTextViewInView;
-
-//重置聊天框高度
-- (void)resetMessageTextHeight;
-
-//更新键盘frame
-- (void)updateFrame;
 @end

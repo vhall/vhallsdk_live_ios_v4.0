@@ -11,6 +11,7 @@
 #import "VHallMoviePlayer.h"
 
 @class VHallActivityModel;
+
 @interface VHallBasePlugin : NSObject
 
 /**
@@ -31,7 +32,7 @@
 - (instancetype)initWithMoviePlayer:(VHallMoviePlayer*)moviePlayer;
 
 /**
-* 开始活动通知
-*/
+ * 开始活动通知
+ */
 - (void)startActivity:(NSNotification *)notify;
 @end

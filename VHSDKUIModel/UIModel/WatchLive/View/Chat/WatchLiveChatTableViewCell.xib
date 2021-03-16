@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17124"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WatchLiveChatCell" rowHeight="144" id="KGk-i7-Jjw" customClass="WatchLiveChatTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WatchLiveChatCell" rowHeight="104" id="KGk-i7-Jjw" customClass="WatchLiveChatTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="405" height="104"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                <rect key="frame" x="0.0" y="0.0" width="405" height="104"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NickName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OK1-ho-IrX">
-                        <rect key="frame" x="58" y="3" width="139" height="17"/>
-                        <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="113" id="dvF-Ib-LGW"/>
-                        </constraints>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NickName" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OK1-ho-IrX">
+                        <rect key="frame" x="58" y="3" width="224" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -37,11 +34,8 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="FNi-oH-Ggf">
-                        <rect key="frame" x="58" y="25" width="254" height="34"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="34" id="rQE-nh-e5c"/>
-                        </constraints>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="FNi-oH-Ggf" customClass="MLEmojiLabel">
+                        <rect key="frame" x="58" y="80" width="339" height="14"/>
                         <attributedString key="attributedText">
                             <fragment content="Content">
                                 <attributes>
@@ -54,34 +48,46 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2020-04-00 00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nbe-a5-yeT">
-                        <rect key="frame" x="204.5" y="6" width="108.5" height="12"/>
+                        <rect key="frame" x="289.5" y="6" width="108.5" height="12"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="108.5" id="pk3-Ih-pwP"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXt-yC-Gxc">
+                        <rect key="frame" x="58" y="30" width="339" height="40"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.20941152441887445" green="0.68294812152807394" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="FNi-oH-Ggf" firstAttribute="top" secondItem="OK1-ho-IrX" secondAttribute="bottom" constant="5" id="0IF-bX-HuE"/>
+                    <constraint firstItem="FNi-oH-Ggf" firstAttribute="leading" secondItem="OK1-ho-IrX" secondAttribute="leading" id="1Lp-NL-4od"/>
                     <constraint firstItem="nbe-a5-yeT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="5XI-nL-cn1"/>
                     <constraint firstItem="nbe-a5-yeT" firstAttribute="leading" secondItem="OK1-ho-IrX" secondAttribute="trailing" constant="7.5" id="A8L-j0-R9u"/>
-                    <constraint firstItem="bSh-Qw-lYK" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="H2u-wr-vEM"/>
+                    <constraint firstItem="KXt-yC-Gxc" firstAttribute="leading" secondItem="OK1-ho-IrX" secondAttribute="leading" id="BdN-DE-rQJ"/>
                     <constraint firstAttribute="trailing" secondItem="nbe-a5-yeT" secondAttribute="trailing" constant="7" id="HzQ-2m-5vJ"/>
-                    <constraint firstItem="FNi-oH-Ggf" firstAttribute="leading" secondItem="bSh-Qw-lYK" secondAttribute="trailing" constant="8" id="Rwy-Iy-jSz"/>
+                    <constraint firstItem="FNi-oH-Ggf" firstAttribute="top" secondItem="KXt-yC-Gxc" secondAttribute="bottom" constant="10" id="Jne-BT-K1p"/>
+                    <constraint firstItem="KXt-yC-Gxc" firstAttribute="top" secondItem="OK1-ho-IrX" secondAttribute="bottom" constant="10" id="Xtj-Qn-iYh"/>
                     <constraint firstItem="OK1-ho-IrX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="3" id="Z6y-fa-ebV"/>
+                    <constraint firstAttribute="bottom" secondItem="FNi-oH-Ggf" secondAttribute="bottom" constant="10" id="fiW-v9-ddb"/>
                     <constraint firstItem="bSh-Qw-lYK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="hCw-WR-0cm"/>
+                    <constraint firstAttribute="trailing" secondItem="KXt-yC-Gxc" secondAttribute="trailing" constant="8" id="rgC-dH-WRq"/>
+                    <constraint firstItem="bSh-Qw-lYK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="tfR-8e-73f"/>
                     <constraint firstItem="OK1-ho-IrX" firstAttribute="leading" secondItem="bSh-Qw-lYK" secondAttribute="trailing" constant="8" id="ves-Dr-rQT"/>
                     <constraint firstAttribute="trailing" secondItem="FNi-oH-Ggf" secondAttribute="trailing" constant="8" id="zPS-1r-KAg"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="lblContext" destination="FNi-oH-Ggf" id="HDH-4i-N6G"/>
+                <outlet property="lblContext" destination="FNi-oH-Ggf" id="2d1-Ov-Z5l"/>
                 <outlet property="lblNickName" destination="OK1-ho-IrX" id="p16-S7-jya"/>
                 <outlet property="lblTime" destination="nbe-a5-yeT" id="bUG-84-ibh"/>
                 <outlet property="pic" destination="bSh-Qw-lYK" id="CUA-4d-deD"/>
+                <outlet property="replayTop" destination="Xtj-Qn-iYh" id="wV1-zv-mkg"/>
+                <outlet property="replyContext" destination="KXt-yC-Gxc" id="XfE-Vk-UkZ"/>
             </connections>
-            <point key="canvasLocation" x="496" y="278"/>
+            <point key="canvasLocation" x="458.39999999999998" y="297.75112443778113"/>
         </tableViewCell>
     </objects>
     <resources>

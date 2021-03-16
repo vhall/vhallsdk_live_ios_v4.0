@@ -67,6 +67,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 #define VHLog(...)              NSLog(__VA_ARGS__)
+
 #define VH_SH                   ((VHScreenWidth<VHScreenHeight)?VHScreenHeight:VHScreenWidth)
 #define VH_SW                   ((VHScreenWidth<VHScreenHeight)?VHScreenWidth:VHScreenHeight)
 #define VHScreenHeight          ([UIScreen mainScreen].bounds.size.height)
@@ -79,6 +80,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define MakeColor(r,g,b,a)      ([UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a])
 #define MakeColorRGB(hex)       ([UIColor colorWithRed:((hex>>16)&0xff)/255.0 green:((hex>>8)&0xff)/255.0 blue:(hex&0xff)/255.0 alpha:1.0])
 #define MakeColorRGBA(hex,a)    ([UIColor colorWithRed:((hex>>16)&0xff)/255.0 green:((hex>>8)&0xff)/255.0 blue:(hex&0xff)/255.0 alpha:a])
-#define MessageTool_SendBtnColor MakeColor(153,153,153,1.0f)
+
 
 #endif /* UIModel_PrefixHeader_h */

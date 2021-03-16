@@ -5,59 +5,39 @@
 //  Created by vhall on 17/2/14.
 //  Copyright © 2017年 vhall. All rights reserved.
 //
-
+// 签到
+// !!!!:注意实例方法使用时机，看直播/回放————>在收到"播放连接成功回调"或"视频信息预加载成功回调"以后使用。
 #import <Foundation/Foundation.h>
 #import "VHallBasePlugin.h"
 
 @protocol VHallSignDelegate <NSObject>
-/**
- *  开始签到
- *
- *  开始签到消息
- */
+
+/// 收到主持人发起签到消息
 - (void)startSign;
 
 @optional
-/**
- *  距签到结束剩余时间
- *
- *  距签到结束剩余时间
- */
+
+/// 距签到结束剩余时间，每秒会回调一次
+/// @param remainingTime 剩余倒计时
 - (void)signRemainingTime:(NSTimeInterval)remainingTime;
-/**
- *  签到结束
- *
- *  签到结束消息
- */
+
+/// 签到结束 （签到剩余倒计时结束后回调）
 - (void)stopSign;
 
 @end
 
 @interface VHallSign : VHallBasePlugin
 
-@property (nonatomic, assign) id <VHallSignDelegate> delegate;
-/**
- *  签到
- *  isStop 成功后是否结束倒计时 YES结束(则不执行签到结束的回调) NO等待倒计时结束
- *  成功回调成功Block
- *  失败回调失败Block
- *  		失败Block中的字典结构如下：
- * 		key:code 表示错误码
- *		value:content 表示错误信息
- * 10010 	活动不存在
- * 10011 	不是该平台下的活动
- * 10017 	活动id 不能为空
- * 10807 	用户id不能为空
- * 10813 	签名ID不能为空
- * 10814 	用户名称不能为空
- * 10815 	当前用户已签到
- */
-- (BOOL)signSuccessIsStop:(BOOL)isStop success:(void(^)())success failed:(void (^)(NSDictionary* failedData))reslutFailedCallback;
+@property (nonatomic, copy) NSString *title;     ///<签到标题 (主持人设置发起签到设置的标题，默认为"主持人发起了签到")
 
-/**
- *  取消签到
- *
- *  取消签到
- */
+@property (nonatomic, weak) id <VHallSignDelegate> delegate;
+
+/// 观众确定签到
+/// @param isStop isStop 成功后是否结束倒计时 YES：结束(则不执行签到结束的回调) NO：不结束（会收到签到结束的回调）
+/// @param success 成功回调成功Block
+/// @param reslutFailedCallback 失败回调失败Block 字典结构：{code：错误码，content：错误信息}
+- (BOOL)signSuccessIsStop:(BOOL)isStop success:(void(^)(void))success failed:(void (^)(NSDictionary* failedData))reslutFailedCallback;
+
+/// 观众取消签到
 - (void)cancelSign;
 @end

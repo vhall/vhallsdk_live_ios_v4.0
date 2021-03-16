@@ -23,7 +23,7 @@
     NSMutableArray * _inavBtns;//互动设置btns
 
     VHSettingTextFieldItem *item00,*item01,*item02,*item03;
-    VHSettingTextFieldItem *item10,*item11,*item12,*item13,*item14,*item15;
+    VHSettingTextFieldItem *item10,*item11,*item12,*item13,*item14,*item15,*item16;
     VHSettingTextFieldItem *item20,*item21;
     VHSettingTextFieldItem *item30;
 
@@ -218,10 +218,11 @@
     item14.text =  [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.videoCaptureFPS];
     item15 = [VHSettingTextFieldItem  itemWithTitle:@"音频码率(kpbs)"];
     item15.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.audioBitRate];
-    VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item10,item11,item12,item13,item14,item15]];
+    item16 = [VHSettingTextFieldItem  itemWithTitle:@"主播昵称"];
+    item16.text = DEMO_Setting.live_nick_name;
+    VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item10,item11,item12,item13,item14,item15,item16]];
     group.headerTitle = @"发直播设置";
     [self.groups addObject:group];
-    
 }
 
 -(void)setupGroup2
@@ -277,35 +278,35 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VHSettingGroup *group=self.groups [indexPath.section];
-    if(indexPath.section == 1 && indexPath.row == group.items.count)
+    if(indexPath.section == 1)
     {
-        static   NSString *Identifier = @"noiseSwitchCell";
-        UITableViewCell *noiseSwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
-        if (noiseSwitchcell == nil)
-            noiseSwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
-        _noiseSwitch.on = DEMO_Setting.isOpenNoiseSuppresion;
-        noiseSwitchcell.textLabel.text = @"  音频降噪";
-        noiseSwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
-        _noiseSwitch.left = self.view.width - 60;
-        _noiseSwitch.top = 10;
-        [noiseSwitchcell.contentView addSubview:_noiseSwitch];
-        
-        return noiseSwitchcell;
-    }
-    else if(indexPath.section == 1 && indexPath.row == group.items.count+1)
-    {
-        static   NSString *Identifier = @"beautifySwitchcell";
-        UITableViewCell *beautifySwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
-        if (beautifySwitchcell == nil)
-            beautifySwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
-        _beautifySwitch.on = DEMO_Setting.beautifyFilterEnable;
-        beautifySwitchcell.textLabel.text = @"  美颜";
-        beautifySwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
-        _beautifySwitch.left = self.view.width - 60;
-        _beautifySwitch.top = 10;
-        [beautifySwitchcell.contentView addSubview:_beautifySwitch];
-        
-        return beautifySwitchcell;
+        if(indexPath.row == group.items.count) { //音频降噪
+            static   NSString *Identifier = @"noiseSwitchCell";
+            UITableViewCell *noiseSwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
+            if (noiseSwitchcell == nil)
+                noiseSwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
+            _noiseSwitch.on = DEMO_Setting.isOpenNoiseSuppresion;
+            noiseSwitchcell.textLabel.text = @"  音频降噪";
+            noiseSwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
+            _noiseSwitch.left = self.view.width - 60;
+            _noiseSwitch.top = 10;
+            [noiseSwitchcell.contentView addSubview:_noiseSwitch];
+            
+            return noiseSwitchcell;
+        }else if (indexPath.row == group.items.count + 1) { //美颜
+            static   NSString *Identifier = @"beautifySwitchcell";
+            UITableViewCell *beautifySwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
+            if (beautifySwitchcell == nil)
+                beautifySwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
+            _beautifySwitch.on = DEMO_Setting.beautifyFilterEnable;
+            beautifySwitchcell.textLabel.text = @"  美颜";
+            beautifySwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
+            _beautifySwitch.left = self.view.width - 60;
+            _beautifySwitch.top = 10;
+            [beautifySwitchcell.contentView addSubview:_beautifySwitch];
+            
+            return beautifySwitchcell;
+        }
     }
     else if(indexPath.section == 3 && indexPath.row == 0)
     {
@@ -572,6 +573,11 @@
             {
                  DEMO_Setting.audioBitRate = [text integerValue];
                  item15.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.audioBitRate];
+            }
+            case 6:
+            {
+                 DEMO_Setting.live_nick_name = text;
+                 item15.text = [NSString stringWithFormat:@"%@",DEMO_Setting.live_nick_name];
             }
                 break;
             default:

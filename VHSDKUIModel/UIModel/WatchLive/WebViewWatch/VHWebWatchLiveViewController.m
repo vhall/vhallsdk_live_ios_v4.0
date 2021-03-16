@@ -11,6 +11,14 @@
 #import <WebKit/WebKit.h>
 #import <VHLiveSDK/VHallApi.h>
 
+//旧版控制台
+//#define WebWatchHost @"http://live.vhall.com/"  //正式环境
+
+//新版控制台
+//#define WebWatchHost @"https://t-webinar.e.vhall.com/v3/lives/watch/"  //测试环境
+#define WebWatchHost @"https://live.vhall.com/v3/lives/watch/"  //正式环境
+
+
 @interface VHWebWatchLiveViewController () <WKUIDelegate>
 /** 观看地址 */
 @property (nonatomic, strong) NSString *watchUrlStr;
@@ -50,7 +58,7 @@
 
 //加载url
 - (void)loadUrl {
-    self.watchUrlStr = [NSString stringWithFormat:@"http://live.vhall.com/%@",self.roomId];
+    self.watchUrlStr = [NSString stringWithFormat:@"%@%@",WebWatchHost,self.roomId];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.watchUrlStr] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.f];
     [self.webView loadRequest:request];

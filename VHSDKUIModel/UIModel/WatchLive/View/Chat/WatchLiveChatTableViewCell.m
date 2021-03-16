@@ -16,9 +16,9 @@
     __weak IBOutlet UIImageView *pic;
     __weak IBOutlet UILabel *lblNickName;
     __weak IBOutlet UILabel *lblTime;
-    __weak IBOutlet UILabel *lblContext;
-    MLEmojiLabel *_textLabel;
-    UIImage *image;
+    __weak IBOutlet MLEmojiLabel *lblContext;
+    __weak IBOutlet UILabel *replyContext;
+    __weak IBOutlet NSLayoutConstraint *replayTop;
 }
 
 - (id)init
@@ -31,45 +31,20 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
-    image = nil;
-      [self layoutIfNeeded];
-    if(!_textLabel)
-    {
-        _textLabel = [MLEmojiLabel new];
-        _textLabel.numberOfLines = 0;
-        
-        _textLabel.font = lblContext.font;
-        _textLabel.adjustsFontSizeToFitWidth=YES;
-        _textLabel.minimumScaleFactor = 0.3;
-        _textLabel.backgroundColor = [UIColor clearColor];
-        _textLabel.lineBreakMode = NSLineBreakByCharWrapping;
-        _textLabel.isNeedAtAndPoundSign = NO;
-        _textLabel.textColor = [UIColor blackColor];
-        _textLabel.customEmojiRegex = CustomEmojiRegex;
-        _textLabel.customEmojiPlistName = CustomEmojiPlistName;
-        _textLabel.customEmojiBundleName = BundleName;
-        _textLabel.userInteractionEnabled=NO;
-        _textLabel.disableThreeCommon = NO;
-        _textLabel.frame = lblContext.frame;
-        [self.contentView addSubview:_textLabel];
-        lblContext.hidden = YES;
-    }
-//    _textLabel.text = @"[惊讶]";
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
-- (void)layoutSubviews
-{
-    if(!_model) return;
     
-    _textLabel.top = 20;
-    _textLabel.width = VH_SW - 60;
+    lblContext.minimumScaleFactor = 0.3;
+    lblContext.lineBreakMode = NSLineBreakByCharWrapping;
+    lblContext.isNeedAtAndPoundSign = NO;
+    lblContext.textColor = [UIColor blackColor];
+    lblContext.customEmojiRegex = CustomEmojiRegex;
+    lblContext.customEmojiPlistName = CustomEmojiPlistName;
+    lblContext.customEmojiBundleName = BundleName;
+    lblContext.userInteractionEnabled=NO;
+    lblContext.disableThreeCommon = NO;
+}
+
+- (void)setModel:(VHallChatModel *)model {
+    _model = model;
     if([_model isKindOfClass:[VHallCustomMsgModel class]])
     {
         VHallCustomMsgModel *model = (VHallCustomMsgModel *)_model;
@@ -78,29 +53,34 @@
         lblNickName.textColor = [UIColor redColor];
         lblTime.text = model.time;
         //内容
-        _textLabel.text = [model.jsonstr stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        lblContext.text = [model.jsonstr stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         
-//        [_textLabel sizeToFit];
-//        _textLabel.frame = lblContext.frame;
-    }
-    else{
+        replayTop.constant = 0;
+        replyContext.text = @"";
+    } else {
         [pic sd_setImageWithURL:[NSURL URLWithString:_model.avatar] placeholderImage:BundleUIImage(@"head50")];
         lblNickName.text = [_model.user_name stringByAppendingFormat:@"[%@-%ld]%@",_model.role,(long)_model.role_name,[_model.account_id isEqualToString:[VHallApi currentUserID]]?@"(myself)":@""];
         lblTime.text = _model.time;
         lblNickName.textColor = [UIColor blackColor];
-        //内容
-        [_textLabel setText:[NSString stringWithFormat:@"%@%@",_model.text?_model.text:@"",
-                             _model.imageUrls.count>0? [_model.imageUrls componentsJoinedByString:@";"]:@""]];
-        if([_model isKindOfClass:[VHallChatModel class]] && _model.replyMsg)
-            [_textLabel setText:[NSString stringWithFormat:@"回复 %@：%@",_model.replyMsg.user_name,_model.text]];
-        if([_model isKindOfClass:[VHCommentModel class]] && _model.replyMsg)
-                   [_textLabel setText:[NSString stringWithFormat:@"回复 %@：%@",_model.replyMsg.user_name,_model.text]];
+        NSString *contextText = [NSString stringWithFormat:@"%@%@",_model.text?_model.text:@"",_model.imageUrls.count>0? [_model.imageUrls componentsJoinedByString:@";"]:@""];
+        //聊天
+        if(_model.replyMsg) { //回复
+            replayTop.constant = 10;
+            NSString *string = [NSString stringWithFormat:@"%@%@",_model.replyMsg.text ?_model.replyMsg.text:@"",_model.replyMsg.imageUrls.count>0? [_model.replyMsg.imageUrls componentsJoinedByString:@";"]:@""];
+            replyContext.text = [NSString stringWithFormat:@"%@：%@",_model.replyMsg.user_name,string];
+            [lblContext setText:[NSString stringWithFormat:@"回复：%@",contextText]];
+        }else { //非回复
+            replayTop.constant = 0;
+            replyContext.text = @"";
+            lblContext.text = contextText;
+        }
         
-//        NSLog(@"************ %@",_model.text);
-        
-//        [_textLabel sizeToFit];
-//        _textLabel.frame = lblContext.frame;
+//        //评论
+//        if([_model isKindOfClass:[VHCommentModel class]] && _model.replyMsg) {
+//            [lblContext setText:[NSString stringWithFormat:@"回复 %@：%@",_model.replyMsg.user_name,_model.text]];
+//        }
     }
 }
+
 
 @end

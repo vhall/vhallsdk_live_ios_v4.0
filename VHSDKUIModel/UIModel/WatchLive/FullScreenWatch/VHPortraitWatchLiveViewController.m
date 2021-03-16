@@ -74,9 +74,9 @@
     [self configUI];
     [self configFrame];
     //方式一：预加载方式
-    [self.moviePlayer preLoadRoomWithParam:self.playParam];
+//    [self.moviePlayer preLoadRoomWithParam:self.playParam];
     //方式二：非预加载方式
-//    [self startPlayLive];
+    [self startPlayLive];
 }
 
 - (void)startPlayLive {
@@ -241,7 +241,7 @@
  *  @param livePlayErrorType 直播错误类型
  */
 - (void)playError:(VHSaasLivePlayErrorType)livePlayErrorType info:(NSDictionary*)info {
-    NSLog(@"播放时错误的回调---info = %@",info);
+    NSLog(@"播放时错误的回调livePlayErrorType = %zd---info = %@",livePlayErrorType,info);
     [MBProgressHUD hideHUDForView:self.liveVideoContentView animated:YES];
     NSString *errorStr = info[@"content"];
     [UIAlertController showAlertControllerTitle:@"提示" msg:errorStr btnTitle:@"确定" callBack:nil];
@@ -432,19 +432,19 @@
 /**
  * 收到上下线消息
  */
-- (void)reciveOnlineMsg:(NSArray *)msgs {
+- (void)reciveOnlineMsg:(NSArray <VHallOnlineStateModel *> *)msgs {
     [self.decorateView receiveMessage:msgs];
 }
 /**
  * 收到聊天消息
  */
-- (void)reciveChatMsg:(NSArray *)msgs {
+- (void)reciveChatMsg:(NSArray <VHallChatModel *> *)msgs {
     [self.decorateView receiveMessage:msgs];
 }
 /**
  * 收到自定义消息
  */
-- (void)reciveCustomMsg:(NSArray *)msgs {
+- (void)reciveCustomMsg:(NSArray <VHallCustomMsgModel *> *)msgs {
     [self.decorateView receiveMessage:msgs];
 }
 
@@ -597,11 +597,12 @@
     {
         _playParam = [[NSMutableDictionary alloc]init];
         _playParam[@"id"] =  _roomId;
-        _playParam[@"name"] = [UIDevice currentDevice].name;
-        _playParam[@"email"] = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         if (_kValue && _kValue.length>0) {
             _playParam[@"pass"] = _kValue;
         }
+//        _playParam[@"name"] = [UIDevice currentDevice].name;
+//        _playParam[@"email"] = [NSString stringWithFormat:@"%@@qq.com",[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
+
     }
     return _playParam;
 }

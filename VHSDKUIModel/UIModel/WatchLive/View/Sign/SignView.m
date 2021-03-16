@@ -8,7 +8,7 @@
 
 #import "SignView.h"
 static SignView *g_signView = nil;
-
+static NSString *g_signTitle = @"";
 typedef BOOL(^BtnClickedBlock)();
 
 
@@ -40,6 +40,11 @@ typedef BOOL(^BtnClickedBlock)();
     }
     UIWindow *win=[UIApplication sharedApplication].windows[0];
     [win addSubview:g_signView];
+}
+
++ (void)showSignWithTitle:(NSString *)title btnClickedBlock:(BOOL(^)())block {
+    g_signTitle = title;
+    [self showSignBtnClickedBlock:block];
 }
 
 + (void)close
@@ -95,10 +100,10 @@ typedef BOOL(^BtnClickedBlock)();
         [btn addTarget:self action:@selector(closeView) forControlEvents:UIControlEventTouchUpInside];
         [v1 addSubview:btn];
         
-        UILabel *info = [[UILabel alloc]initWithFrame:CGRectMake(0,20, v1.width, 15)];
-        info.text = @"主持人发起了签到";
+        UILabel *info = [[UILabel alloc]initWithFrame:CGRectMake(0,15, v1.width, 20)];
+        info.text = g_signTitle;
         info.textColor = MakeColorRGB(0x2a2c31);
-        info.font = [UIFont systemFontOfSize:21];
+        info.font = [UIFont systemFontOfSize:18];
         info.textAlignment = NSTextAlignmentCenter;
         [v1 addSubview:info];
         

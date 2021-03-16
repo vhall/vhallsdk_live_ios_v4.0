@@ -5,7 +5,7 @@
 //  Created by xiongchao on 2020/10/29.
 //  Copyright © 2020 www.vhall.com. All rights reserved.
 //
-
+//web看直播
 #import "VHBaseViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN

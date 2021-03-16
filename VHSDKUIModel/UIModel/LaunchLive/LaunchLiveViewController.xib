@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -168,7 +168,7 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uyx-U8-9xz">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uyx-U8-9xz">
                                     <rect key="frame" x="10" y="507" width="250" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="7wm-gZ-ljb"/>
@@ -189,7 +189,7 @@
                                 <constraint firstItem="Ngw-Mj-Evc" firstAttribute="leading" secondItem="MOi-XC-KsP" secondAttribute="leading" constant="10" id="wIS-JW-xzd"/>
                             </constraints>
                         </view>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PuD-Ul-jg4">
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PuD-Ul-jg4">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             <connections>
                                 <action selector="hideKey:" destination="-1" eventType="touchUpInside" id="m9h-VQ-I27"/>
@@ -352,7 +352,7 @@
                 <constraint firstItem="2b8-7E-grG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fI2-GJ-lf4"/>
                 <constraint firstAttribute="trailing" secondItem="2b8-7E-grG" secondAttribute="trailing" id="yA9-nB-bsQ"/>
             </constraints>
-            <point key="canvasLocation" x="-175.5" y="319.5"/>
+            <point key="canvasLocation" x="-177" y="252"/>
         </view>
         <swipeGestureRecognizer direction="left" id="iz6-cd-R8U" userLabel="Swipe View Left"/>
         <swipeGestureRecognizer direction="right" id="IoC-8W-dt2" userLabel="Swipe View Right"/>

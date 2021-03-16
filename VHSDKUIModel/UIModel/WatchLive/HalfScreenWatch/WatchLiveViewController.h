@@ -5,7 +5,7 @@
 //  Created by developer_k on 16/4/13.
 //  Copyright © 2016年 vhall. All rights reserved.
 //
-
+//看直播
 #import "VHBaseViewController.h"
 
 @interface WatchLiveViewController : VHBaseViewController

@@ -106,11 +106,13 @@
     rtmpLivedemoVC.interfaceOrientation = orientation;
     rtmpLivedemoVC.isOpenNoiseSuppresion = DEMO_Setting.isOpenNoiseSuppresion;
     rtmpLivedemoVC.beautifyFilterEnable  = DEMO_Setting.beautifyFilterEnable;
+    rtmpLivedemoVC.nick_name = DEMO_Setting.live_nick_name;
     rtmpLivedemoVC.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:rtmpLivedemoVC animated:YES completion:nil];
 }
 
-#pragma mark -
+#pragma mark - UI事件
+//横屏直播/竖屏直播/观看直播/观看回放
 - (IBAction)btnClick:(UIButton*)sender
 {
     _btn0.selected = _btn1.selected = _btn2.selected = _btn3.selected =NO;
@@ -155,8 +157,8 @@
                 watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
                 [self presentViewController:watchVC animated:YES completion:nil];
             }];
-            
-            UIAlertAction *webWatch = [UIAlertAction actionWithTitle:@"H5嵌入观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+            UIAlertAction *webWatch = [UIAlertAction actionWithTitle:@"web嵌入观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 VHWebWatchLiveViewController *watchVC = [[VHWebWatchLiveViewController alloc] init];
                 watchVC.roomId = DEMO_Setting.watchActivityID;
                 watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -191,32 +193,31 @@
     }
 }
 
+//参数设置
 - (IBAction)systemSettingClick:(id)sender
 {
     VHSettingViewController *settingVc=[[VHSettingViewController alloc] init];
     settingVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:settingVc animated:YES completion:nil];
 }
+
+//登录/退出
 - (IBAction)loginOrloginOutClick:(id)sender
 {
-    if ([VHallApi isLoggedIn])
-    {
-        __weak typeof(self) weekself= self;
+    if(self.loginBtn.selected) { //退出登录
+        UIWindow *window = [UIApplication sharedApplication].delegate.window;
+        [MBProgressHUD showHUDAddedTo:window animated:YES];
         [VHallApi logout:^{
-            [weekself showMsg:@"已退出" afterDelay:1.5];
-            DEMO_Setting.nickName = [VHallApi currentUserNickName];
-            [weekself updateUI];
-            _loginBtn.selected = NO;
+            [MBProgressHUD hideHUDForView:window animated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
         } failure:^(NSError *error) {
-            [weekself updateUI];
+            [MBProgressHUD showHUDAddedTo:window animated:YES];
+            [self showMsg:error.localizedDescription afterDelay:1.5];
         }];
-    }
-    else
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
+//头像
 - (IBAction)headBtnClicked:(id)sender
 {
     if (![VHallApi isLoggedIn])

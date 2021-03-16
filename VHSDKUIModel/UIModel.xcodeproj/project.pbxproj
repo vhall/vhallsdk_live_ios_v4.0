@@ -15,6 +15,16 @@
 		0375079C251B553300DBDF24 /* UIModelTools.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03750799251B526500DBDF24 /* UIModelTools.h */; };
 		03D099A7254A9301001F0F36 /* VHWebWatchLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D099A6254A9301001F0F36 /* VHWebWatchLiveViewController.m */; };
 		03D099A8254A93CB001F0F36 /* VHWebWatchLiveViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03D099A5254A9301001F0F36 /* VHWebWatchLiveViewController.h */; };
+		03E4A928250776B0005BB8D8 /* 插图_中奖_信息提交@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4A920250776AF005BB8D8 /* 插图_中奖_信息提交@2x.png */; };
+		03E4A929250776B0005BB8D8 /* 插图_礼物_未中奖@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4A921250776AF005BB8D8 /* 插图_礼物_未中奖@3x.png */; };
+		03E4A92A250776B0005BB8D8 /* 插图_中奖_信息错误@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4A922250776AF005BB8D8 /* 插图_中奖_信息错误@2x.png */; };
+		03E4A92B250776B0005BB8D8 /* 插图_中奖_信息错误@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4A923250776AF005BB8D8 /* 插图_中奖_信息错误@3x.png */; };
+		03E4A92C250776B0005BB8D8 /* 插图_礼物_已中奖@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4A924250776AF005BB8D8 /* 插图_礼物_已中奖@2x.png */; };
+		03E4A92D250776B0005BB8D8 /* 插图_礼物_未中奖@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4A925250776AF005BB8D8 /* 插图_礼物_未中奖@2x.png */; };
+		03E4A92E250776B0005BB8D8 /* 插图_中奖_信息提交@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4A926250776AF005BB8D8 /* 插图_中奖_信息提交@3x.png */; };
+		03E4A92F250776B0005BB8D8 /* 插图_礼物_已中奖@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4A927250776B0005BB8D8 /* 插图_礼物_已中奖@3x.png */; };
+		03E4A93225087659005BB8D8 /* WatchLiveLotteryWinListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4A93125087658005BB8D8 /* WatchLiveLotteryWinListView.m */; };
+		03E4A9352508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4A9342508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.m */; };
 		C0443B5E242839550063FB0D /* VHBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A18242839530063FB0D /* VHBaseViewController.m */; };
 		C0443B5F242839550063FB0D /* LaunchLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A1A242839530063FB0D /* LaunchLiveViewController.m */; };
 		C0443B61242839550063FB0D /* VHChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A1D242839530063FB0D /* VHChatTableViewCell.m */; };
@@ -327,6 +337,18 @@
 		0375079A251B526500DBDF24 /* UIModelTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIModelTools.m; sourceTree = "<group>"; };
 		03D099A5254A9301001F0F36 /* VHWebWatchLiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHWebWatchLiveViewController.h; sourceTree = "<group>"; };
 		03D099A6254A9301001F0F36 /* VHWebWatchLiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHWebWatchLiveViewController.m; sourceTree = "<group>"; };
+		03E4A920250776AF005BB8D8 /* 插图_中奖_信息提交@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "插图_中奖_信息提交@2x.png"; sourceTree = "<group>"; };
+		03E4A921250776AF005BB8D8 /* 插图_礼物_未中奖@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "插图_礼物_未中奖@3x.png"; sourceTree = "<group>"; };
+		03E4A922250776AF005BB8D8 /* 插图_中奖_信息错误@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "插图_中奖_信息错误@2x.png"; sourceTree = "<group>"; };
+		03E4A923250776AF005BB8D8 /* 插图_中奖_信息错误@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "插图_中奖_信息错误@3x.png"; sourceTree = "<group>"; };
+		03E4A924250776AF005BB8D8 /* 插图_礼物_已中奖@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "插图_礼物_已中奖@2x.png"; sourceTree = "<group>"; };
+		03E4A925250776AF005BB8D8 /* 插图_礼物_未中奖@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "插图_礼物_未中奖@2x.png"; sourceTree = "<group>"; };
+		03E4A926250776AF005BB8D8 /* 插图_中奖_信息提交@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "插图_中奖_信息提交@3x.png"; sourceTree = "<group>"; };
+		03E4A927250776B0005BB8D8 /* 插图_礼物_已中奖@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "插图_礼物_已中奖@3x.png"; sourceTree = "<group>"; };
+		03E4A93025087658005BB8D8 /* WatchLiveLotteryWinListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WatchLiveLotteryWinListView.h; sourceTree = "<group>"; };
+		03E4A93125087658005BB8D8 /* WatchLiveLotteryWinListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WatchLiveLotteryWinListView.m; sourceTree = "<group>"; };
+		03E4A9332508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WatchLiveLotteryWriteWinInfoView.h; sourceTree = "<group>"; };
+		03E4A9342508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WatchLiveLotteryWriteWinInfoView.m; sourceTree = "<group>"; };
 		C0443A18242839530063FB0D /* VHBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHBaseViewController.m; sourceTree = "<group>"; };
 		C0443A1A242839530063FB0D /* LaunchLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchLiveViewController.m; sourceTree = "<group>"; };
 		C0443A1C242839530063FB0D /* VHLiveChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHLiveChatView.h; sourceTree = "<group>"; };
@@ -653,7 +675,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		033CE48125199678001BBA7F /* PortraitWatch */ = {
+		033CE48125199678001BBA7F /* FullScreenWatch */ = {
 			isa = PBXGroup;
 			children = (
 				033CE47E2519961B001BBA7F /* VHPortraitWatchLiveViewController.h */,
@@ -663,7 +685,26 @@
 				0375075E251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.h */,
 				0375075F251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.m */,
 			);
-			path = PortraitWatch;
+			path = FullScreenWatch;
+			sourceTree = "<group>";
+		};
+		0361360525DF644300C5C029 /* HalfScreenWatch */ = {
+			isa = PBXGroup;
+			children = (
+				C0443B22242839540063FB0D /* WatchLiveViewController.h */,
+				C0443B5D242839550063FB0D /* WatchLiveViewController.m */,
+				C0443B29242839540063FB0D /* WatchLiveViewController.xib */,
+			);
+			path = HalfScreenWatch;
+			sourceTree = "<group>";
+		};
+		0361360A25DF648E00C5C029 /* WebViewWatch */ = {
+			isa = PBXGroup;
+			children = (
+				03D099A5254A9301001F0F36 /* VHWebWatchLiveViewController.h */,
+				03D099A6254A9301001F0F36 /* VHWebWatchLiveViewController.m */,
+			);
+			path = WebViewWatch;
 			sourceTree = "<group>";
 		};
 		C0443A17242839530063FB0D /* UIModel */ = {
@@ -828,6 +869,14 @@
 		C0443A84242839540063FB0D /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				03E4A925250776AF005BB8D8 /* 插图_礼物_未中奖@2x.png */,
+				03E4A921250776AF005BB8D8 /* 插图_礼物_未中奖@3x.png */,
+				03E4A924250776AF005BB8D8 /* 插图_礼物_已中奖@2x.png */,
+				03E4A927250776B0005BB8D8 /* 插图_礼物_已中奖@3x.png */,
+				03E4A922250776AF005BB8D8 /* 插图_中奖_信息错误@2x.png */,
+				03E4A923250776AF005BB8D8 /* 插图_中奖_信息错误@3x.png */,
+				03E4A920250776AF005BB8D8 /* 插图_中奖_信息提交@2x.png */,
+				03E4A926250776AF005BB8D8 /* 插图_中奖_信息提交@3x.png */,
 				C0443A8A242839540063FB0D /* 标清@2x.png */,
 				C0443A87242839540063FB0D /* 标清@3x.png */,
 				C0443AA7242839540063FB0D /* 超清@2x.png */,
@@ -1006,13 +1055,10 @@
 		C0443B21242839540063FB0D /* WatchLive */ = {
 			isa = PBXGroup;
 			children = (
-				C0443B22242839540063FB0D /* WatchLiveViewController.h */,
-				C0443B5D242839550063FB0D /* WatchLiveViewController.m */,
-				C0443B29242839540063FB0D /* WatchLiveViewController.xib */,
-				03D099A5254A9301001F0F36 /* VHWebWatchLiveViewController.h */,
-				03D099A6254A9301001F0F36 /* VHWebWatchLiveViewController.m */,
+				0361360525DF644300C5C029 /* HalfScreenWatch */,
+				033CE48125199678001BBA7F /* FullScreenWatch */,
+				0361360A25DF648E00C5C029 /* WebViewWatch */,
 				C0443B2A242839540063FB0D /* View */,
-				033CE48125199678001BBA7F /* PortraitWatch */,
 			);
 			path = WatchLive;
 			sourceTree = "<group>";
@@ -1134,6 +1180,10 @@
 				C0443B59242839550063FB0D /* WatchLiveLotteryTableViewCell.h */,
 				C0443B5B242839550063FB0D /* WatchLiveLotteryTableViewCell.m */,
 				C0443B57242839550063FB0D /* WatchLiveLotteryTableViewCell.xib */,
+				03E4A93025087658005BB8D8 /* WatchLiveLotteryWinListView.h */,
+				03E4A93125087658005BB8D8 /* WatchLiveLotteryWinListView.m */,
+				03E4A9332508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.h */,
+				03E4A9342508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.m */,
 			);
 			path = Lottery;
 			sourceTree = "<group>";
@@ -1307,7 +1357,9 @@
 				C0443BC4242839550063FB0D /* Expression_90@2x.png in Resources */,
 				C0A26E30242F0DDC000D8708 /* DLNA_seekbar@3x.png in Resources */,
 				C0443BF3242839550063FB0D /* head50.png in Resources */,
+				03E4A92F250776B0005BB8D8 /* 插图_礼物_已中奖@3x.png in Resources */,
 				C0443B6D242839550063FB0D /* Expression_42@2x.png in Resources */,
+				03E4A928250776B0005BB8D8 /* 插图_中奖_信息提交@2x.png in Resources */,
 				C0443B6A242839550063FB0D /* Expression_87@2x.png in Resources */,
 				C0443BB7242839550063FB0D /* Expression_61@2x.png in Resources */,
 				C0443C1B242839550063FB0D /* 静音@2x.png in Resources */,
@@ -1338,6 +1390,7 @@
 				C0443BDB242839550063FB0D /* icon_video_open_camera@3x.png in Resources */,
 				C0443C1A242839550063FB0D /* 单音频@3x.png in Resources */,
 				C0443C15242839550063FB0D /* 开音@3x.png in Resources */,
+				03E4A92A250776B0005BB8D8 /* 插图_中奖_信息错误@2x.png in Resources */,
 				C0443BED242839550063FB0D /* chat_other@3x.png in Resources */,
 				C0443BAF242839550063FB0D /* Expression_57@2x.png in Resources */,
 				C0443B9E242839550063FB0D /* Expression_51@2x.png in Resources */,
@@ -1408,6 +1461,7 @@
 				C0443B8C242839550063FB0D /* Expression_81@2x.png in Resources */,
 				C0443B84242839550063FB0D /* Expression_60@2x.png in Resources */,
 				C0443C1E242839550063FB0D /* nav_back@2x.png in Resources */,
+				03E4A92D250776B0005BB8D8 /* 插图_礼物_未中奖@2x.png in Resources */,
 				C0443BC8242839550063FB0D /* title@3x.png in Resources */,
 				C0A26E27242F0DDC000D8708 /* DLNA_close@2x.png in Resources */,
 				C0443BE3242839550063FB0D /* 高清@3x.png in Resources */,
@@ -1423,6 +1477,7 @@
 				C0443BF9242839550063FB0D /* 适应屏幕@3x.png in Resources */,
 				C0443BD1242839550063FB0D /* icon_video_open_microphone@3x.png in Resources */,
 				C0443C5D242839550063FB0D /* WatchLiveViewController.xib in Resources */,
+				03E4A92B250776B0005BB8D8 /* 插图_中奖_信息错误@3x.png in Resources */,
 				C0443B8F242839550063FB0D /* Expression_70@2x.png in Resources */,
 				C0443C26242839550063FB0D /* 闪光开启@3x.png in Resources */,
 				C0443C3D242839550063FB0D /* live_keyboard@2x.png in Resources */,
@@ -1436,6 +1491,7 @@
 				C0443C65242839550063FB0D /* WatchLiveOnlineTableViewCell.xib in Resources */,
 				C0443C0E242839550063FB0D /* 语音关闭@2x.png in Resources */,
 				C0443BD8242839550063FB0D /* icon_video_close_camera@3x.png in Resources */,
+				03E4A92E250776B0005BB8D8 /* 插图_中奖_信息提交@3x.png in Resources */,
 				C0443BC0242839550063FB0D /* Expression_63@2x.png in Resources */,
 				C0443C8B24283ACF0063FB0D /* unchecked.png in Resources */,
 				C0443BF2242839550063FB0D /* 单选空.png in Resources */,
@@ -1498,6 +1554,8 @@
 				C0443B9F242839550063FB0D /* Expression_20@2x.png in Resources */,
 				C0443B7F242839550063FB0D /* faceExpression.plist in Resources */,
 				C0443BFA242839550063FB0D /* 适应屏幕@2x.png in Resources */,
+				03E4A929250776B0005BB8D8 /* 插图_礼物_未中奖@3x.png in Resources */,
+				03E4A92C250776B0005BB8D8 /* 插图_礼物_已中奖@2x.png in Resources */,
 				C0443C08242839550063FB0D /* 弹幕@2x.png in Resources */,
 				C0443B88242839550063FB0D /* Expression_56@2x.png in Resources */,
 				C0443BCD242839550063FB0D /* 多选空.png in Resources */,
@@ -1549,6 +1607,7 @@
 				033CE4802519961B001BBA7F /* VHPortraitWatchLiveViewController.m in Sources */,
 				C0443C6A242839550063FB0D /* SZQuestionCell.m in Sources */,
 				C0443C69242839550063FB0D /* SZConfigure.m in Sources */,
+				03E4A9352508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.m in Sources */,
 				C0529860242A41FD0029B29C /* DLNAView.m in Sources */,
 				C0443C74242839550063FB0D /* SueveyBackGroundView.m in Sources */,
 				C0443C36242839550063FB0D /* VHMessageToolView.m in Sources */,
@@ -1581,6 +1640,7 @@
 				C0443C7E242839550063FB0D /* MicCountDownView.m in Sources */,
 				C0443C53242839550063FB0D /* WatchPlayBackViewController.m in Sources */,
 				C0443C82242839550063FB0D /* WatchLiveLotteryViewController.m in Sources */,
+				03E4A93225087659005BB8D8 /* WatchLiveLotteryWinListView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
