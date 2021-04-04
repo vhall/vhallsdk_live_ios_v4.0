@@ -42,7 +42,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jut-58-1jc">
-                            <rect key="frame" x="163.5" y="236.5" width="48" height="24"/>
+                            <rect key="frame" x="10" y="236.5" width="355" height="24"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <color key="textColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                             <nil key="highlightedColor"/>
@@ -99,6 +99,7 @@
                         <constraint firstItem="XwX-NC-DH8" firstAttribute="leading" secondItem="Svq-0i-1hS" secondAttribute="leading" constant="10" id="Buc-g6-0u2"/>
                         <constraint firstItem="elO-5b-dro" firstAttribute="width" secondItem="k3v-cL-9tj" secondAttribute="width" id="DpD-Yw-mpq"/>
                         <constraint firstItem="elO-5b-dro" firstAttribute="height" secondItem="k3v-cL-9tj" secondAttribute="height" id="Fpy-19-ti9"/>
+                        <constraint firstItem="Jut-58-1jc" firstAttribute="leading" secondItem="Swr-qH-ZZ9" secondAttribute="leading" constant="10" id="J3J-ze-Wah"/>
                         <constraint firstItem="Swr-qH-ZZ9" firstAttribute="leading" secondItem="Svq-0i-1hS" secondAttribute="leading" id="Kir-Fa-MVr"/>
                         <constraint firstItem="iZp-rs-LIF" firstAttribute="bottom" secondItem="k3v-cL-9tj" secondAttribute="bottom" constant="24" id="M6i-gy-nDU"/>
                         <constraint firstItem="Jut-58-1jc" firstAttribute="centerY" secondItem="Svq-0i-1hS" secondAttribute="centerY" constant="108" id="NJq-sP-gd4"/>
@@ -108,10 +109,10 @@
                         <constraint firstItem="Auc-ju-R8I" firstAttribute="leading" secondItem="XwX-NC-DH8" secondAttribute="trailing" constant="5" id="U2u-cy-4fc"/>
                         <constraint firstItem="iZp-rs-LIF" firstAttribute="trailing" secondItem="k3v-cL-9tj" secondAttribute="trailing" constant="24" id="aFE-vw-1HY"/>
                         <constraint firstAttribute="bottom" secondItem="Swr-qH-ZZ9" secondAttribute="bottom" id="eTJ-eT-pgB"/>
-                        <constraint firstItem="Jut-58-1jc" firstAttribute="centerX" secondItem="Svq-0i-1hS" secondAttribute="centerX" id="jSD-sd-Onz"/>
                         <constraint firstItem="k3v-cL-9tj" firstAttribute="centerX" secondItem="Svq-0i-1hS" secondAttribute="centerX" id="kAX-sA-3gm"/>
                         <constraint firstItem="iZp-rs-LIF" firstAttribute="top" secondItem="k3v-cL-9tj" secondAttribute="top" constant="-23" id="lCp-rY-Xqj"/>
                         <constraint firstItem="k3v-cL-9tj" firstAttribute="centerY" secondItem="Svq-0i-1hS" secondAttribute="centerY" constant="9.5" id="lwq-vF-mtm"/>
+                        <constraint firstItem="Jut-58-1jc" firstAttribute="trailing" secondItem="Swr-qH-ZZ9" secondAttribute="trailing" constant="-10" id="plO-aj-KjQ"/>
                         <constraint firstAttribute="trailing" secondItem="0nS-m9-LUz" secondAttribute="trailing" constant="7.5" id="xIA-H6-3rD"/>
                     </constraints>
                 </view>

@@ -14,7 +14,6 @@
 @interface VHSettingTableViewCell ()<UITextFieldDelegate>
 @property(nonatomic,strong) UILabel  *titleLabel;
 @property(nonatomic,strong) UILabel  *videoResulotionLabel;
-
 @end
 
 @implementation VHSettingTableViewCell
@@ -35,34 +34,26 @@
     if (self= [ super initWithStyle:style reuseIdentifier:reuseIdentifier])
     {
         UITextField *field = [[UITextField alloc] init];
-        field.layer.borderWidth=1;
-        field.clearButtonMode =UITextFieldViewModeWhileEditing;
-        field.textColor =MakeColorRGB(0x9d9da0);
-        field.textAlignment=NSTextAlignmentRight;
+        field.clearButtonMode = UITextFieldViewModeWhileEditing;
+        field.textColor = MakeColorRGB(0x9d9da0);
+        field.textAlignment = NSTextAlignmentRight;
         field.delegate = self;
-        field.layer.borderColor=[UIColor clearColor].CGColor;
+        field.font = [UIFont systemFontOfSize:15];
         [self.contentView addSubview:field];
         _textField = field;
-        
-        UIView  *line = [[UIView alloc] initWithFrame:CGRectMake(0, 49, [UIScreen mainScreen].bounds.size.width, 1)];
-        line.backgroundColor=MakeColorRGB(0xf5f5f5);
-        line.alpha=0.6;
-        [self.contentView addSubview:line];
-        
-        
-        
+    
         UILabel *titleLabel = [[UILabel alloc] init];
-        [titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [titleLabel setFont:[UIFont systemFontOfSize:15]];
         [titleLabel setTextColor:[UIColor blackColor]];
         [self.contentView addSubview:titleLabel];
         _titleLabel =titleLabel;
         
-        
         UILabel *videoResulotionLabel = [[UILabel alloc] init];
-        [videoResulotionLabel setFont:[UIFont systemFontOfSize:14]];
+        [videoResulotionLabel setFont:[UIFont systemFontOfSize:15]];
         [videoResulotionLabel setTextColor:MakeColorRGB(0x9d9da0)];
         videoResulotionLabel.textAlignment=NSTextAlignmentRight;
-        _videoResulotionLabel =videoResulotionLabel;
+        [self.contentView addSubview:videoResulotionLabel];
+        _videoResulotionLabel = videoResulotionLabel;
         
     }
     return self;
@@ -97,23 +88,23 @@
 {
     if ([_item isKindOfClass:[VHSettingArrowItem class]])
     {
-        self.accessoryView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow_right"]];
+        self.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow_right"]];
     }else if ([_item isKindOfClass:[VHSettingTextFieldItem class]])
     {
         VHSettingTextFieldItem *tempItem = (VHSettingTextFieldItem*)_item;
         if ((_item.indexPath.section == 1 && _item.indexPath.row ==2)  ||
-            (_item.indexPath.section == 2 && _item.indexPath.row ==0)   ||
+            (_item.indexPath.section == 2 && _item.indexPath.row ==0)  ||
             (_item.indexPath.section == 2 && _item.indexPath.row ==1) )
         {
-            [_textField removeFromSuperview];
-            [self.contentView addSubview:_videoResulotionLabel];
+            _textField.hidden = YES;
+            _videoResulotionLabel.hidden = NO;
             [_videoResulotionLabel setText:tempItem.text];
         }
         else
         {
             _textField.text = tempItem.text;
-            [_videoResulotionLabel removeFromSuperview];
-            [self.contentView addSubview:_textField];
+            _textField.hidden = NO;
+            _videoResulotionLabel.hidden = YES;
         }
     }else
     {
@@ -123,13 +114,11 @@
 
 -(void)layoutSubviews
 {
-    
-    [_titleLabel setFrame:CGRectMake(15, 15, _titleLabel.width, 20)];
-    [_textField setFrame:CGRectMake(_titleLabel.right+5, 6, [UIScreen mainScreen].bounds.size.width-_titleLabel.width-10-15, 40)];
+    [super layoutSubviews];
+    [_titleLabel setFrame:CGRectMake(15, (self.contentView.height - 20 ) /2.0, _titleLabel.width, 20)];
+    [_textField setFrame:CGRectMake(_titleLabel.right+5, (self.contentView.height - 40) /2.0, [UIScreen mainScreen].bounds.size.width-_titleLabel.width-10-15, 40)];
     [_videoResulotionLabel setFrame:_textField.frame];
 }
-
-
 
 
 -(void)textFieldDidEndEditing:(UITextField *)textField

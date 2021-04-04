@@ -68,15 +68,14 @@
     
     [self initSubViews];
     
-    if (!self.roomId) {
+    NSString *roomId = [NSString stringWithFormat:@"%@",self.joinRoomPrams[@"id"]];
+    if (!roomId) {
         [UIAlertController showAlertControllerTitle:@"温馨提示" msg:@"互动房间id不能为空" btnTitle:@"确定" callBack:^{
             
         }];
-    }
-    else
-    {
+    } else {
         //进入互动房间
-        [self.interactiveRoom enterRoomWithRoomId:self.roomId];
+        [self.interactiveRoom enterRoomWithParams:self.joinRoomPrams];
     }
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     //程序进入前后台监听

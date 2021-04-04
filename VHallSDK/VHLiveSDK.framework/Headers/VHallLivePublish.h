@@ -9,6 +9,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "VHallConst.h"
 #import "VHPublishConfig.h"
+#import "VHWebinarInfo.h"
 
 @protocol VHallLivePublishDelegate;
 @interface VHallLivePublish : NSObject
@@ -131,19 +132,25 @@
 
 @protocol VHallLivePublishDelegate <NSObject>
 
-@required
+@optional
 
 /**
  *  发起直播时的状态
  *  @param liveStatus 直播状态
  *  @param info 详细信息，字典结构：{code：错误码，content：错误信息}
  */
--(void)publishStatus:(VHLiveStatus)liveStatus withInfo:(NSDictionary*)info;
+- (void)publishStatus:(VHLiveStatus)liveStatus withInfo:(NSDictionary*)info;
 
-@optional
 /**
  *  采集到第一帧的回调
  *  @param image 第一帧的图片
  */
 -(void)firstCaptureImage:(UIImage*)image;
+
+
+/// 活动相关信息回调（注意：此接口为v6.0新增，仅限新版控制台(v3及以上)创建的活动使用，否则不会回调）
+/// @param publishObject 推流对象
+/// @param webinarInfo 活动相关信息
+- (void)publish:(VHallLivePublish *)publishObject webinarInfo:(VHWebinarInfo *)webinarInfo;
+
 @end

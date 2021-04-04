@@ -682,7 +682,7 @@
     if (!_interactiveVC)
     {
         VHinteractiveViewController *interactiveVC = [[VHinteractiveViewController alloc] init];
-        interactiveVC.roomId = self.roomId;
+        interactiveVC.joinRoomPrams = self.playParam;
         interactiveVC.inavBeautifyFilterEnable = self.interactBeautifyEnable;
         interactiveVC.pushResolution = self.interactResolution;
         interactiveVC.delegate = self;

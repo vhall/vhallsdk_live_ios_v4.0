@@ -1307,7 +1307,7 @@ static AnnouncementView* announcementView = nil;
         _fullscreenBtn.selected = NO;
         //进入互动
         VHinteractiveViewController *controller = [[VHinteractiveViewController alloc] init];
-        controller.roomId = self.roomId;
+        controller.joinRoomPrams = [self playParam];
         controller.pushResolution = self.interactResolution;
         controller.inavBeautifyFilterEnable = self.interactBeautifyEnable;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -1379,7 +1379,7 @@ static AnnouncementView* announcementView = nil;
         
         //进入互动
         VHinteractiveViewController *controller = [[VHinteractiveViewController alloc] init];
-        controller.roomId = self.roomId;
+        controller.joinRoomPrams = [self playParam];
         controller.pushResolution = self.interactResolution;
         controller.inavBeautifyFilterEnable = self.interactBeautifyEnable;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;

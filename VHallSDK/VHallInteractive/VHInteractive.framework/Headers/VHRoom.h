@@ -86,6 +86,14 @@ typedef NS_ENUM(NSInteger, VHRoomDevice) {
 - (void)enterRoomWithRoomId:(NSString *)roomId;
 
 /*
+ * 加入房间
+ * @param params 参数
+ * params[@"id"]    = 加入房间id
+ * params[@"pass"]  = 活动如果有K值或密码，则需要传
+ */
+- (void)enterRoomWithParams:(NSDictionary *)params;
+
+/*
  * 上麦推流
  * @param camera 本地摄像头view
  */

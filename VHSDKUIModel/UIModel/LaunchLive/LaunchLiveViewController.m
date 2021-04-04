@@ -400,14 +400,16 @@
 }
 
 #pragma mark - 直播代理
+//活动信息回调
+- (void)publish:(VHallLivePublish *)publishObject webinarInfo:(VHWebinarInfo *)webinarInfo {
+    VHLog(@"接收到活动信息");
+}
 
--(void)firstCaptureImage:(UIImage *)image
-{
+-(void)firstCaptureImage:(UIImage *)image {
     VHLog(@"第一张图片");
 }
 
--(void)publishStatus:(VHLiveStatus)liveStatus withInfo:(NSDictionary *)info
-{
+-(void)publishStatus:(VHLiveStatus)liveStatus withInfo:(NSDictionary *)info {
     __weak typeof(self) weakSelf = self;
     void (^resetStartPlay)(NSString * msg) = ^(NSString * msg){
         dispatch_async(dispatch_get_main_queue(), ^{

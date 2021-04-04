@@ -46,10 +46,10 @@
 /// 获取文档演示view，如果没有文档则为nil (在收到"文档显示/隐藏回调"后获取)
 @property (nonatomic, strong, readonly) UIView *documentView;
 
-
 /// 活动状态 （在收到"视频信息预加载回调"或"播放连接成功回调"后使用）
 @property (nonatomic, assign, readonly) VHMovieActiveState activeState;
-/// 活动相关信息 （在收到"视频信息预加载回调"或"播放连接成功回调"后使用）
+
+/// 活动相关信息 （在收到"视频信息预加载回调"或"播放连接成功回调"后使用，v6.0新增，仅限新版控制台(v3及以上)创建的活动使用）
 @property (nonatomic, strong, readonly) VHWebinarInfo *webinarInfo;
 
 //---------------以下属性 点播/回放播放时使用 直播无效--------------------
@@ -269,6 +269,11 @@
 /// @param isQuestion_status 1开启 0关闭
 - (void)moviePlayer:(VHallMoviePlayer *)player isQuestion_status:(BOOL)isQuestion_status;
 
+
+/// 视频宽髙回调（支持直播与点播）
+/// @param player 播放器实例
+/// @param size 视频尺寸
+- (void)moviePlayer:(VHallMoviePlayer *)player videoSize:(CGSize)size;
 
 #pragma mark - 点播
 

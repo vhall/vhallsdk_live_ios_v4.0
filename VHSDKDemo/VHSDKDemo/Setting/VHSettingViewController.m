@@ -40,11 +40,6 @@
 
 @implementation VHSettingViewController
 
-//-(instancetype)init
-//{
-//    return [super initWithStyle:UITableViewStyleGrouped];
-//}
-
 
 -(NSMutableArray *)groups
 {
@@ -58,18 +53,15 @@
 
 -(void)initWithView
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showKeyboard:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showKeyboard:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:)  name:UIKeyboardDidHideNotification object:nil];
     
-    //注册通知,监听键盘消失事件
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:)
-                                            name:UIKeyboardDidHideNotification object:nil];
     [[UIApplication sharedApplication].keyWindow setBackgroundColor:[UIColor whiteColor]];
     UIView *headerView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, (iPhoneX?88:64))];
     headerView.backgroundColor= MakeColorRGB(0xEC3544);
     [self.view insertSubview:headerView atIndex:0];
     
-    UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0,(iPhoneX?44:20), 44, 44)];
+    UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0,(iPhoneX?40:20), 44, 44)];
     [back setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateNormal];
     [back addTarget:self action:@selector(backBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [headerView addSubview:back];
@@ -105,30 +97,13 @@
     _inavBeautifySwitch = [[UISwitch alloc]init];
     [_inavBeautifySwitch addTarget:self action:@selector(inavBeautifySwitch) forControlEvents:UIControlEventValueChanged];
     
-    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, (iPhoneX?80:64), self.view.width, [UIScreen mainScreen].bounds.size.height-(iPhoneX?80:64)) style:UITableViewStyleGrouped];
-   // tableView.backgroundColor=[UIColor whiteColor];
-    _tableView.userInteractionEnabled=YES;
-    UIView *header=[[UIView alloc] initWithFrame:CGRectMake(0, 0,  [UIScreen mainScreen].bounds.size.width, 30)];
-    UILabel *text=[[UILabel alloc] init];
-    
-    
-    [text setText:@"使用聊天、问答等功能必须登录"];
-    [text sizeToFit];
-    text.center =header.center;
-    [text setTextColor:MakeColorRGB(0xd71a27)];
-    [text setFont:[UIFont systemFontOfSize:12]];
-    text.textAlignment=NSTextAlignmentCenter;
-    [header addSubview:text];
-    header.backgroundColor=MakeColorRGB(0xefcacc);
-    
-    UIImageView *brast =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"brast"]];
-    [brast setFrame:CGRectMake(text.left , 10, brast.width, brast.height)];
-    [header addSubview:brast];
-    
-    [_tableView setTableHeaderView:header];
-    _tableView.dataSource= self;
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, (iPhoneX?80:64), self.view.width, [UIScreen mainScreen].bounds.size.height-(iPhoneX?80:64)) style:UITableViewStylePlain];
+    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.dataSource = self;
     _tableView.delegate = self;
-    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+//    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.sectionHeaderHeight = 35;
+    _tableView.rowHeight = 44;
     [self.view addSubview:_tableView];
     if ([_tableView  respondsToSelector:@selector(setLayoutMargins:)]) {
         [_tableView setLayoutMargins:UIEdgeInsetsZero];
@@ -140,24 +115,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-
     _selectArray = @[@"352X288",@"640X480",@"960X540",@"1280X720"];
-    
-    //0    1 VHPushTypeSD 2 VHPushTypeHD 3 VHPushTypeUHD
-//    DEMO_Setting.pushResolution = @"3";//
-
     self.title = @"设置";
     [self setupGroup0];
     [self setupGroup1];
     [self setupGroup2];
     [self setupGroup3];
     [self initWithView];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -173,16 +137,6 @@
     _tableView.frame = CGRectMake(0, (iPhoneX?80:64), self.view.width, [UIScreen mainScreen].bounds.size.height-(iPhoneX?80:64));
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 -(void)setupGroup0
 {
     item00 = [VHSettingTextFieldItem  itemWithTitle:@"活动ID"];
@@ -194,7 +148,7 @@
     item03 = [VHSettingTextFieldItem  itemWithTitle:@"超时时间"];
     item03.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.timeOut];
     VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item00,item01,item02,item03]];
-    group.headerTitle = @"观看直播/回放";
+    group.headerTitle = @"看直播/回放";
     [self.groups addObject:group];
 }
 
@@ -221,7 +175,7 @@
     item16 = [VHSettingTextFieldItem  itemWithTitle:@"主播昵称"];
     item16.text = DEMO_Setting.live_nick_name;
     VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item10,item11,item12,item13,item14,item15,item16]];
-    group.headerTitle = @"发直播设置";
+    group.headerTitle = @"发直播";
     [self.groups addObject:group];
 }
 
@@ -241,7 +195,7 @@
     item21.text = DEMO_Setting.nickName;
     
     VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item20,item21]];
-    group.headerTitle = @"其他设置";
+    group.headerTitle = @"其他";
     [self.groups addObject:group];
 }
 - (void)setupGroup3
@@ -282,14 +236,14 @@
     {
         if(indexPath.row == group.items.count) { //音频降噪
             static   NSString *Identifier = @"noiseSwitchCell";
-            UITableViewCell *noiseSwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
+            UITableViewCell *noiseSwitchcell = [tableView dequeueReusableCellWithIdentifier:Identifier];
             if (noiseSwitchcell == nil)
                 noiseSwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
             _noiseSwitch.on = DEMO_Setting.isOpenNoiseSuppresion;
+            _noiseSwitch.left = self.view.width - 60;
+            _noiseSwitch.top = 7;
             noiseSwitchcell.textLabel.text = @"  音频降噪";
             noiseSwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
-            _noiseSwitch.left = self.view.width - 60;
-            _noiseSwitch.top = 10;
             [noiseSwitchcell.contentView addSubview:_noiseSwitch];
             
             return noiseSwitchcell;
@@ -298,11 +252,11 @@
             UITableViewCell *beautifySwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
             if (beautifySwitchcell == nil)
                 beautifySwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
-            _beautifySwitch.on = DEMO_Setting.beautifyFilterEnable;
             beautifySwitchcell.textLabel.text = @"  美颜";
             beautifySwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
+            _beautifySwitch.on = DEMO_Setting.beautifyFilterEnable;
             _beautifySwitch.left = self.view.width - 60;
-            _beautifySwitch.top = 10;
+            _beautifySwitch.top = 7;
             [beautifySwitchcell.contentView addSubview:_beautifySwitch];
             
             return beautifySwitchcell;
@@ -345,21 +299,21 @@
        UITableViewCell *beautifySwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
        if (beautifySwitchcell == nil)
            beautifySwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
+        beautifySwitchcell.textLabel.text = @"  互动美颜";
+        beautifySwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
        _inavBeautifySwitch.on = DEMO_Setting.inavBeautifyFilterEnable;
-       beautifySwitchcell.textLabel.text = @"  互动美颜";
-       beautifySwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
        _inavBeautifySwitch.left = self.view.width - 60;
-       _inavBeautifySwitch.top = 10;
+       _inavBeautifySwitch.top = 7;
        [beautifySwitchcell.contentView addSubview:_inavBeautifySwitch];
        
        return beautifySwitchcell;
     }
  
-    __weak typeof(self) weakSelf=self;
+    __weak typeof(self) weakSelf = self;
     VHSettingTableViewCell *cell =[VHSettingTableViewCell  cellWithTableView:tableView];
-    VHSettingItem          *item = group.items[indexPath.row];
-    item.indexPath=indexPath;
-    cell.item  =item;
+    VHSettingItem *item = group.items[indexPath.row];
+    item.indexPath = indexPath;
+    cell.item  = item;
     
     cell.inputText= ^(NSString *text)
     {
@@ -382,12 +336,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    VHSettingGroup *group=self.groups [indexPath.section];
-    if(indexPath.section == 1 && (indexPath.row == 6 || indexPath.row == 7))
+    VHSettingGroup *group = self.groups[indexPath.section];
+    if(indexPath.section == 1 && (indexPath.row >= group.items.count))
     {
         return;
     }
-    if(indexPath.section == 3 && (indexPath.row == 0 || indexPath.row == 1)) {
+    if(indexPath.section == 3) {
         return;
     }
     
@@ -410,28 +364,17 @@
     }
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    // 取出组模型
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, VHScreenWidth, 30)];
+    label.backgroundColor = MakeColorRGB(0xEFEFF4);
+    label.textColor = MakeColorRGB(0xEC3544);
+    label.font = [UIFont systemFontOfSize:14];
     VHSettingGroup *group =  self.groups[section];
-    return group.headerTitle;
-}
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:   (NSInteger)section{
-    // 取出组模型
-    VHSettingGroup *group =  self.groups[section];
-    return group.footTitle;
+    label.text = [NSString stringWithFormat:@"  %@",group.headerTitle];
+    return label;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 50;
-}
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-     if(section == 0)
-         return 32;
-    return 15;
-}
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -476,8 +419,6 @@
 
 - (void)hideKeyboard:(NSNotification *)noti
 {
-    //    NSLog(@"%@", noti);
-    //
     [UIView beginAnimations:nil context:NULL];//此处添加动画，使之变化平滑一点
     [UIView setAnimationDuration:0.3];
     self.view.transform = CGAffineTransformIdentity;

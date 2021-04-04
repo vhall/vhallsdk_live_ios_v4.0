@@ -20,7 +20,8 @@
 /** 代理 */
 @property (nonatomic, weak) id<VHinteractiveViewControllerDelegate> _Nullable delegate;
 
-@property (nonnull,nonatomic, copy) NSString *roomId;//互动房间id
+//加入互动房间参数（id：房间id pass：密码/k值，等）
+@property (nonatomic, strong) NSDictionary * _Nonnull joinRoomPrams;
 
 /** 互动工具view */
 @property (nonatomic, strong , readonly) UIView * _Nullable toolView;

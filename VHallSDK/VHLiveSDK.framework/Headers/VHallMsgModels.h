@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 
 @interface VHallMsgModels : NSObject
 @property (nonatomic, copy) NSString * join_id;         //参会id
-@property (nonatomic, copy) NSString * account_id;      //微吼用户ID
+@property (nonatomic, copy) NSString * account_id;      //用户ID
 @property (nonatomic, copy) NSString * user_name;       //参会时的昵称
 @property (nonatomic, copy) NSString * avatar;          //头像url，如果没有则为空字符串
 @property (nonatomic, copy) NSString * room;            //房间号，即活动id
@@ -79,10 +79,11 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 @property (nonatomic, copy) NSString * question_id;     ///<问题ID
 @property (nonatomic, copy) NSString * content;         ///<提问/回答内容
 @property (nonatomic, copy) NSString * join_id;         ///<参会id
-@property (nonatomic, copy) NSString * created_at;      ///<提问/回答时间
+@property (nonatomic, copy) NSString * created_at;      ///<提问/回答时间 (mm:ss)
 @property (nonatomic, copy) NSString * nick_name;       ///<昵称
 @property (nonatomic, copy) NSString * avatar;          ///<头像
 
+@property (nonatomic, copy) NSString * created_time; ///<提问/回答时间 (yyyy-MM-dd HH:mm:ss)，新版v3控制台创建的活动才有此值
 @end
 
 //回答消息
@@ -105,7 +106,7 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 @property (nonatomic, copy) NSString * survey_id;       ///<活动ID
 
 //-----------新版抽奖新增----------------
-@property (nonatomic, assign) BOOL is_new;  ///<是否为新版抽奖（即使用v3版控制台创建的直播） 1：是 0：否
+@property (nonatomic, assign) BOOL is_new;  ///<是否为新版抽奖（即使用新版v3版控制台创建的活动） 1：是 0：否
 @end
 
 //开始抽奖消息
