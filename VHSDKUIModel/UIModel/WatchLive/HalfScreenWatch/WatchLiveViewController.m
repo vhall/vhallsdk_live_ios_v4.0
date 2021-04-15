@@ -29,11 +29,13 @@
 #import "LaunchLiveViewController.h"
 #import "UIAlertController+ITTAdditionsUIModel.h"
 #import "MJRefresh.h"
+#import "VHScrollTextView.h"
+#import "Masonry.h"
 
 # define DebugLog(fmt, ...) NSLog((@"\n[文件名:%s]\n""[函数名:%s]\n""[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
 
 static AnnouncementView* announcementView = nil;
-@interface WatchLiveViewController ()<VHallMoviePlayerDelegate, VHallChatDelegate, VHallQAndADelegate, VHallLotteryDelegate,VHallSignDelegate,VHallSurveyDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,VHMessageToolBarDelegate,MicCountDownViewDelegate,VHInvitationAlertDelegate,VHSurveyViewControllerDelegate,DLNAViewDelegate>
+@interface WatchLiveViewController ()<VHallMoviePlayerDelegate, VHallChatDelegate, VHallQAndADelegate, VHallLotteryDelegate,VHallSignDelegate,VHallSurveyDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,VHMessageToolBarDelegate,MicCountDownViewDelegate,VHInvitationAlertDelegate,VHSurveyViewControllerDelegate,DLNAViewDelegate,VHWebinarInfoDelegate>
 {
     VHallChat         *_chat;       //聊天
     VHallQAndA        *_QA;         //问答
@@ -110,6 +112,7 @@ static AnnouncementView* announcementView = nil;
 /// 投屏权限
 @property (nonatomic , assign) BOOL   isCast_screen;
 @property (nonatomic, assign) NSInteger chatListPage; //聊天记录页码，默认1
+@property (nonatomic, strong) VHScrollTextView *scrollTextView;     ///<跑马灯
 @end
 
 @implementation WatchLiveViewController
@@ -1111,6 +1114,7 @@ static AnnouncementView* announcementView = nil;
 {
     VHLog(@"播放连接成功：%@",info);
     VHWebinarInfo *webinarInfo = self.moviePlayer.webinarInfo;
+    webinarInfo.delegate = self;
     if(webinarInfo) {
         if(webinarInfo.online_show) {
             self.onlineLab.text = [NSString stringWithFormat:@"在线人数（真实人数：%zd，虚拟人数：%zd）",webinarInfo.online_real,webinarInfo.online_virtual];
@@ -1121,6 +1125,16 @@ static AnnouncementView* announcementView = nil;
             self.pvLab.text = [NSString stringWithFormat:@"活动热度（真实热度：%zd，虚拟热度：%zd）",webinarInfo.pv_real,webinarInfo.pv_virtual];
         }else {
             self.pvLab.text = @"";
+        }
+        
+        if(webinarInfo.scrollTextInfo.scrolling_open == 1) { //开启跑马灯
+            
+            VHScrollTextView *scrollTextView = [[VHScrollTextView alloc] init];
+            [moviePlayer.moviePlayerView addSubview:scrollTextView];
+            [scrollTextView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(moviePlayer.moviePlayerView);
+            }];
+            [scrollTextView showScrollTextWithModel:webinarInfo.scrollTextInfo];
         }
     }
     //获取聊天记录
@@ -1362,6 +1376,12 @@ static AnnouncementView* announcementView = nil;
     return player.realityBufferTime / 1000.0 + 3;
 }
 
+
+#pragma mark - VHWebinarInfoDelegate
+//房间人数改变回调
+- (void)onlineChangeRealNum:(NSUInteger)online_real virtualNum:(NSUInteger)online_virtual {
+    self.onlineLab.text = [NSString stringWithFormat:@"在线人数（真实人数：%zd，虚拟人数：%zd）",online_real,online_virtual];
+}
 
 #pragma mark - VHInvitationAlertDelegate
 - (void)alert:(VHInvitationAlert *)alert clickAtIndex:(NSInteger)index
@@ -1794,7 +1814,6 @@ static AnnouncementView* announcementView = nil;
 }
 
 #pragma mark - 懒加载
-
 
 #pragma mark - 屏幕旋转相关
 -(BOOL)shouldAutorotate

@@ -54,9 +54,9 @@
 
 //---------------以下属性 点播/回放播放时使用 直播无效--------------------
 /// 视频时长
-@property (nonatomic, readonly) NSTimeInterval          duration;
+@property (nonatomic, assign, readonly) NSTimeInterval          duration;
 /// 可播放时长
-@property (nonatomic, readonly) NSTimeInterval          playableDuration;
+@property (nonatomic, assign, readonly) NSTimeInterval          playableDuration;
 /// 当前播放时间点
 @property (nonatomic, assign) NSTimeInterval          currentPlaybackTime;
 /// 点播倍速播放速率 0.50, 0.67, 0.80, 1.0, 1.25, 1.50, and 2.0

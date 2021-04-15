@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 
 
 @interface VHallMsgModels : NSObject
-@property (nonatomic, copy) NSString * join_id;         //参会id
+@property (nonatomic, copy) NSString * join_id;
 @property (nonatomic, copy) NSString * account_id;      //用户ID
 @property (nonatomic, copy) NSString * user_name;       //参会时的昵称
 @property (nonatomic, copy) NSString * avatar;          //头像url，如果没有则为空字符串

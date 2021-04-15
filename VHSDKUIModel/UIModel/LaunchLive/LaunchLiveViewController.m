@@ -30,6 +30,7 @@
     VHallChat         *_chat;       //聊天
     dispatch_source_t _timer;
     long              _liveTime;
+    BOOL  _alreadyStartLive;  //标记上次开播成功后，是否主动停止过
 }
 
 
@@ -140,6 +141,7 @@
     [_engine reconnect];
 }
 
+//返回
 - (IBAction)closeBtnClick:(id)sender
 {
     if (_engine.isPublishing)
@@ -296,28 +298,31 @@
     
     if (!_isVideoStart)
     {
-        [_chatDataArray removeAllObjects];
-        [_chatView update];
-        [_hud showAnimated:YES];
-        _torchBtn.hidden = NO;
-        
-        [_engine startLive:self.publishParam];
-
-        self.engine.displayView.frame   = _perView.bounds;
-        [self.perView insertSubview:_engine.displayView atIndex:0];
+        if(_alreadyStartLive) { //如果上次开播，没有主动停止，再次开播时，重连流即可
+            [_engine reconnect];
+        }else { //重新开播
+            [_chatDataArray removeAllObjects];
+            [_chatView update];
+            [_hud showAnimated:YES];
+            _torchBtn.hidden = NO;
+            [_engine startLive:self.publishParam];
+            self.engine.displayView.frame   = _perView.bounds;
+            [self.perView insertSubview:_engine.displayView atIndex:0];
+        }
     }
     else
     {
-        _isVideoStart=NO;
+        //停止直播
+        _isVideoStart = NO;
         _bitRateLabel.text = @"";
         [_hud hideAnimated:YES];
         _videoStartAndStopBtn.selected = NO;
         [self chatShow:NO];
         _torchBtn.hidden = YES;
         [_engine stopLive];//停止活动
+        _alreadyStartLive = NO;
     }
     _logView.hidden = YES;
-    //_isVideoStart = !_isVideoStart;
 }
 
 //发起/停止纯音频直播
@@ -407,6 +412,7 @@
 
 -(void)firstCaptureImage:(UIImage *)image {
     VHLog(@"第一张图片");
+    _alreadyStartLive = YES;
 }
 
 -(void)publishStatus:(VHLiveStatus)liveStatus withInfo:(NSDictionary *)info {
@@ -423,6 +429,7 @@
 
     BOOL errorLiveStatus = NO;
     NSString * content = info[@"content"];
+    
     switch (liveStatus)
     {
         case VHLiveStatusUploadSpeed:
@@ -434,7 +441,7 @@
         {
             [_hud hideAnimated:YES];
             [weakSelf chatShow:YES];
-            _isVideoStart=YES;
+            _isVideoStart = YES;
             if (_isVideoStart || _isAudioStart) {
                 _videoStartAndStopBtn.selected = YES;
             }
@@ -466,7 +473,7 @@
         case VHLiveStatusGetUrlError:
         {
             [_hud hideAnimated:YES];
-            _isVideoStart=NO;
+            _isVideoStart = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf showMsg:content afterDelay:1.5];
             });
@@ -489,7 +496,7 @@
         case  VHLiveStatusAudioRecoderError :
         {
             [_hud hideAnimated:YES];
-            _isVideoStart=NO;
+            _isVideoStart = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
 //                [weakSelf showMsg:@"音频采集失败,可能是麦克风未授权使用" afterDelay:1.5];
                 [_engine disconnect];

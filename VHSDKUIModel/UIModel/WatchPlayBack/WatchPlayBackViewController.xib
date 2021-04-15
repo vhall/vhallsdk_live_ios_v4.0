@@ -174,7 +174,7 @@
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <state key="selected">
-                                <color key="titleColor" red="1" green="0.33725490200000002" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleColor" systemColor="systemRedColor"/>
                             </state>
                             <connections>
                                 <action selector="chatButtonClick:" destination="-1" eventType="touchUpInside" id="LgA-cH-xaR"/>
@@ -328,6 +328,9 @@
         <image name="适应屏幕.png" width="30" height="30"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

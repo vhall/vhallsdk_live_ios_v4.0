@@ -148,25 +148,26 @@ typedef NS_ENUM(NSInteger, VHRoomDevice) {
  * 有成员离开房间
  */
 - (void)room:(VHRoom *)room didRemovedAttendView:(VHRenderView *)attendView;
+
 /*
- * 互动房间互动消息回调
+ * 互动房间互动消息回调（不推荐使用）
  * eventName    互动消息name，可为空
  * attributes   互动消息体
  */
 - (void)room:(VHRoom *)room interactiveMsgWithEventName:(NSString *)eventName attribute:(id)attributes;
 
 /*
- 被主播下麦 v4.0.0
+    自己下麦（主动下麦/被下麦） v4.0.0
  */
 - (void)leaveInteractiveRoomByHost:(VHRoom *)room;
 
 /*
- 主播操作自己的麦克风 v4.0.0
+    自己的麦克风开关回调（主动操作/被操作）  v4.0.0
  */
 - (void)room:(VHRoom *)room microphoneClosed:(BOOL)isClose;
 
 /*
- 主播操作自己的摄像头 v4.0.0
+    自己的摄像头开关回调（主动操作/被操作） v4.0.0
  */
 - (void)room:(VHRoom *)room screenClosed:(BOOL)isClose;
 

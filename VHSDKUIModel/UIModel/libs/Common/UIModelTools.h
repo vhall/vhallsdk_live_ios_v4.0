@@ -24,6 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 字典转json字符串方法
 + (NSString *)jsonStringWithObject:(id)dict;
+
+
+//从十六进制字符串获取颜色，
+//color:支持@“#123456”、 @“0X123456”、 @“123456”三种格式
++ (UIColor *)colorWithHexString:(NSString *)color;
+
++ (UIColor *)colorWithHexString:(NSString *)color alpha:(CGFloat)alpha;
 @end
 
 NS_ASSUME_NONNULL_END
