@@ -236,7 +236,7 @@
 }
 
 /*
- 被讲师下麦 v4.0.0
+    自己下麦
  */
 - (void)leaveInteractiveRoomByHost:(VHRoom *)room
 {
@@ -246,18 +246,20 @@
 }
 
 /*
- 主播操作自己的麦克风 v4.0.0
+    自己的麦克风状态改变
  */
 - (void)room:(VHRoom *)room microphoneClosed:(BOOL)isClose
 {
+    NSLog(@"麦克风");
     _micBtn.selected = isClose;
 }
 
 /*
- 主播操作自己的摄像头 v4.0.0
+    自己的摄像头状态改变
  */
 - (void)room:(VHRoom *)room screenClosed:(BOOL)isClose
 {
+    NSLog(@"摄像头");
     _cameraBtn.selected = isClose;
 }
 

@@ -97,6 +97,19 @@ typedef void(^FinishBlock)(int code, NSString * _Nullable message);//code 200 �
 - (instancetype)initCameraViewWithFrame:(CGRect)frame options:(NSDictionary*)options;
 
 /*
+ * 创建本地录屏view 使用自定义 视频参数
+ * @param frame frame
+ * @param attributes  流自定义信息
+ * @param isShowVideo 是否回显录屏画面 建议不回显 NO，后台运行会有离屏渲染
+ * @param port 默认 18999
+ * @param options  如：@{VHFrameResolutionTypeKey:@(VHFrameResolution192x144),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)}
+ */
+- (instancetype)initScreenViewWithFrame:(CGRect)frame attributes:(NSString*)attributes isShowVideo:(BOOL)isShowVideo;
+- (instancetype)initScreenViewWithFrame:(CGRect)frame attributes:(NSString*)attributes isShowVideo:(BOOL)isShowVideo post:(uint16_t)port;
+- (instancetype)initScreenViewWithFrame:(CGRect)frame options:(NSDictionary*)options attributes:(NSString*)attributes isShowVideo:(BOOL)isShowVideo post:(uint16_t)port;
+
+
+/*
  * 更新推流参数 要求推流之前设置有效 本地流有效
  * @param options  如：@{VHFrameResolutionTypeKey:@(VHFrameResolution192x144),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)}
  */

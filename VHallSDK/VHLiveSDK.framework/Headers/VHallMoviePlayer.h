@@ -52,6 +52,9 @@
 /// 活动相关信息 （在收到"视频信息预加载回调"或"播放连接成功回调"后使用，v6.0新增，仅限新版控制台(v3及以上)创建的活动使用）
 @property (nonatomic, strong, readonly) VHWebinarInfo *webinarInfo;
 
+/// 水印（在收到"播放连接成功回调"后使用）
+@property(nonatomic, strong, readonly) UIImageView *waterImg;
+
 //---------------以下属性 点播/回放播放时使用 直播无效--------------------
 /// 视频时长
 @property (nonatomic, assign, readonly) NSTimeInterval          duration;

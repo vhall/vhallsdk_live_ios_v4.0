@@ -252,6 +252,8 @@
     
     VHPublishConfig* config = [VHPublishConfig configWithType:VHPublishConfigTypeDefault];
     config.orientation = captureVideoOrientation;
+//    config.pushType = VHStreamTypeOnlyAudio; //音频直播
+    config.pushType = VHStreamTypeVideoAndAudio; //默认视频直播
     config.publishConnectTimes = 2;
     config.videoBitRate = self.videoBitRate<=0?700:self.videoBitRate;
     config.videoCaptureFPS = self.videoCaptureFPS<=0?15:self.videoCaptureFPS;
