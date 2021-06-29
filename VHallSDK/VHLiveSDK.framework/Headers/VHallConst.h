@@ -175,6 +175,15 @@ typedef NS_ENUM(NSInteger,VHWebinarLiveType) {
 };
 
 
+//用户角色 1主持人 2观众 3助理 4嘉宾
+typedef NS_ENUM(NSInteger, VHRoomRoleNameType) {
+    VHRoomRoleNameType_Host = 1,
+    VHRoomRoleNameType_Audience = 2,
+    VHRoomRoleNameType_Assistant = 3,
+    VHRoomRoleNameType_Guest = 4,
+};
+
+
 #endif /* VHallConst_h */
 
 //错误信息info中 错误码code 及 content错误信息
@@ -254,7 +263,7 @@ typedef NS_ENUM(NSInteger,VHWebinarLiveType) {
 20021 | 您已被禁言
 20022 | 服务器维护中
 20023 | 当前已在其他设备观看
- 
+20024 | token相关错误
 
 以下是网络错误信息
 30001 | 请求参数错误

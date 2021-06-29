@@ -25,6 +25,17 @@
 #import "VHallSign.h"
 #import "VHallSurvey.h"
 
+@protocol VHallApiDelegate <NSObject>
+
+@optional
+/*！
+ * token错误回调，监听到此回调后需重新登录
+ * error   error
+ */
+- (void)vHallApiTokenDidError:(NSError *)error;
+
+@end
+
 @interface VHallApi : NSObject 
 
 /*！
@@ -57,6 +68,11 @@
  *  @param type 日志类型
  */
 + (void)setLogType:(VHLogType)type;
+
+
+/// 注册代理
+/// @param delegate 代理
++ (void)registerDelegate:(id <VHallApiDelegate>)delegate;
 
 #pragma mark - 使用用户系统相关功能需登录SDK
 /*!

@@ -30,7 +30,7 @@
 - (void)reciveCustomMsg:(NSArray <VHallCustomMsgModel *> *)msgs;
 
 /**
- * 收到被禁言/取消禁言
+ * 收到自己被禁言/取消禁言
  */
 - (void)forbidChat:(BOOL)forbidChat;
 
@@ -46,7 +46,7 @@
 @property (nonatomic, weak) id <VHallChatDelegate> delegate;
 
 /**
- * 是否被禁言
+ * 是否被禁言（YES：自己被禁言或全体被禁言，NO：自己未被禁言且全体未被禁言）
  */
 @property (nonatomic, assign,readonly) BOOL isSpeakBlocked;
 

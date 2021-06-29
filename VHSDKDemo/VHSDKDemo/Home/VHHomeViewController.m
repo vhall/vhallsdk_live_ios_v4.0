@@ -19,9 +19,10 @@
 #import "VHStystemSetting.h"
 #import "VHSettingViewController.h"
 #import "VHWebWatchLiveViewController.h"
+#import "VHNavigationController.h"
+#import "VHInteractLiveVC_New.h"
 
-
-@interface VHHomeViewController ()
+@interface VHHomeViewController ()<VHallApiDelegate>
 @property (weak, nonatomic) IBOutlet UILabel        *deviceCategory;
 @property (weak, nonatomic) IBOutlet UIButton       *loginBtn;
 @property (weak, nonatomic) IBOutlet UIImageView    *headImage;//头像
@@ -42,6 +43,8 @@
     // Do any additional setup after loading the view from its nib.
     [self updateUI];
     
+    [VHallApi registerDelegate:self];
+    
     NSArray *arr =@[_btn0,_btn1,_btn2,_btn3];
     for (UIButton*btn in arr) {
         CGSize image = btn.imageView.frame.size;
@@ -51,6 +54,7 @@
         btn.imageEdgeInsets =UIEdgeInsetsMake(-38, 0.5*title.width, 0, -0.5*title.width);
     }
 
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -111,6 +115,32 @@
     [self presentViewController:rtmpLivedemoVC animated:YES completion:nil];
 }
 
+#pragma mark - 进入互动直播
+- (void)enterInteractLiveRoomWithIsHost:(BOOL)isHost {
+    if (isHost && DEMO_Setting.activityID.length<=0) {
+        [self showMsg:@"请在设置中输入发直播活动ID" afterDelay:2];
+        return;
+    }
+    if (!isHost && DEMO_Setting.watchActivityID.length<=0) {
+        [self showMsg:@"请在设置中输入看直播活动ID" afterDelay:2];
+        return;
+    }
+    if (!isHost && (DEMO_Setting.codeWord == nil||DEMO_Setting.codeWord<=0)) {
+        [self showMsg:@"请在设置中输入口令" afterDelay:2];
+        return;
+    }
+
+    [VHWebinarBaseInfo getWebinarBaseInfoWithWebinarId:isHost?DEMO_Setting.activityID:DEMO_Setting.watchActivityID success:^(VHWebinarBaseInfo * _Nonnull baseInfo) {
+        NSDictionary *params = isHost ? @{@"id":DEMO_Setting.activityID,@"nickname":self.nickName.text,@"avatar":[VHallApi currentUserHeadUrl]} : @{@"id":DEMO_Setting.watchActivityID,@"password":DEMO_Setting.codeWord,@"nickname":self.nickName.text,@"avatar":[VHallApi currentUserHeadUrl]};
+        VHInteractLiveVC_New *vc = [[VHInteractLiveVC_New alloc] initWithParams:params isHost:isHost screenLandscape:baseInfo.webinar_show_type];
+        VHNavigationController *nav = [[VHNavigationController alloc] initWithRootViewController:vc];
+        nav.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:nav animated:YES completion:nil];
+    } fail:^(NSError * _Nonnull error) {
+        [self showMsg:error.localizedDescription afterDelay:2.0];
+    }];
+}
+
 #pragma mark - UI事件
 //横屏直播/竖屏直播/观看直播/观看回放
 - (IBAction)btnClick:(UIButton*)sender
@@ -119,14 +149,36 @@
     sender.selected = YES;
    
     switch (sender.tag) {
-        case 0://横屏发直播
+        case 0://发起直播
         {
-            [self startLive:UIInterfaceOrientationLandscapeRight];//设备左转，摄像头在左边
+            UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            UIAlertAction *landscapeLive = [UIAlertAction actionWithTitle:@"竖屏直播" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self startLive:UIInterfaceOrientationPortrait];
+            }];
+            UIAlertAction *portraitLive = [UIAlertAction actionWithTitle:@"横屏直播" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self startLive:UIInterfaceOrientationLandscapeRight];//设备左转，摄像头在左边
+            }];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+            [alertController addAction:landscapeLive];
+            [alertController addAction:portraitLive];
+            [alertController addAction:cancelAction];
+            [self presentViewController:alertController animated:YES completion:nil];
         }
             break;
-        case 1://竖屏发直播
+        case 1://进入互动直播
         {
-            [self startLive:UIInterfaceOrientationPortrait];
+            UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            UIAlertAction *hostJoin = [UIAlertAction actionWithTitle:@"主播进入" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self enterInteractLiveRoomWithIsHost:YES];
+            }];
+            UIAlertAction *guestJoin = [UIAlertAction actionWithTitle:@"嘉宾进入" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self enterInteractLiveRoomWithIsHost:NO];
+            }];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+            [alertController addAction:hostJoin];
+            [alertController addAction:guestJoin];
+            [alertController addAction:cancelAction];
+            [self presentViewController:alertController animated:YES completion:nil];
         }
             break;
         case 2://观看直播
@@ -229,6 +281,17 @@
         UIViewController* vc = ((UIViewController*)[[class alloc] init]);
         vc.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:vc animated:YES completion:nil];
+    }
+}
+
+#pragma mark - VHallApiDelegate
+- (void)vHallApiTokenDidError:(NSError *)error {
+    if (self.presentedViewController) {
+        [self.presentedViewController dismissViewControllerAnimated:NO completion:^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }];
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

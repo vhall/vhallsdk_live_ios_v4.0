@@ -20,19 +20,26 @@
 @property (nonatomic,weak) VHallActivityModel *activityModel;
 
 /**
+ * 开始活动通知
+ */
+- (void)startActivity:(NSNotification *)notify;
+
+/**
  * 初始化功能模块
  * livePublish 发起端实例
  */
-- (instancetype)initWithLivePublish:(VHallLivePublish*)livePublish;
+- (instancetype)initWithLivePublish:(VHallLivePublish *)livePublish __deprecated_msg("Use initWithObject: instead");
 
 /**
  * 初始化功能模块
  * moviePlayer 观看端实例
  */
-- (instancetype)initWithMoviePlayer:(VHallMoviePlayer*)moviePlayer;
+- (instancetype)initWithMoviePlayer:(VHallMoviePlayer *)moviePlayer __deprecated_msg("Use initWithObject: instead");
 
 /**
- * 开始活动通知
+ * 初始化功能模块 通用方法
+ * object 发起VHallLivePublish实例、观看VHallMoviePlayer实例、互动VHRoom实例
  */
-- (void)startActivity:(NSNotification *)notify;
+- (instancetype)initWithObject:(NSObject *)object;
+
 @end

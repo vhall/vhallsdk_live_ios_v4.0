@@ -221,13 +221,13 @@
     [self closeButtonClick:nil];
 }
 
-// 有新的成员加入房间
+// 有新的成员加入互动
 - (void)room:(VHRoom *)room didAddAttendView:(VHRenderView *)attendView
 {
     attendView.scalingMode = VHRenderViewScalingModeAspectFill;
     [self addView:attendView];
 }
-//有成员离开房间
+//有成员离开互动
 - (void)room:(VHRoom *)room didRemovedAttendView:(VHRenderView *)attendView
 {
     [self showMsg:[NSString stringWithFormat:@"%@ 已下麦",attendView.userId] afterDelay:0];

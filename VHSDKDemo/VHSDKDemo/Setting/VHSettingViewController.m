@@ -22,7 +22,7 @@
     
     NSMutableArray * _inavBtns;//互动设置btns
 
-    VHSettingTextFieldItem *item00,*item01,*item02,*item03;
+    VHSettingTextFieldItem *item00,*item01,*item02,*item03,*item04;
     VHSettingTextFieldItem *item10,*item11,*item12,*item13,*item14,*item15,*item16;
     VHSettingTextFieldItem *item20,*item21;
     VHSettingTextFieldItem *item30;
@@ -143,11 +143,13 @@
     item00.text=DEMO_Setting.watchActivityID;
     item01 = [VHSettingTextFieldItem  itemWithTitle:@"k值"];
     item01.text =  DEMO_Setting.kValue;
-    item02 = [VHSettingTextFieldItem  itemWithTitle:@"缓冲时间"];
-    item02.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.bufferTimes];
-    item03 = [VHSettingTextFieldItem  itemWithTitle:@"超时时间"];
-    item03.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.timeOut];
-    VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item00,item01,item02,item03]];
+    item02 = [VHSettingTextFieldItem  itemWithTitle:@"口令"];
+    item02.text =  DEMO_Setting.codeWord;
+    item03 = [VHSettingTextFieldItem  itemWithTitle:@"缓冲时间"];
+    item03.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.bufferTimes];
+    item04 = [VHSettingTextFieldItem  itemWithTitle:@"超时时间"];
+    item04.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.timeOut];
+    VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item00,item01,item02,item03,item04]];
     group.headerTitle = @"看直播/回放";
     [self.groups addObject:group];
 }
@@ -542,14 +544,20 @@
                 break;
             case 2:
             {
-                DEMO_Setting.bufferTimes = [text integerValue];
-                item02.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.bufferTimes];
+                DEMO_Setting.codeWord = text;
+                item02.text =  DEMO_Setting.codeWord;
             }
                 break;
             case 3:
             {
+                DEMO_Setting.bufferTimes = [text integerValue];
+                item03.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.bufferTimes];
+            }
+                break;
+            case 4:
+            {
                 DEMO_Setting.timeOut = [text integerValue];
-                item03.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.timeOut];
+                item04.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.timeOut];
             }
                 break;
             default:

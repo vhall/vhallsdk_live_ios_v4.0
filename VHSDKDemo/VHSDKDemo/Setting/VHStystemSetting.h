@@ -21,7 +21,8 @@
 @property(nonatomic, assign)NSInteger bufferTimes;      //RTMP观看缓冲时间
 @property(nonatomic, strong)NSString* nickName;     //用户昵称         为空默认随机字符串做昵称
 @property(nonatomic, strong)NSString* email;        //标示该游客用户唯一id 可填写用户邮箱  为空默认使用设备UUID做为唯一ID
-@property(nonatomic, strong)NSString* kValue;       //K值        可以为空
+@property(nonatomic, strong)NSString* codeWord;     //口令
+@property(nonatomic, strong)NSString* kValue;     //K值        可以为空
 @property(nonatomic, assign)NSInteger timeOut;      //超时时间 默认10s
 
 //直播设置

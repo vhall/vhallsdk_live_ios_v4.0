@@ -35,6 +35,7 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 @property (nonatomic,assign)NSInteger bu;               //频道业务单元
 @property (nonatomic, copy) NSString * client;          //消息来源
 @property (nonatomic, copy) NSString * msg_id;     ///<消息id
+@property (nonatomic, strong) id data;  
 @end
 
 //上下线消息

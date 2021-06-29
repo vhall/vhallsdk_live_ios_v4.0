@@ -10,5 +10,9 @@
 #define UIModel_PrefixHeader_pch
 
 #import "UIModel.h"
-
+#import "Masonry.h"
+#import "YYText.h"
+#import "QMUIKit.h"
+#import "VHEnum.h"
+#import "ProgressHud.h"
 #endif /* UIModel_PrefixHeader_pch */

@@ -20,9 +20,11 @@
 {
     self = LoadViewNibName;
     if (self) {
+        
     }
     return self;
 }
+
 
 - (void)awakeFromNib {
     [super awakeFromNib];

@@ -1296,8 +1296,9 @@ static AnnouncementView* announcementView = nil;
     [MBProgressHUD hideHUDForView:_moviePlayer.moviePlayerView animated:YES];
     _startAndStopBtn.selected = NO;
     [_moviePlayer stopPlay];
-    
-    [UIAlertController showAlertControllerTitle:@"提示" msg:@"直播已结束" btnTitle:@"确定" callBack:nil];
+    [UIAlertController showAlertControllerTitle:@"提示" msg:@"直播已结束" btnTitle:@"确定" callBack:^{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
 }
 
 // 主持人是否允许举手

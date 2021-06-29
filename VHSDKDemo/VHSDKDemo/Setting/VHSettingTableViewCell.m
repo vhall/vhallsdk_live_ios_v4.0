@@ -123,7 +123,8 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    _inputText([NSString stringWithFormat:@"%@",textField.text]);
+    NSString *text = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    _inputText([NSString stringWithFormat:@"%@",text]);
 }
 
 

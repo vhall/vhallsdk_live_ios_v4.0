@@ -8,4 +8,7 @@
   pod 'Reachability','3.2' <br>
   pod 'SDWebImage','5.6.1' <br>
   pod 'MJRefresh','3.3.1' <br>
+  pod 'YYText','1.0.7' <br>
+  pod 'QMUIKit','4.1.3' <br>
+  pod 'MJExtension','3.2.4' <br>
 

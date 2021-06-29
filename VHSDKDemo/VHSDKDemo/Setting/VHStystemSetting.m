@@ -54,6 +54,7 @@ static VHStystemSetting *pub_sharedSetting = nil;
         _nickName   = [standardUserDefaults objectForKey:@"VHnickName"];     //参会昵称    为空默认随机字符串做昵称
         _email     = [standardUserDefaults objectForKey:@"VHuserID"];        //标示该游客用户唯一id 可填写用户邮箱  为空默认使用设备UUID做为唯一ID
         _kValue     = [standardUserDefaults objectForKey:@"VHkValue"];       //K值        可以为空
+        _codeWord     = [standardUserDefaults objectForKey:@"VHCodeWord"];    //口令
 
         //直播设置
         _videoResolution= [standardUserDefaults objectForKey:@"VHvideoResolution"];//发起直播分辨率
@@ -215,6 +216,12 @@ static VHStystemSetting *pub_sharedSetting = nil;
 {
     _kValue = kValue;
     [[NSUserDefaults standardUserDefaults] setObject:_kValue forKey:@"VHkValue"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+-(void)setCodeWord:(NSString *)codeWord
+{
+    _codeWord = codeWord;
+    [[NSUserDefaults standardUserDefaults] setObject:_codeWord forKey:@"VHCodeWord"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 - (void)setAccount:(NSString *)account
