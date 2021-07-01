@@ -741,7 +741,7 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 6.1.0;
+				MARKETING_VERSION = 6.0.3;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo;
@@ -776,7 +776,7 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 6.1.0;
+				MARKETING_VERSION = 6.0.3;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo;

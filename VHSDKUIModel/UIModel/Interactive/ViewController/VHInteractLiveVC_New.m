@@ -216,7 +216,7 @@
         @"role":@(self.role),
         @"avatar":self.params[@"avatar"]};
     VUI_Log(@"设置本地流用户信息：%@",attributes);
-    [self.localRenderView setAttributes:attributes.mj_JSONString];
+    [_localRenderView setAttributes:attributes.mj_JSONString];
     success ? success() : nil;
 }
 
@@ -260,7 +260,7 @@
 //前台
 - (void)appWillEnterForeground {
     [super appWillEnterForeground];
-    if(!self.isGuest && self.liveStateView.liveState == VHLiveState_Success) {//主播端 && 已开播
+    if(!self.isGuest && self.liveStateView.liveState == VHLiveState_Success && self.inavRoom.isPublishing == NO) {//主播端 && 已开播 && 未推流
         //开始推流
         [self.inavRoom publishWithCameraView:self.localRenderView];
     }
@@ -449,6 +449,7 @@
 
 #pragma mark - VHRoomDelegate
 - (void)room:(VHRoom *)room enterRoomWithError:(NSError *)error {
+    NSLog(@"加入房间回调");
     [self interactiveRoomError:error];
 }
 
