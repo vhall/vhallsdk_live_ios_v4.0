@@ -241,7 +241,7 @@
 - (void)leaveInteractiveRoomByHost:(VHRoom *)room
 {
     [UIModelTools showMsgInWindow:@"您已被主播下麦" afterDelay:3 offsetY:100];
-    //离开互动房间
+    //退出
     [self closeButtonClick:nil];
 }
 
@@ -326,39 +326,34 @@
     [self kickOut];
     [self showMsgInWindow:@"已被踢出互动" afterDelay:1];
 }
+
+//直播结束回调
 - (void)room:(VHRoom *)room liveOver:(BOOL)liveOver
 {
     [self closeButtonClick:nil];
 }
 /**
- * 收到被禁言/取消禁言
+ * 收到自己被禁言/取消禁言
  */
 - (void)room:(VHRoom *)room forbidChat:(BOOL)forbidChat
 {
-    [self showMsgInWindow:forbidChat?@"已被禁言":@"已取消禁言" afterDelay:1];
+    
+    [self showMsg:forbidChat?@"您已被禁言":@"您已被取消禁言" afterDelay:1];
+    //被禁言后，退出
+    [self closeButtonClick:nil];
 }
 /**
  * 收到全体禁言/取消全体禁言
  */
 - (void)room:(VHRoom *)room allForbidChat:(BOOL)allForbidChat
 {
-//    收到全体禁言/取消全体禁言
-    [self showMsgInWindow:allForbidChat?@"已被全体禁言":@"已取消全体禁言" afterDelay:1];
+    [self showMsg:allForbidChat?@"已开启全体禁言":@"已取消全体禁言" afterDelay:1];
 }
 
 #pragma mark - button click
 //退出
 - (void)closeButtonClick:(UIButton *)sender {
-    //移除互动视频
-    [self removeAllViews];
-
-    [_cameraView stopStats];
-    //停止推流
-    [_interactiveRoom unpublish];
-    //离开互动房间
-    [_interactiveRoom leaveRoom];
-    _interactiveRoom = nil;
-    
+    [self stopInteractive];
     //返回上级页面
     if(self.delegate && [self.delegate respondsToSelector:@selector(interactiveViewClose:byKickOut:)]) {
         [self.delegate interactiveViewClose:self byKickOut:NO];
@@ -366,6 +361,20 @@
         [self dismissViewControllerAnimated:YES completion:^{}];
     }
 }
+
+//停止互动，移除相关视图
+- (void)stopInteractive {
+    //停止推流
+    [_interactiveRoom unpublish];
+    //移除互动视频
+    [self removeAllViews];
+    //停止流状态监听
+    [_cameraView stopStats];
+    //离开互动房间
+    [_interactiveRoom leaveRoom];
+    _interactiveRoom = nil;
+}
+
 //摄像头切换
 - (void)swapStatusChanged:(UIButton *)sender {
     _cameraView.hidden = YES;
@@ -391,6 +400,24 @@
     (sender.selected) ? [_cameraView muteVideo] : [_cameraView unmuteVideo];
 }
 
+
+//被踢出
+- (void)kickOut {
+    [self stopInteractive];
+    //踢出返回
+    if(self.delegate && [self.delegate respondsToSelector:@selector(interactiveViewClose:byKickOut:)]) {
+        [self.delegate interactiveViewClose:self byKickOut:YES];
+    }else {
+        UIViewController *vc = self;
+        Class homeVcClass = NSClassFromString(@"VHHomeViewController");
+        while (![vc isKindOfClass:homeVcClass]) {
+            vc = vc.presentingViewController;
+        }
+        [vc dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    }
+}
 
 
 #pragma mark - 互动观众
@@ -452,83 +479,15 @@
         [_cameraView setDeviceOrientation:UIDeviceOrientationPortrait];
         _cameraView.transform = CGAffineTransformMakeScale(-1,1);//镜像
         _cameraView.beautifyEnable = _inavBeautifyFilterEnable;
-        
-//        [_cameraView setDeviceOrientation:[UIDevice currentDevice].orientation];
+
+        //设置自己的视频流用户信息，使其他端可从视频流中获取该信息
+        NSDictionary *attributes = @{
+            @"nickName":[VHallApi currentUserNickName], //昵称
+            @"role":@(2), // 1主持人 2观众 3助理 4嘉宾
+            @"avatar":[VHallApi currentUserHeadUrl]}; //头像
+        [_cameraView setAttributes:[UIModelTools jsonStringWithObject:attributes]];
     }
     return _cameraView;
-}
-
-- (void)kickOut {
-    [_interactiveRoom unpublish];
-    [self kickOutAction];
-}
-
-- (void)kickOutAction {
-    //移除互动视频
-    [self removeAllViews];
-    
-    [_cameraView stopStats];
-    
-    //离开互动房间
-    [_interactiveRoom leaveRoom];
-    _interactiveRoom = nil;
-    
-
-    //踢出返回
-    if(self.delegate && [self.delegate respondsToSelector:@selector(interactiveViewClose:byKickOut:)]) {
-        [self.delegate interactiveViewClose:self byKickOut:YES];
-    }else {
-        UIViewController *vc = self;
-        Class homeVcClass = NSClassFromString(@"VHHomeViewController");
-        while (![vc isKindOfClass:homeVcClass]) {
-            vc = vc.presentingViewController;
-        }
-        [vc dismissViewControllerAnimated:YES completion:^{
-            
-        }];
-    }
-}
-
-//#pragma mark 权限
-//- (BOOL)audioAuthorization
-//{
-//    BOOL authorization = NO;
-//
-//    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
-//    switch (authStatus) {
-//        case AVAuthorizationStatusNotDetermined:
-//            //没有询问是否开启麦克风
-//            break;
-//        case AVAuthorizationStatusRestricted:
-//            //未授权，家长限制
-//            break;
-//        case AVAuthorizationStatusDenied:
-//            //玩家未授权
-//            break;
-//        case AVAuthorizationStatusAuthorized:
-//            //玩家授权
-//            authorization = YES;
-//            break;
-//        default:
-//            break;
-//    }
-//    return authorization;
-//}
-//
-//- (BOOL)cameraAuthorization
-//{
-//    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-//    if (authStatus == AVAuthorizationStatusRestricted ||
-//        authStatus == AVAuthorizationStatusDenied)
-//    {
-//        return NO;
-//    }
-//    return YES;
-//}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

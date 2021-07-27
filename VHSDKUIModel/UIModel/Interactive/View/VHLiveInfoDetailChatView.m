@@ -42,7 +42,7 @@
 }
 
 - (void)receiveMessage:(VHLiveMsgModel *)model {
-    if(!model || model.isOnlineMsg) { //暂不处理上下线消息
+    if(!model) {
         return;
     }
     if (!model.nickName || [model.nickName isEqualToString:@""]) {

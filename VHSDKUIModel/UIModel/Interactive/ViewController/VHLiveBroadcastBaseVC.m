@@ -167,15 +167,9 @@
         msgModel.msg_id = model.msg_id;
         msgModel.nickName = model.user_name;
         msgModel.context = model.text;
-        if ([model.role isEqualToString:@"host"]) {
-            msgModel.role = VHLiveRole_Host;
-        } else if ([model.role isEqualToString:@"guest"]) {
-            msgModel.role = VHLiveRole_Guest;
-        } else if ([model.role isEqualToString:@"assistant"]) {
-            msgModel.role = VHLiveRole_Assistant;
-        } else if ([model.role isEqualToString:@"user"]) {
-            msgModel.role = VHLiveRole_Audience;
-        }
+        msgModel.type = model.type;
+        msgModel.role = model.role_name;
+        msgModel.imageUrls = model.imageUrls;
         [self.infoDetailView.chatView receiveMessage:msgModel];
     }
 }
@@ -399,7 +393,6 @@
         self.countDownTimer = [VHLiveWeakTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:nil repeats:YES];
         //隐藏开播按钮
         [self.liveStateView setLiveState:VHLiveState_Success btnTitle:@""];
-        [self prepareLiveSuccess:nil];
     }else if(type == VHLiveState_Forbid) { //被封禁，返回
         [self popRootViewController];
     }else if(type == VHLiveState_NetError) {
@@ -408,8 +401,6 @@
     }
 }
 
-- (void)prepareLiveSuccess:(void (^)(void))success {
-}
 
 //显示直播结束view
 - (void)showLiveEndView {

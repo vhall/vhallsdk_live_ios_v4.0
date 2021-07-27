@@ -27,8 +27,8 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 @property (nonatomic, copy) NSString * avatar;          //头像url，如果没有则为空字符串
 @property (nonatomic, copy) NSString * room;            //房间号，即活动id
 @property (nonatomic, copy) NSString * time;            //发送时间，根据服务器时间确定
-@property (nonatomic, copy) NSString * role;            //用户类型 host:主持人 guest：嘉宾 assistant：助手 user：观众
-@property (nonatomic,assign)NSInteger role_name;        //用户类型 1:主持人 2：观众  3：助手 4：嘉宾
+@property (nonatomic, copy) NSString * role;            //用户类型 host:主持人 guest：嘉宾 assistant：助理 user：观众
+@property (nonatomic,assign)NSInteger role_name;        //用户类型 1:主持人 2：观众  3：助理 4：嘉宾
 @property (nonatomic, strong) id context;               //附加消息
 @property (nonatomic,assign)NSInteger pv;               //频道在线连接数
 @property (nonatomic,assign)NSInteger uv;               //频道在线用户数

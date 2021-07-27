@@ -46,13 +46,19 @@
 
 - (void)setMsgModel:(VHLiveMsgModel *)msgModel {
     _msgModel = msgModel;
+    
+    NSString *contentText = msgModel.context ? msgModel.context : @"";
+    if(msgModel.imageUrls.count > 0) { //消息中带有图片，拼接图片地址
+        NSString *imgUrlStr = [msgModel.imageUrls componentsJoinedByString:@";\n"];
+        contentText = [NSString stringWithFormat:@"%@\n%@",contentText,imgUrlStr];
+    }
     //匹配表情
-    NSMutableAttributedString *contentText = [VHKeyboardToolView processCommentContent:msgModel.context font:FONT_FZZZ(14) textColor:[UIColor whiteColor]];
+    NSMutableAttributedString *attText = [VHKeyboardToolView processCommentContent:contentText font:FONT_FZZZ(14) textColor:[UIColor whiteColor]];
     //插入昵称
     NSString *name = msgModel.nickName.length > VH_MaxNickNameCount ? [NSString stringWithFormat:@"%@...",[msgModel.nickName substringToIndex:VH_MaxNickNameCount]] : msgModel.nickName;
-    [contentText yy_insertString:[NSString stringWithFormat:@"%@：",name] atIndex:0];
+    [attText yy_insertString:[NSString stringWithFormat:@"%@：",name] atIndex:0];
     //设置昵称颜色与字体
-    [contentText setAttributes:@{NSForegroundColorAttributeName : MakeColorRGB(0xE2E2E2),NSFontAttributeName : FONT_FZZZ(14)} range:NSMakeRange(0, name.length + 1)];
+    [attText setAttributes:@{NSForegroundColorAttributeName : MakeColorRGB(0xE2E2E2),NSFontAttributeName : FONT_FZZZ(14)} range:NSMakeRange(0, name.length + 1)];
    
     //插入角色标签
     if(msgModel.role != VHLiveRole_Audience) {
@@ -73,9 +79,11 @@
         CGSize size = [self.roleLab sizeThatFits:CGSizeZero];
         self.roleLab.size = CGSizeMake(size.width, 16);
         NSMutableAttributedString *attachment = [NSMutableAttributedString yy_attachmentStringWithContent:self.roleLab contentMode:UIViewContentModeLeft attachmentSize:CGSizeMake(size.width + 5, 16)  alignToFont:FONT_FZZZ(14) alignment:YYTextVerticalAlignmentCenter];
-        [contentText insertAttributedString:attachment atIndex:0];
+        [attText insertAttributedString:attachment atIndex:0];
     }
-    self.msgLab.attributedText = contentText;
+    
+    self.msgLab.lineBreakMode = NSLineBreakByCharWrapping;
+    self.msgLab.attributedText = attText;
 }
 
 #pragma mark - lazyload

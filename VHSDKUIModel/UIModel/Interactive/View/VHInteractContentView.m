@@ -108,16 +108,48 @@
                 [self.dadaSource removeObject:memberModel];
             }
         }
-//
-        if(model.role_name == VHLiveRole_Host) { //主持人始终放第一个位置
-            [self.dadaSource insertObject:model atIndex:0];
-        }else {
-            [self.dadaSource addObject:model];
-        }
+
+        [self addNewUserWithModel:model];
+        
     } else { //插播 || 共享屏幕
         self.screenOrFileModel = model;
     }
     [self reloadAllData];
+}
+
+
+- (void)addNewUserWithModel:(VHLiveMemberModel *)model {
+    NSMutableArray *hostArray = [NSMutableArray array];
+    NSMutableArray *guestArray = [NSMutableArray array];
+    NSMutableArray *assistantArray = [NSMutableArray array];
+    NSMutableArray *audienceArray = [NSMutableArray array];
+    
+    for(int i = 0 ; i < self.dadaSource.count ; i++) {
+        VHLiveMemberModel *tempModel = self.dadaSource[i];
+        if(tempModel.role_name == VHLiveRole_Host) { //主持人
+            [hostArray addObject:tempModel];
+        }else if(tempModel.role_name == VHLiveRole_Guest) { //嘉宾
+            [guestArray addObject:tempModel];
+        }else if(tempModel.role_name == VHLiveRole_Assistant) { //助理
+            [assistantArray addObject:tempModel];
+        }else  { //观众
+            [audienceArray addObject:tempModel];
+        }
+    }
+    if(model.role_name == VHLiveRole_Host) { //主持人
+        [hostArray addObject:model];
+    }else if(model.role_name == VHLiveRole_Guest) { //嘉宾
+        [guestArray addObject:model];
+    }else if(model.role_name == VHLiveRole_Assistant) { //助理
+        [assistantArray addObject:model];
+    }else { //观众
+        [audienceArray addObject:model];
+    }
+    [self.dadaSource removeAllObjects];
+    [self.dadaSource addObjectsFromArray:hostArray];
+    [self.dadaSource addObjectsFromArray:guestArray];
+    [self.dadaSource addObjectsFromArray:assistantArray];
+    [self.dadaSource addObjectsFromArray:audienceArray];
 }
 
 //**下麦移除视频画面

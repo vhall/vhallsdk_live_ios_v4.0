@@ -274,7 +274,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Le5-Xz-EM6">
-                    <rect key="frame" x="0.0" y="255" width="375" height="557"/>
+                    <rect key="frame" x="0.0" y="255" width="375" height="523"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cw3-a0-z1m" userLabel="slider1">
                             <rect key="frame" x="75" y="6" width="1" height="26"/>
@@ -377,10 +377,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WN1-tv-hfk" userLabel="showView">
-                            <rect key="frame" x="0.0" y="39" width="375" height="518"/>
+                            <rect key="frame" x="0.0" y="39" width="375" height="484"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mvi-e9-Cxi" userLabel="bottomView">
-                                    <rect key="frame" x="0.0" y="478" width="375" height="40"/>
+                                    <rect key="frame" x="0.0" y="444" width="375" height="40"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iyS-x5-ZIk">
                                             <rect key="frame" x="10" y="4" width="355" height="30"/>
@@ -418,7 +418,7 @@
                                     </constraints>
                                 </view>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hdq-Oz-rlP" userLabel="chatTableView">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="478"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="444"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <connections>
                                         <outlet property="dataSource" destination="-1" id="S5i-gq-PPR"/>
@@ -426,10 +426,10 @@
                                     </connections>
                                 </tableView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UBW-po-r5T" userLabel="docConentView">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="518"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="484"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lc0-mn-8uP">
-                                            <rect key="frame" x="0.0" y="118.33333333333334" width="375" height="281.33333333333326"/>
+                                            <rect key="frame" x="0.0" y="101.33333333333331" width="375" height="281.33333333333331"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="lc0-mn-8uP" secondAttribute="height" multiplier="4:3" id="bCR-1S-sTZ"/>
@@ -450,7 +450,7 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂未演示文档" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e5h-h4-2DH">
-                                            <rect key="frame" x="0.0" y="248.33333333333337" width="375" height="21"/>
+                                            <rect key="frame" x="0.0" y="231.33333333333337" width="375" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="90j-oV-4Eq"/>
                                             </constraints>
@@ -535,7 +535,7 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="h5q-BX-aH2" secondAttribute="trailing" id="1ZU-Bn-eCz"/>
                 <constraint firstItem="h5q-BX-aH2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GLB-eb-pyS"/>
-                <constraint firstAttribute="bottom" secondItem="Le5-Xz-EM6" secondAttribute="bottom" id="KeB-UB-beg"/>
+                <constraint firstItem="83p-fe-aem" firstAttribute="bottom" secondItem="Le5-Xz-EM6" secondAttribute="bottom" id="KeB-UB-beg"/>
                 <constraint firstItem="Le5-Xz-EM6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="U69-Zh-NPn"/>
                 <constraint firstItem="h5q-BX-aH2" firstAttribute="top" secondItem="83p-fe-aem" secondAttribute="top" id="Wgo-52-fvV"/>
                 <constraint firstAttribute="trailing" secondItem="Le5-Xz-EM6" secondAttribute="trailing" id="Xm5-GM-xA0"/>

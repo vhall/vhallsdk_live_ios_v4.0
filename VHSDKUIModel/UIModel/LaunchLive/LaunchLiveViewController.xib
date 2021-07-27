@@ -152,7 +152,7 @@
                             </state>
                             <state key="selected" image="结束直播"/>
                             <connections>
-                                <action selector="startVideoPlayer" destination="-1" eventType="touchUpInside" id="MZw-bB-Eg4"/>
+                                <action selector="startVideoPlayer:" destination="-1" eventType="touchUpInside" id="Un3-gS-nQn"/>
                             </connections>
                         </button>
                         <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MOi-XC-KsP">

@@ -54,14 +54,27 @@
  */
 + (void)registerApp:(NSString *)appKey SecretKey:(NSString *)secretKey;
 
+
 /*！
  *  注册app
  *  需要在 application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 中调用
  *  @param appKey       vhall后台注册生成的appkey
  *  @param secretKey    vhall后台注册生成的appsecretKey
- *  @param host  微吼服务所在域名 原vhall客户可以不填
+ *  @param host         微吼服务所在域名，可传nil默认使用微吼域名
  */
 + (void)registerApp:(NSString *)appKey SecretKey:(NSString *)secretKey host:(NSString*)host;
+
+
+/*！
+ *  注册app
+ *  需要在 application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 中调用
+ *  @param appKey       vhall后台注册生成的appkey
+ *  @param secretKey    vhall后台注册生成的appsecretKey
+ *  @param host         微吼服务所在域名，可传nil默认使用微吼域名
+ *  @param rsaPrivateKey    RSA私钥，若控制台设置使用RSA加密方式，则需要传此值
+ */
++ (void)registerApp:(NSString *)appKey SecretKey:(NSString *)secretKey host:(NSString*)host rsaPrivateKey:(NSString *)rsaPrivateKey;
+
 
 /*！
  *  设置日志类型

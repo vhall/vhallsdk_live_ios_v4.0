@@ -19,7 +19,6 @@
 
 @interface LaunchLiveViewController ()<VHallLivePublishDelegate, VHallChatDelegate,VHMessageToolBarDelegate>
 {
-    BOOL  _isVideoStart;
     BOOL  _isAudioStart;
     BOOL  _torchType;
     BOOL  _onlyVideo;
@@ -30,7 +29,7 @@
     VHallChat         *_chat;       //聊天
     dispatch_source_t _timer;
     long              _liveTime;
-    BOOL  _alreadyStartLive;  //标记上次开播成功后，是否主动停止过
+    BOOL  _publishSuccess;  //标记当前开播状态
 }
 
 
@@ -40,7 +39,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *bitRateLabel;
 @property (weak, nonatomic) IBOutlet UIButton *videoStartAndStopBtn;
 @property (weak, nonatomic) IBOutlet UIButton *audioStartAndStopBtn;
-@property (weak, nonatomic) IBOutlet UIButton *torchBtn;
+@property (weak, nonatomic) IBOutlet UIButton *torchBtn; //闪光灯
 @property (weak, nonatomic) IBOutlet UIView *chatContainerView;
 @property (weak, nonatomic) IBOutlet UITextField *msgTextField;
 @property (weak, nonatomic) IBOutlet UIButton *chatMsgSend;
@@ -131,14 +130,18 @@
 
 -(void)LaunchLiveDidEnterBackground
 {
-    [_engine disconnect];
+    if(_publishSuccess) {
+        [_engine disconnect];
+    }
     [_engine stopVideoCapture];
 }
 
 -(void)LaunchLiveWillEnterForeground
 {
     [_engine startVideoCapture];
-    [_engine reconnect];
+    if(_publishSuccess) {
+        [_engine reconnect];
+    }
 }
 
 //返回
@@ -149,7 +152,7 @@
          [_engine stopLive];//停止活动
     }
     [_engine destoryObject];
-    self.engine = nil;
+    _engine = nil;
     
     [self dismissViewControllerAnimated:YES completion:^{
     }];
@@ -179,7 +182,6 @@
 
 -(void)initDatas
 {
-    _isVideoStart = NO;
     _isAudioStart = NO;
     _torchType = NO;
     _onlyVideo = NO;
@@ -291,40 +293,38 @@
 }
 
 #pragma mark - 发起/停止直播
-- (IBAction)startVideoPlayer
+- (IBAction)startVideoPlayer:(UIButton *)sender
 {
 #if (TARGET_IPHONE_SIMULATOR)
     [self showMsg:@"无法在模拟器上发起直播！" afterDelay:1.5];
     return;
 #endif
     
-    if (!_isVideoStart)
-    {
-        if(_alreadyStartLive) { //如果上次开播，没有主动停止，再次开播时，重连流即可
+    if(sender.selected == NO) {  //开始直播
+        [_hud showAnimated:YES];
+        
+        if(_publishSuccess) { //如果当前已经成功开播，且没有主动停止直播，但由于网络断开等问题导致被动停止，再次开播时，重连流即可
             [_engine reconnect];
-        }else { //重新开播
+        }else { //发起直播
+            [_engine startLive:self.publishParam];
+            _engine.displayView.frame   = _perView.bounds;
+            [self.perView insertSubview:_engine.displayView atIndex:0];
+            
             [_chatDataArray removeAllObjects];
             [_chatView update];
-            [_hud showAnimated:YES];
             _torchBtn.hidden = NO;
-            [_engine startLive:self.publishParam];
-            self.engine.displayView.frame   = _perView.bounds;
-            [self.perView insertSubview:_engine.displayView atIndex:0];
         }
+    }else { //停止直播
+        [UIAlertController showAlertControllerTitle:@"提示" msg:@"您是否要结束直播？" leftTitle:@"取消" rightTitle:@"结束" leftCallBack:^{
+            return;
+        } rightCallBack:^{
+            [_engine stopLive];//停止直播
+            [_engine destoryObject];
+            _engine = nil;
+            _publishSuccess = NO;
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }];
     }
-    else
-    {
-        //停止直播
-        _isVideoStart = NO;
-        _bitRateLabel.text = @"";
-        [_hud hideAnimated:YES];
-        _videoStartAndStopBtn.selected = NO;
-        [self chatShow:NO];
-        _torchBtn.hidden = YES;
-        [_engine stopLive];//停止活动
-        _alreadyStartLive = NO;
-    }
-    _logView.hidden = YES;
 }
 
 //发起/停止纯音频直播
@@ -414,23 +414,10 @@
 
 -(void)firstCaptureImage:(UIImage *)image {
     VHLog(@"第一张图片");
-    _alreadyStartLive = YES;
 }
 
 -(void)publishStatus:(VHLiveStatus)liveStatus withInfo:(NSDictionary *)info {
-    __weak typeof(self) weakSelf = self;
-    void (^resetStartPlay)(NSString * msg) = ^(NSString * msg){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            _isVideoStart = NO;
-            _bitRateLabel.text = @"";
-            _videoStartAndStopBtn.selected = NO;
-            [weakSelf chatShow:NO];
-            [UIAlertController showAlertControllerTitle:msg msg:@"" btnTitle:@"确定" callBack:nil];
-        });
-    };
-
-    BOOL errorLiveStatus = NO;
-    NSString * content = info[@"content"];
+    NSString *content = info[@"content"];
     
     switch (liveStatus)
     {
@@ -442,44 +429,34 @@
         case VHLiveStatusPushConnectSucceed:
         {
             [_hud hideAnimated:YES];
-            [weakSelf chatShow:YES];
-            _isVideoStart = YES;
-            if (_isVideoStart || _isAudioStart) {
-                _videoStartAndStopBtn.selected = YES;
-            }
+            [self chatShow:YES];
+            _publishSuccess = YES;
+            _videoStartAndStopBtn.selected = YES;
             //设置画面填充模式
             [_engine setContentMode:VHRTMPMovieScalingModeAspectFill];
         }
             break;
         case VHLiveStatusSendError:
         {
-            resetStartPlay(@"流发送失败");
-            errorLiveStatus = YES;
+            content = @"流发送失败";
+            [self publishWithErrorMsg:content];
         }
             break;
         case VHLiveStatusPushConnectError:
         {
-            [_hud hideAnimated:YES];
             NSString *str =[NSString stringWithFormat:@"连接失败:%@",content];
-            resetStartPlay(str);
-            errorLiveStatus = YES;
+            [self publishWithErrorMsg:str];
         }
             break;
         case VHLiveStatusParamError:
         {
-            [_hud hideAnimated:YES];
-            resetStartPlay(@"参数错误");
-            errorLiveStatus = YES;
+            content = @"参数错误";
+            [self publishWithErrorMsg:content];
         }
             break;
         case VHLiveStatusGetUrlError:
         {
-            [_hud hideAnimated:YES];
-            _isVideoStart = NO;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf showMsg:content afterDelay:1.5];
-            });
-            errorLiveStatus = YES;
+            [self publishWithErrorMsg:content];
         }
             break;
         case VHLiveStatusUploadNetworkOK:
@@ -492,25 +469,29 @@
         {
             _bitRateLabel.textColor = [UIColor redColor];
             VHLog(@"kLiveStatusNetworkStatus:%@",content);
-            errorLiveStatus = YES;
         }
             break;
-        case  VHLiveStatusAudioRecoderError :
+        case  VHLiveStatusAudioRecoderError : //音频采集失败
         {
-            [_hud hideAnimated:YES];
-            _isVideoStart = NO;
-            dispatch_async(dispatch_get_main_queue(), ^{
-//                [weakSelf showMsg:@"音频采集失败,可能是麦克风未授权使用" afterDelay:1.5];
-                [_engine disconnect];
-                resetStartPlay(@"音频采集失败,可能是麦克风未授权使用");
-            });
-            errorLiveStatus = YES;
+            [self publishWithErrorMsg:content];
+            
         }
             break;
         default:
             break;
     }
 }
+
+//推流失败提示
+- (void)publishWithErrorMsg:(NSString *)msg {
+    [_hud hideAnimated:YES];
+    
+    _bitRateLabel.text = @"";
+    _videoStartAndStopBtn.selected = NO;
+    [self chatShow:NO];
+    [UIAlertController showAlertControllerTitle:msg msg:@"" btnTitle:@"确定" callBack:nil];
+}
+
 
 #pragma mark - 美颜设置
 - (IBAction)filterBtnClick:(UIButton *)sender

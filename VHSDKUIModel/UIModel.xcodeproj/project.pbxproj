@@ -1354,6 +1354,8 @@
 		C0443AF5242839540063FB0D /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				F3A105742626DA6A00F73EEA /* ProgressHud.h */,
+				F3A105752626DA6A00F73EEA /* ProgressHud.m */,
 				0341C56A261ECD8600EF599B /* VHLiveWeakTimer.h */,
 				0341C569261ECD8600EF599B /* VHLiveWeakTimer.m */,
 				C0443AF8242839540063FB0D /* UIAlertController+ITTAdditionsUIModel.h */,
@@ -1733,7 +1735,6 @@
 				F3A1093726297FAC003552F8 /* AlertView */,
 				F32B64D826281C5B0067BD0C /* Keyboard */,
 				F3A105772626E7EB00F73EEA /* VHRefresh */,
-				F3A105732626DA6A00F73EEA /* ProgressHud */,
 				F3A105622626D78C00F73EEA /* VHActionSheet */,
 				F3A1055F2626CE8900F73EEA /* VHSegmentView.h */,
 				F3A105602626CE8900F73EEA /* VHSegmentView.m */,
@@ -1758,15 +1759,6 @@
 				F3A1056C2626D78C00F73EEA /* VHActionSheet.h */,
 			);
 			path = VHActionSheet;
-			sourceTree = "<group>";
-		};
-		F3A105732626DA6A00F73EEA /* ProgressHud */ = {
-			isa = PBXGroup;
-			children = (
-				F3A105742626DA6A00F73EEA /* ProgressHud.h */,
-				F3A105752626DA6A00F73EEA /* ProgressHud.m */,
-			);
-			path = ProgressHud;
 			sourceTree = "<group>";
 		};
 		F3A105772626E7EB00F73EEA /* VHRefresh */ = {

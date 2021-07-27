@@ -1275,6 +1275,7 @@ static AnnouncementView* announcementView = nil;
     }
 }
 
+//直播开始回调
 - (void)LiveStart{
     VHLog(@"LiveStart");
     
@@ -1290,15 +1291,20 @@ static AnnouncementView* announcementView = nil;
 {
     
 }
+
+//直播已结束回调
 - (void)LiveStoped
 {
     VHLog(@"直播已结束");
     [MBProgressHUD hideHUDForView:_moviePlayer.moviePlayerView animated:YES];
     _startAndStopBtn.selected = NO;
     [_moviePlayer stopPlay];
-    [UIAlertController showAlertControllerTitle:@"提示" msg:@"直播已结束" btnTitle:@"确定" callBack:^{
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [UIAlertController showAlertControllerTitle:@"提示" msg:@"直播已结束" btnTitle:@"确定" callBack:^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }];
+    });
 }
 
 // 主持人是否允许举手
@@ -1515,12 +1521,12 @@ static AnnouncementView* announcementView = nil;
 
 - (void)forbidChat:(BOOL) forbidChat
 {
-    [self showMsgInWindow:forbidChat?@"被禁言":@"取消禁言" afterDelay:2];
+    [self showMsg:forbidChat?@"您已被禁言":@"您已被取消禁言" afterDelay:2];
 }
 
 - (void)allForbidChat:(BOOL) allForbidChat
 {
-    [self showMsgInWindow:allForbidChat?@"全体禁言":@"取消全体禁言" afterDelay:2];
+    [self showMsg:allForbidChat?@"已开启全体禁言":@"已取消全体禁言" afterDelay:2];
 }
 
 

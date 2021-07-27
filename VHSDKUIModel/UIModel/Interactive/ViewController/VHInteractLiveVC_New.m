@@ -104,18 +104,16 @@
     
     if(self.role == VHLiveRole_Guest) { //嘉宾没有开播按钮，直接加入，成功后加入互动房间
         @weakify(self);
-        [self prepareLiveSuccess:^{
+        [self.inavRoom guestEnterRoomWithParams:self.params success:^(VHRoomInfo *roomInfo) {
             @strongify(self);
-            [self.inavRoom guestEnterRoomWithParams:self.params success:^(VHRoomInfo *roomInfo) {
-                self.roomInfo = roomInfo;
-                self.roomInfo.documentManager.delegate = self;
-                //嘉宾端，没有直播计时，显示直播名称
-                self.infoDetailView.topToolView.liveTitleStr = self.roomInfo.webinar_title;
-                self.infoDetailView.topToolView.headIconStr = self.roomInfo.webinar_user_icon;
-                [self startIMServer];
-            } fail:^(NSError *error) {
-                VH_ShowToast(error.localizedDescription);
-            }];
+            self.roomInfo = roomInfo;
+            self.roomInfo.documentManager.delegate = self;
+            //嘉宾端，没有直播计时，显示直播名称
+            self.infoDetailView.topToolView.liveTitleStr = self.roomInfo.webinar_title;
+            self.infoDetailView.topToolView.headIconStr = self.roomInfo.webinar_user_icon;
+            [self startIMServer];
+        } fail:^(NSError *error) {
+            VH_ShowToast(error.localizedDescription);
         }];
     }
 }
@@ -209,16 +207,6 @@
     });
 }
 
-- (void)prepareLiveSuccess:(void (^)(void))success {
-    //设置本地流用户信息
-    NSDictionary *attributes = @{
-        @"nickName":self.params[@"nickname"],
-        @"role":@(self.role),
-        @"avatar":self.params[@"avatar"]};
-    VUI_Log(@"设置本地流用户信息：%@",attributes);
-    [_localRenderView setAttributes:attributes.mj_JSONString];
-    success ? success() : nil;
-}
 
 //开播倒计时结束
 - (void)startLiveCountDownOver {
@@ -339,9 +327,6 @@
             }else {
                 [self leaveInteracRoom]; //停止推流，退出互动房间
                 [self popViewController];
-            }
-            for (NSString *cid in self.roomInfo.documentManager.documentViewsByIDs.allKeys) {
-                [self.roomInfo.documentManager destroyWithCID:cid];
             }
         } else {
             [self leaveInteracRoom];
@@ -815,6 +800,13 @@
         _localRenderView.scalingMode = VHRenderViewScalingModeAspectFill;
         _localRenderView.beautifyEnable = YES;
         [_localRenderView setDeviceOrientation:self.screenLandscape ? UIDeviceOrientationLandscapeLeft : UIDeviceOrientationPortrait];
+        
+        //设置流用户信息
+        NSDictionary *attributes = @{
+            @"nickName":self.params[@"nickname"],
+            @"role":@(self.role),
+            @"avatar":self.params[@"avatar"]};
+        [_localRenderView setAttributes:attributes.mj_JSONString];
     }
     return _localRenderView;
 }
