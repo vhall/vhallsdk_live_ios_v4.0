@@ -623,12 +623,9 @@ static AnnouncementView* announcementView = nil;
     self.detailBtn.selected = self.docBtn.selected = self.QABtn.selected = self.lotteryBtn.selected = NO;
     self.chatBtn.selected = YES;
     self.currentSelectedButton = sender;
-    [self.chatTextFieldBtn setTitle:@"我来说两句" forState:UIControlStateNormal];
+    [self.chatTextFieldBtn setTitle:@"  我来说两句" forState:UIControlStateNormal];
     
-    [_chatView reloadData];
-    if(_chatDataArray.count >0) {
-        [_chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_chatDataArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
+    [self reloadDataWithDataSource:_chatDataArray animated:NO];
     
     if (!_loadedChatHistoryList)
     {
@@ -643,11 +640,8 @@ static AnnouncementView* announcementView = nil;
         if(page == 1) {
             weakSelf.chatDataArray = [NSMutableArray arrayWithArray:msgs];
             weakSelf.chatListPage = 1;
-            [weakSelf.chatView reloadData];
             
-            if(weakSelf.chatDataArray.count > 0) {
-                [weakSelf.chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:weakSelf.chatDataArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-            }
+            [weakSelf reloadDataWithDataSource:weakSelf.chatDataArray animated:YES];
             
             _loadedChatHistoryList = YES;
         }else {
@@ -789,12 +783,9 @@ static AnnouncementView* announcementView = nil;
     self.lotteryBtn.selected = self.chatBtn.selected = self.docBtn.selected = self.detailBtn.selected = NO;
     self.QABtn.selected = YES;
     self.currentSelectedButton = sender;
-    [self.chatTextFieldBtn setTitle:@"发起提问" forState:UIControlStateNormal];
+    [self.chatTextFieldBtn setTitle:@"  发起提问" forState:UIControlStateNormal];
     
-    [_chatView reloadData];
-    if(_QADataArray.count > 0) {
-        [_chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_QADataArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
+    [self reloadDataWithDataSource:_QADataArray animated:NO];
 
     if(_QADataArray.count == 0) {
         [self loadQAListNewData];
@@ -815,7 +806,7 @@ static AnnouncementView* announcementView = nil;
             }
         }
         if (_QABtn.selected) {
-            [_chatView reloadData];
+            [self reloadDataWithDataSource:_QADataArray animated:YES];
         }
         [weakself.chatView.mj_header endRefreshing];
     } failed:^(NSDictionary *failedData) {
@@ -823,6 +814,15 @@ static AnnouncementView* announcementView = nil;
         [weakself showMsgInWindow:tipMsg afterDelay:2];
         [weakself.chatView.mj_header endRefreshing];
     }];
+}
+
+- (void)reloadDataWithDataSource:(NSArray *)dataSource animated:(BOOL)animated{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_chatView reloadData];
+        if(dataSource.count > 0) {
+            [_chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        }
+    });
 }
 
 
@@ -1278,15 +1278,14 @@ static AnnouncementView* announcementView = nil;
 //直播开始回调
 - (void)LiveStart{
     VHLog(@"LiveStart");
-    
     __weak typeof(self) wf = self;
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC));
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [UIAlertController showAlertControllerTitle:@"提示" msg:@"直播已开始" btnTitle:@"确定" callBack:^{
             [wf.moviePlayer startPlay:[wf playParam]];
         }];
     });
 }
+
 - (void)LiveStartDefinition
 {
     
@@ -1537,10 +1536,7 @@ static AnnouncementView* announcementView = nil;
     }
     [_chatDataArray addObjectsFromArray:msgs];
     if (_chatBtn.selected) {
-        [_chatView reloadData];
-        if(_chatDataArray.count >0) {
-            [_chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_chatDataArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }
+        [self reloadDataWithDataSource:_chatDataArray animated:YES];
     }
 }
 
@@ -1564,18 +1560,25 @@ static AnnouncementView* announcementView = nil;
 //收到问答
 - (void)reciveQAMsg:(NSArray <VHallQAModel *> *)msgs
 {
-    for (VHallQAModel * qaModel in msgs) {
+    for (VHallQAModel *qaModel in msgs) {
+        //添加问题
         [_QADataArray addObject:qaModel.questionModel];
-
-        if (qaModel.answerModels.count > 0) {
-            [_QADataArray addObjectsFromArray:qaModel.answerModels];
+        if(qaModel.answerModels.count > 0) { //如果有回答
+            BOOL showAnswer = NO; //是否有可显示的回答
+            for(VHallAnswerModel *answer in qaModel.answerModels) {
+                if(answer.is_open == YES || [qaModel.questionModel.join_id isEqualToString:self.moviePlayer.webinarInfo.join_id]) { // 公开的回答 || 私密回答自己的提问
+                    [_QADataArray addObject:answer];
+                    showAnswer = YES;
+                }
+            }
+            if(showAnswer == NO) { //如果没有可显示的回答，则不添加问题
+                [_QADataArray removeObject:qaModel.questionModel];
+            }
         }
     }
+    
     if (_QABtn.selected) {
-        [_chatView reloadData];
-        if(_chatDataArray.count >0) {
-            [_chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_QADataArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }
+        [self reloadDataWithDataSource:_QADataArray animated:YES];
     }
 }
 
@@ -1629,10 +1632,7 @@ static AnnouncementView* announcementView = nil;
     [_chatDataArray addObject:model];//添加问卷消息到聊天列表
 
     if (_chatBtn.selected) {
-        [_chatView reloadData];
-        if(_chatDataArray.count >0 ) {
-            [_chatView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_chatDataArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }
+        [self reloadDataWithDataSource:_chatDataArray animated:YES];
     }
 }
 

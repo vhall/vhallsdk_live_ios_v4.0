@@ -55,8 +55,8 @@ typedef NS_ENUM(NSInteger,ChatMsgType) {
 @property (nonatomic, copy) NSString * text;            ///<聊天消息
 @property (nonatomic, assign) ChatMsgType type;         ///<聊天消息类型
 @property (nonatomic, copy) NSArray  * imageUrls;       ///<图片消息url列表
-@property (nonatomic, strong) VHallChatModel *replyMsg; ///<回复消息
-@property (nonatomic, copy)   NSArray  * atList;        ///<@人列表
+@property (nonatomic, strong) VHallChatModel *replyMsg; ///<回复消息，若无回复消息返回nil
+@property (nonatomic, copy)   NSArray  *atList;        ///<@用户列表，若无@用户返回nil
 @end
 
 

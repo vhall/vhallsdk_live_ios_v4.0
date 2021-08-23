@@ -45,8 +45,7 @@
 
 - (void)setModel:(VHallChatModel *)model {
     _model = model;
-    if([_model isKindOfClass:[VHallCustomMsgModel class]])
-    {
+    if([_model isKindOfClass:[VHallCustomMsgModel class]]) { //自定义消息
         VHallCustomMsgModel *model = (VHallCustomMsgModel *)_model;
         pic.image = nil;
         lblNickName.text = @"【用户自定义消息】";
@@ -57,13 +56,13 @@
         
         replayTop.constant = 0;
         replyContext.text = @"";
-    } else {
+    } else {  //聊天消息
         [pic sd_setImageWithURL:[NSURL URLWithString:_model.avatar] placeholderImage:BundleUIImage(@"head50")];
         lblNickName.text = [_model.user_name stringByAppendingFormat:@"[%@-%ld]%@",_model.role,(long)_model.role_name,[_model.account_id isEqualToString:[VHallApi currentUserID]]?@"(myself)":@""];
         lblTime.text = _model.time;
         lblNickName.textColor = [UIColor blackColor];
         NSString *contextText = [NSString stringWithFormat:@"%@%@",_model.text?_model.text:@"",_model.imageUrls.count>0? [_model.imageUrls componentsJoinedByString:@";"]:@""];
-        //聊天
+
         if(_model.replyMsg) { //回复
             replayTop.constant = 10;
             NSString *string = [NSString stringWithFormat:@"%@%@",_model.replyMsg.text ?_model.replyMsg.text:@"",_model.replyMsg.imageUrls.count>0? [_model.replyMsg.imageUrls componentsJoinedByString:@";"]:@""];

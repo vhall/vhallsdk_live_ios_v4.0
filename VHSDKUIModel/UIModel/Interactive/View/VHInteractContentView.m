@@ -234,12 +234,7 @@
 
 //共享屏幕或插播视频
 - (VHLocalRenderView *)screenOrFileVideo {
-    for(VHLiveMemberModel *model in self.dadaSource) {
-        if(model.videoView.streamType == VHInteractiveStreamTypeScreen || model.videoView.streamType == VHInteractiveStreamTypeFile) {
-            return model.videoView;
-        }
-    }
-    return nil;
+    return self.screenOrFileModel.videoView;
 }
 
 - (NSMutableArray *)getMicUserList {

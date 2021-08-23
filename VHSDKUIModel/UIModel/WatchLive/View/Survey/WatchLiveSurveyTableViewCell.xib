@@ -26,7 +26,7 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukd-Gg-e0Q">
                         <rect key="frame" x="171" y="9" width="86" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" title="获取问卷">
+                        <state key="normal" title="点击参与">
                             <color key="titleColor" red="0.93333333330000001" green="0.47843137250000001" blue="0.38823529410000002" alpha="1" colorSpace="deviceRGB"/>
                         </state>
                         <connections>

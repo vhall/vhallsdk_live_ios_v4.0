@@ -25,6 +25,9 @@
 /// 代理
 @property (nonatomic, weak) id <VHRoomDelegate> delegate;
 
+/// 设置旁路直播布局，默认VHCANVAS_LAYOUT_PATTERN_TILED_6_1T5D：主次平铺，一行5个位于底部 （主持人设置）
+@property (nonatomic, assign) VHBroadcastLayout broadcastLayout;
+
 /// 当前房间状态
 @property (nonatomic, assign, readonly) VHRoomStatus status;
 
@@ -46,7 +49,7 @@
 /// 房间相关信息（进入房间成功后才有值）
 @property (nonatomic, strong, readonly) VHRoomInfo *roomInfo;
 
-/// 支持的推流视频分辨率列表，如：[480x360,640x480,960x540...]
+/// 获取支持的推流视频分辨率列表，如：[480x360,640x480,960x540...]
 + (NSArray<NSString *> *)availableVideoResolutions;
 
 /// 观众加入互动房间 (观众使用，注意必须先进行VHallMoviePlayer观看，参考demo使用)
@@ -211,12 +214,12 @@
 /// @param cameraView 当前推流 cameraView
 - (void)room:(VHRoom *)room didUnpublish:(VHRenderView *)cameraView;
 
-/// 新成员上麦回调
+/// 视频流加入回调（流类型包括音视频、共享屏幕、插播等）
 /// @param room room实例
 /// @param attendView 该成员对应视频画面
 - (void)room:(VHRoom *)room didAddAttendView:(VHRenderView *)attendView;
 
-/// 成员下麦回调
+/// 视频流离开回调（流类型包括音视频、共享屏幕、插播等）
 /// @param room room实例
 /// @param attendView 该成员对应视频画面
 - (void)room:(VHRoom *)room didRemovedAttendView:(VHRenderView *)attendView;

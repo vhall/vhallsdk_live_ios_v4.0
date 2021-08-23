@@ -96,6 +96,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="headImage" destination="c0p-3r-P6r" id="pFD-wK-qVi"/>
+                <outlet property="headLeft" destination="ql7-C5-Eks" id="c8N-XM-oTh"/>
                 <outlet property="lblContent" destination="qly-b0-RKR" id="ckh-JL-dEj"/>
                 <outlet property="lblNickName" destination="04l-do-IiD" id="Noy-hR-uj4"/>
                 <outlet property="lblTime" destination="AWW-EW-qM6" id="YtN-hD-1Bx"/>

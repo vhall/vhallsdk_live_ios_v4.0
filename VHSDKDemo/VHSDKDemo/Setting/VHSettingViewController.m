@@ -141,7 +141,7 @@
 {
     item00 = [VHSettingTextFieldItem  itemWithTitle:@"活动ID"];
     item00.text=DEMO_Setting.watchActivityID;
-    item01 = [VHSettingTextFieldItem  itemWithTitle:@"k值"];
+    item01 = [VHSettingTextFieldItem  itemWithTitle:@"密码或k值"];
     item01.text =  DEMO_Setting.kValue;
     item02 = [VHSettingTextFieldItem  itemWithTitle:@"口令"];
     item02.text =  DEMO_Setting.codeWord;

@@ -23,7 +23,6 @@
 
 @interface VHInteractLiveVC_New ()<VHRoomDelegate,VHallChatDelegate,VHDocumentDelegate>
 {
-    BOOL _NetErrorRetry; //标记当前网络错误重试
     BOOL _noShowDownMicTip; //是否不显示下麦提示
 }
 
@@ -42,11 +41,6 @@
 @property (nonatomic, assign) BOOL downMicrophoneBySelf;
 /** 标记是否为自己手动关闭直播 */
 @property (nonatomic, assign) BOOL closeLiveBySelf;
-/** 标记是否为自己进行麦克风操作 */
-@property (nonatomic, assign) BOOL operateMicBySelf;
-/** 标记是否为自己进行摄像头操作 */
-@property (nonatomic, assign) BOOL operateCameraBySelf;
-
 @end
 
 @implementation VHInteractLiveVC_New
@@ -103,20 +97,26 @@
     }];
     
     if(self.role == VHLiveRole_Guest) { //嘉宾没有开播按钮，直接加入，成功后加入互动房间
-        @weakify(self);
-        [self.inavRoom guestEnterRoomWithParams:self.params success:^(VHRoomInfo *roomInfo) {
-            @strongify(self);
-            self.roomInfo = roomInfo;
-            self.roomInfo.documentManager.delegate = self;
-            //嘉宾端，没有直播计时，显示直播名称
-            self.infoDetailView.topToolView.liveTitleStr = self.roomInfo.webinar_title;
-            self.infoDetailView.topToolView.headIconStr = self.roomInfo.webinar_user_icon;
-            [self startIMServer];
-        } fail:^(NSError *error) {
-            VH_ShowToast(error.localizedDescription);
-        }];
+        [self guestJoin];
     }
 }
+
+//嘉宾加入
+- (void)guestJoin {
+    @weakify(self);
+    [self.inavRoom guestEnterRoomWithParams:self.params success:^(VHRoomInfo *roomInfo) {
+        @strongify(self);
+        self.roomInfo = roomInfo;
+        self.roomInfo.documentManager.delegate = self;
+        //嘉宾端，没有直播计时，显示直播名称
+        self.infoDetailView.topToolView.liveTitleStr = self.roomInfo.webinar_title;
+        self.infoDetailView.topToolView.headIconStr = self.roomInfo.webinar_user_icon;
+        [self startIMServer];
+    } fail:^(NSError *error) {
+        VH_ShowToast(error.localizedDescription);
+    }];
+}
+
 
 // 初始化IM服务
 - (void)startIMServer {
@@ -224,27 +224,6 @@
     }];
 }
 
-//网络错误，重新推流
-- (void)restartPushForNetError {
-    VUI_Log(@"当前房间状态：%zd",self.inavRoom.status);
-    _NetErrorRetry = YES;
-    if(self.inavRoom.status == VHRoomStatusConnected) { //房间已连接
-        VUI_Log(@"房间已经连接，重新推流");
-        [self.inavRoom publishWithCameraView:self.localRenderView];
-    }else {
-        VUI_Log(@"房间没有连接，重新加入房间");
-        //重新加入房间
-        @weakify(self)
-        [self.inavRoom hostEnterRoomStartWithParams:self.params success:^(VHRoomInfo *roomInfo) {
-            @strongify(self)
-            self.roomInfo = roomInfo;
-            [self startIMServer];
-        } fail:^(NSError *error) {
-            VH_ShowToast(error.localizedDescription);
-        }];
-    }
-}
-
 //前台
 - (void)appWillEnterForeground {
     [super appWillEnterForeground];
@@ -256,8 +235,8 @@
 
 //后台
 - (void)appDidEnterBackground {
-    //停止推流
     if([self.inavRoom isPublishing]) {
+        //下麦并停止推流
         [self.inavRoom unpublish];
     }
 }
@@ -354,7 +333,6 @@
 - (void)liveDetaiViewClickMicrophoneBtn:(VHLiveBroadcastInfoDetailView *)detailView voiceBtn:(UIButton *)voiceBtn {
     voiceBtn.userInteractionEnabled = NO;
     BOOL open = voiceBtn.isSelected ? YES : NO;
-    self.operateMicBySelf = YES;
     if (open) {
         [self.localRenderView unmuteAudio];
         VH_ShowToast(@"已打开麦克风");
@@ -370,7 +348,6 @@
 - (void)liveDetaiViewClickCameraOpenBtn:(VHLiveBroadcastInfoDetailView *)detailView videoBtn:(UIButton *)videoBtn {
     videoBtn.userInteractionEnabled = NO;
     BOOL open = videoBtn.isSelected ? YES : NO;
-    self.operateCameraBySelf = YES;
     if (open) {
         [self.localRenderView unmuteVideo];
         VH_ShowToast(@"已打开摄像头");
@@ -441,13 +418,15 @@
 // 房间连接成功回调
 - (void)room:(VHRoom *)room didConnect:(NSDictionary *)roomMetadata {
     if (self.role == VHLiveRole_Host) {
+        //开始推流
         [self.inavRoom publishWithCameraView:self.localRenderView];
+        //设置允许观众举手上麦
+        [self.inavRoom setHandsUpStatus:1 success:nil fail:nil];
     }
 }
 
 //推流成功
 - (void)room:(VHRoom *)room didPublish:(VHRenderView *)cameraView {
-    _NetErrorRetry = NO;
     [self.liveStateView setLiveState:VHLiveState_Success btnTitle:@""];
     //移除本地预览视频
     [self.localRenderView removeFromSuperview];
@@ -469,12 +448,17 @@
 - (void)room:(VHRoom *)room didUnpublish:(VHRenderView *)cameraView {
     VUI_Log(@"停止推流成功");
 }
-//房间错误回调
+//错误回调
 - (void)room:(VHRoom *)room didError:(VHRoomErrorStatus)status reason:(NSString *)reason {
-    VUI_Log(@"房间错误：%@",reason);
-    VH_ShowToast(@"当前网络异常");
-    [self leaveInteracRoom];
-    [self popViewController];
+    VUI_Log(@"房间错误：%@---status：%zd",reason,status);
+    if(status == 284003) { //socket.io fail 错误
+        VH_ShowToast(@"网络错误");
+        //退出
+        [self leaveInteracRoom];
+        [self popViewController];
+    }else { //其他错误，如：上麦人数达到上限（status：513025）
+        VH_ShowToast(reason);
+    }
 }
 
 //房间状态变化
@@ -485,7 +469,7 @@
     }
 }
 
-//新成员上麦回调
+// 视频流添加回调（收到此回调后需要添加视频view，可能是连麦用户，也可能是共享屏幕/插播）
 - (void)room:(VHRoom *)room didAddAttendView:(VHRenderView *)attendView {
     VUI_Log(@"\n某人上麦:%@，流类型：%d，流视频宽高：%@，流id：%@，是否有音频：%d，是否有视频：%d",attendView.userId,attendView.streamType,NSStringFromCGSize(attendView.videoSize),attendView.streamId,attendView.hasAudio,attendView.hasVideo);
     VHLiveMemberModel *model = [VHLiveMemberModel modelWithVHRenderView:(VHLocalRenderView *)attendView];
@@ -493,16 +477,17 @@
     [self.interactView addAttendWithUser:model];
     //更新视频小窗口显示
     [self updataSmallVideo];
-    //如果收到插播，则关闭自己麦克风，解决插播时文件与人声混音问题。
-    if(model.videoView.streamType == VHInteractiveStreamTypeFile) { //插播
-        if([self.interactView haveRenderViewWithTargerId:@""] && self.infoDetailView.topToolView.voiceBtn.selected == NO) { //自己已上麦 && 麦克风处于开启状态下
+    
+    //如果自己上麦中收到插播流，则关闭自己麦克风，解决插播时文件与人声混音问题。
+    if(attendView.streamType == VHInteractiveStreamTypeFile) { //插播
+        if([_localRenderView isPublish] && !self.infoDetailView.topToolView.voiceBtn.selected) { //自己已上麦 && 麦克风打开中
             //关闭麦克风
             [self liveDetaiViewClickMicrophoneBtn:self.infoDetailView voiceBtn:self.infoDetailView.topToolView.voiceBtn];
         }
     }
 }
 
-//成员下麦回调
+/// 视频流移除回调（收到此回调后需要移除视频view，可能是连麦用户，也可能是共享屏幕/插播）
 - (void)room:(VHRoom *)room didRemovedAttendView:(VHRenderView *)attendView {
     [self.interactView removeAttendView:(VHLocalRenderView *)attendView];
     //更新视频小窗口显示
@@ -545,8 +530,9 @@
                         VH_ShowToast(error.localizedDescription);
                     }];
                 } confirmText:@"同意" confirmBlock:^{
+                    __weak __typeof(self)weakSelf = self;
                     [self.inavRoom agreeInviteSuccess:^{
-                        [self.inavRoom publishWithCameraView:self.localRenderView];
+                        [weakSelf.inavRoom publishWithCameraView:weakSelf.localRenderView];
                     } fail:^(NSError *error) {
                         VH_ShowToast(error.localizedDescription);
                     }];
@@ -565,51 +551,30 @@
                 [self.infoDetailView.bottomToolView endTimeByUpMicSuccess:NO];
             }
         }break;
-        case VHRoomMessageType_vrtc_mute:{//静音
+        case VHRoomMessageType_vrtc_mute:{//静音消息
             if(targetIsMyself) {
                 self.infoDetailView.topToolView.voiceBtn.selected = YES;
-                if (self.operateMicBySelf) {
-                    self.operateMicBySelf = NO;
-                    [self.localRenderView muteAudio];
-                } else {
-                    [self.localRenderView muteAudio];
-                }
             }
             [self.interactView targerId:targetId closeMicrophone:YES];
             [self updataSmallVideo];
         }break;
-        case VHRoomMessageType_vrtc_mute_cancel:{//取消静音
+        case VHRoomMessageType_vrtc_mute_cancel:{//取消静音消息
             if(targetIsMyself) {
                 self.infoDetailView.topToolView.voiceBtn.selected = NO;
-                if (self.operateMicBySelf) {
-                    self.operateMicBySelf = NO;
-                } else {
-                    [self.localRenderView unmuteAudio];
-                }
             }
             [self.interactView targerId:targetId closeMicrophone:NO];
             [self updataSmallVideo];
         }break;
-        case VHRoomMessageType_vrtc_frames_forbid:{//关闭摄像头
+        case VHRoomMessageType_vrtc_frames_forbid:{//关闭摄像头消息
             if(targetIsMyself) {
                 self.infoDetailView.topToolView.videoBtn.selected = YES;
-                if (self.operateCameraBySelf) {
-                    self.operateCameraBySelf = NO;
-                } else {
-                    [self.localRenderView muteVideo];
-                }
             }
             [self.interactView targerId:targetId closeCamera:YES];
             [self updataSmallVideo];
         }break;
-        case VHRoomMessageType_vrtc_frames_display:{//开启摄像头
+        case VHRoomMessageType_vrtc_frames_display:{//开启摄像头消息
             if(targetIsMyself) {
                 self.infoDetailView.topToolView.videoBtn.selected = NO;
-                if (self.operateCameraBySelf) {
-                    self.operateCameraBySelf = NO;
-                } else {
-                    [self.localRenderView unmuteVideo];
-                }
             }
             [self.interactView targerId:targetId closeCamera:NO];
             [self updataSmallVideo];

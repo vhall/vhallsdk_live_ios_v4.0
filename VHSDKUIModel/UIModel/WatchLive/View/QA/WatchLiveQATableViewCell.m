@@ -9,6 +9,12 @@
 #import "WatchLiveQATableViewCell.h"
 #import "UIImageView+WebCache.h"
 #import <VHLiveSDK/VHallApi.h>
+
+@interface WatchLiveQATableViewCell ()
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headLeft;
+
+@end
+
 @implementation WatchLiveQATableViewCell
 {
   
@@ -31,7 +37,7 @@
 - (void)setModel:(VHallQuestionModel *)model {
     _model = model;
     
-    if ([_model isKindOfClass:[VHallAnswerModel class]]) {
+    if ([_model isKindOfClass:[VHallAnswerModel class]]) { //回答
         VHallAnswerModel* answer = (VHallAnswerModel *)_model;
         
         NSString* role = @"";
@@ -54,8 +60,8 @@
         [lblType setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
 
         [headImage sd_setImageWithURL:[NSURL URLWithString:answer.avatar] placeholderImage:BundleUIImage(@"head50")];
-        
-    } else {
+        self.headLeft.constant = 50;
+    } else { //提问
         [lblType setTitle:@"问" forState:UIControlStateNormal];
         lblType.layer.borderColor=[UIColor redColor].CGColor;
         [lblType setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
@@ -64,6 +70,7 @@
         lblNickName.text   = [NSString stringWithFormat:@"%@:", _model.nick_name];
         lblTime.text       = _model.created_at;
         lblContent.text    = _model.content;
+        self.headLeft.constant = 15;
     }
 }
 

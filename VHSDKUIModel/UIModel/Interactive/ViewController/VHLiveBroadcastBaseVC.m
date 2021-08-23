@@ -20,7 +20,7 @@
 #import <VHInteractive/VHRoom.h>
 #import "VHDocBrushPopView.h"
 #import "VHEndPublisherVC.h"
-@interface VHLiveBroadcastBaseVC ()<VHLiveBroadcastInfoDetailViewDelegate,VHLiveDocContentViewDelegate,VHLiveStateViewDelegate,VHallChatDelegate,VHDocumentDelegate,VHEndPublisherVCDelegate>
+@interface VHLiveBroadcastBaseVC ()<VHLiveBroadcastInfoDetailViewDelegate,VHLiveDocContentViewDelegate,VHLiveStateViewDelegate,VHallChatDelegate,VHDocumentDelegate,VHEndPublisherVCDelegate,VHDocBrushPopViewDelegate>
 
 /** 开播倒计时 */
 @property (nonatomic, strong ,nullable) NSTimer *countDownTimer;
