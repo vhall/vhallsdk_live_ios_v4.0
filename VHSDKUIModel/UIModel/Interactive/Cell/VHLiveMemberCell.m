@@ -56,7 +56,7 @@
     CGFloat banVoiceRightViewOffset; //禁言view相对于禁言标识右侧view的offset
 
     //是否显示更多按钮
-    if([self.delegate currentUserIsGuest] && (![self.delegate guestHaveMemberManage] || model.role_name != VHLiveRole_Audience)) { //嘉宾端 && (没有用户管理权限 || cell用户非观众)，不显示更多按钮 ，嘉宾只能对观众操作
+    if(([self.delegate currentUserIsGuest] && (![self.delegate guestHaveMemberManage] || model.role_name != VHLiveRole_Audience))  || ([model.account_id isEqualToString:self.mainSpeakerId] && model.role_name == VHLiveRole_Host)) { //1、嘉宾端 && (自己没有用户管理权限 || cell用户非观众) 或者2、cell用户是主讲人且为主持人 ，满足以上两个条件，则隐藏更多按钮
         self.moreBtn.hidden = YES;
         deviceErrorRightView = self.contentView;
         deviceErrorRightViewOffset = -15;

@@ -348,7 +348,7 @@
         //显示互动控制器
         [self showInteractiveVC];
     }else {
-        [self showMsgInWindow:@"主持人已拒绝您上麦" afterDelay:2];
+        VH_ShowToast(@"主持人已拒绝您上麦");
     }
 }
 
@@ -372,7 +372,7 @@
 - (void)moviePlayer:(VHallMoviePlayer*)player isKickout:(BOOL)isKickout {
     if(isKickout) {
         if(!_interactiveVC) { //互动被踢出，_interactiveVC已有提示
-             [self showMsgInWindow:@"您已被踢出" afterDelay:2];
+            VH_ShowToast(@"您已被踢出");
         }
         [_moviePlayer destroyMoivePlayer];
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -387,7 +387,7 @@
  */
 - (void)moviePlayer:(VHallMoviePlayer*)player isHaveDocument:(BOOL)isHave isShowDocument:(BOOL)isShow {
     if(_docShow != isShow) {
-        [self showMsgInWindow:isShow?@"主持人打开文档":@"主持人关闭文档" afterDelay:2 offsetY:80];
+        [ProgressHud showToast:isShow?@"主持人打开文档":@"主持人关闭文档" offsetY:80];
         _docShow = isShow;
     }
 
@@ -452,14 +452,14 @@
  * 收到被禁言/取消禁言
  */
 - (void)forbidChat:(BOOL)forbidChat {
-    [self showMsgInWindow:forbidChat?@"您已被禁言":@"您已被取消禁言" afterDelay:2];
+    VH_ShowToast(forbidChat?@"您已被禁言":@"您已被取消禁言");
 }
 
 /**
  * 收到全体禁言/取消全体禁言
  */
 - (void)allForbidChat:(BOOL)allForbidChat {
-    [self showMsgInWindow:allForbidChat?@"全体已被禁言":@"全体已被取消禁言" afterDelay:2];
+    VH_ShowToast(allForbidChat?@"全体已被禁言":@"全体已被取消禁言");
 }
 
 #pragma mark - VHInvitationAlertDelegate
@@ -480,16 +480,16 @@
 //发送消息
 - (void)decorateView:(VHPortraitWatchLiveDecorateView *)decorateView sendMessage:(NSString *)messageText {
     if(_vhallChat.isAllSpeakBlocked) {
-        [self showMsgInWindow:@"已开启全体禁言" afterDelay:1];
+        VH_ShowToast(@"已开启全体禁言");
         return;
     }
     if(_vhallChat.isSpeakBlocked) {
-        [self showMsgInWindow:@"您已被禁言" afterDelay:1];
+        VH_ShowToast(@"您已被禁言");
         return;
     }
     
     if ([messageText isEqualToString:@""]) {
-        [self showMsgInWindow:@"发送的消息不能为空" afterDelay:2];
+        VH_ShowToast(@"发送的消息不能为空");
         return;
     }
     
@@ -497,19 +497,19 @@
         
     } failed:^(NSDictionary *failedData) {
         
-        NSString* code = [NSString stringWithFormat:@"%@ %@", failedData[@"code"],failedData[@"content"]];
-        [UIModelTools showMsgInWindow:code afterDelay:2];
+        NSString* text = [NSString stringWithFormat:@"%@ %@", failedData[@"code"],failedData[@"content"]];
+        VH_ShowToast(text);
     }];
 }
 
 //上麦按钮点击事件
 - (void)decorateView:(VHPortraitWatchLiveDecorateView *)decorateView upMicBtnClick:(UIButton *)button {
     if(_vhallChat.isAllSpeakBlocked) {
-        [self showMsgInWindow:@"已开启全体禁言" afterDelay:1];
+        VH_ShowToast(@"已开启全体禁言");
         return;
     }
     if(_vhallChat.isSpeakBlocked) {
-        [self showMsgInWindow:@"您已被禁言" afterDelay:1];
+        VH_ShowToast(@"您已被禁言");
         return;
     }
 
@@ -522,9 +522,9 @@
             button.userInteractionEnabled = YES;
             if(error) {
                 NSString *msg = [NSString stringWithFormat:@"申请上麦失败: %@",error.description];
-                [weakSelf showMsgInWindow:msg afterDelay:2];
+                VH_ShowToast(msg);
             } else {
-                [weakSelf showMsgInWindow:@"申请上麦成功" afterDelay:2];
+                VH_ShowToast(@"申请上麦成功");
                 //开启上麦倒计时
                 [weakSelf.decorateView.upMicBtnView countdDown:30];
             }
@@ -536,9 +536,9 @@
             button.userInteractionEnabled = YES;
             if(error) {
                 NSString *msg = [NSString stringWithFormat:@"取消上麦失败: %@",error.description];
-                [weakSelf showMsgInWindow:msg afterDelay:2];
+                VH_ShowToast(msg);
             } else {
-                [weakSelf showMsgInWindow:@"已取消上麦申请" afterDelay:2];
+                VH_ShowToast(@"已取消上麦申请");
                 //停止倒计时
                 [weakSelf.decorateView.upMicBtnView stopCountDown];
             }
@@ -684,7 +684,7 @@
         VHinteractiveViewController *interactiveVC = [[VHinteractiveViewController alloc] init];
         interactiveVC.joinRoomPrams = self.playParam;
         interactiveVC.inavBeautifyFilterEnable = self.interactBeautifyEnable;
-        interactiveVC.pushResolution = self.interactResolution;
+        interactiveVC.inav_num = self.moviePlayer.webinarInfo.inav_num;
         interactiveVC.delegate = self;
         _interactiveVC = interactiveVC;
     }

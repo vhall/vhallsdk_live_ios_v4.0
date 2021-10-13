@@ -52,10 +52,8 @@
 		F32B66D4262977510067BD0C /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F32B66C0262977510067BD0C /* MJRefresh.bundle */; };
 		F32B66D5262977510067BD0C /* libTTTAttributedLabel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F32B66C1262977510067BD0C /* libTTTAttributedLabel.a */; };
 		F32B66D6262977510067BD0C /* libReachability.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F32B66C2262977510067BD0C /* libReachability.a */; };
-		F32B66D7262977510067BD0C /* libQMUIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F32B66C3262977510067BD0C /* libQMUIKit.a */; };
 		F32B66D8262977510067BD0C /* libMasonry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F32B66C4262977510067BD0C /* libMasonry.a */; };
 		F32B66D9262977510067BD0C /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F32B66C5262977510067BD0C /* libMBProgressHUD.a */; };
-		F32B66DA262977510067BD0C /* QMUIResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F32B66C6262977510067BD0C /* QMUIResources.bundle */; };
 		F32B66DB262977510067BD0C /* libMLEmojiLabel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F32B66C7262977510067BD0C /* libMLEmojiLabel.a */; };
 		F32B66DC262977510067BD0C /* libMJRefresh.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F32B66C8262977510067BD0C /* libMJRefresh.a */; };
 		F32B66DE262977510067BD0C /* libUIModel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F32B66CA262977510067BD0C /* libUIModel.a */; };
@@ -174,10 +172,8 @@
 		F32B66C0262977510067BD0C /* MJRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MJRefresh.bundle; sourceTree = "<group>"; };
 		F32B66C1262977510067BD0C /* libTTTAttributedLabel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTTTAttributedLabel.a; sourceTree = "<group>"; };
 		F32B66C2262977510067BD0C /* libReachability.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libReachability.a; sourceTree = "<group>"; };
-		F32B66C3262977510067BD0C /* libQMUIKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libQMUIKit.a; sourceTree = "<group>"; };
 		F32B66C4262977510067BD0C /* libMasonry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMasonry.a; sourceTree = "<group>"; };
 		F32B66C5262977510067BD0C /* libMBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMBProgressHUD.a; sourceTree = "<group>"; };
-		F32B66C6262977510067BD0C /* QMUIResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMUIResources.bundle; sourceTree = "<group>"; };
 		F32B66C7262977510067BD0C /* libMLEmojiLabel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMLEmojiLabel.a; sourceTree = "<group>"; };
 		F32B66C8262977510067BD0C /* libMJRefresh.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMJRefresh.a; sourceTree = "<group>"; };
 		F32B66CA262977510067BD0C /* libUIModel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUIModel.a; sourceTree = "<group>"; };
@@ -203,7 +199,6 @@
 				F32B66D2262977510067BD0C /* libBarrageRenderer.a in Frameworks */,
 				2FA3F1A81F564C9900E2E436 /* libxml2.2.tbd in Frameworks */,
 				F32B66D8262977510067BD0C /* libMasonry.a in Frameworks */,
-				F32B66D7262977510067BD0C /* libQMUIKit.a in Frameworks */,
 				F32B66D1262977510067BD0C /* libSDWebImage.a in Frameworks */,
 				F32B66D6262977510067BD0C /* libReachability.a in Frameworks */,
 				F32B66D9262977510067BD0C /* libMBProgressHUD.a in Frameworks */,
@@ -446,10 +441,8 @@
 				F32B66C0262977510067BD0C /* MJRefresh.bundle */,
 				F32B66C1262977510067BD0C /* libTTTAttributedLabel.a */,
 				F32B66C2262977510067BD0C /* libReachability.a */,
-				F32B66C3262977510067BD0C /* libQMUIKit.a */,
 				F32B66C4262977510067BD0C /* libMasonry.a */,
 				F32B66C5262977510067BD0C /* libMBProgressHUD.a */,
-				F32B66C6262977510067BD0C /* QMUIResources.bundle */,
 				F32B66C7262977510067BD0C /* libMLEmojiLabel.a */,
 				F30429E026302C88009A3D2F /* libMJExtension.a */,
 				F32B66C8262977510067BD0C /* libMJRefresh.a */,
@@ -527,7 +520,6 @@
 				C000AA511E66E053005DFB7C /* LaunchScreen.storyboard in Resources */,
 				C000AB2E1E66E893005DFB7C /* LoginViewController.xib in Resources */,
 				F32B66D4262977510067BD0C /* MJRefresh.bundle in Resources */,
-				F32B66DA262977510067BD0C /* QMUIResources.bundle in Resources */,
 				F32B66DF262977510067BD0C /* UIModel.bundle in Resources */,
 				C000AB0A1E66E66B005DFB7C /* CustomPickerView.xib in Resources */,
 				C000AAAC1E66E546005DFB7C /* VHSettingViewController.xib in Resources */,
@@ -659,6 +651,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -711,6 +704,7 @@
 				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};
@@ -741,7 +735,7 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 6.1.3;
+				MARKETING_VERSION = 6.2.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo;
@@ -776,7 +770,7 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 6.1.3;
+				MARKETING_VERSION = 6.2.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo;

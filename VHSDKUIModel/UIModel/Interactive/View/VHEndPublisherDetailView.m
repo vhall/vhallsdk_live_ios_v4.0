@@ -9,7 +9,6 @@
 #import "VHEndPublisherDetailView.h"
 #import "VHLiveModel.h"
 #import "VHEndPublisherCell.h"
-#import "VUITool.h"
 #import "UIImageView+WebCache.h"
 
 @interface VHEndPublisherDetailView ()<UICollectionViewDelegate,UICollectionViewDataSource>
@@ -69,7 +68,7 @@
 
 - (void)configDataWithLiveModel:(VHLiveModel *)liveModel {
     self.nameLab.text = self.liveModel.webinar_user_nick;
-    [self.headerImg sd_setImageWithURL:[NSURL URLWithString:[VUITool httpPrefixImgUrlStr:liveModel.webinar_user_icon]] placeholderImage:nil];
+    [self.headerImg sd_setImageWithURL:[NSURL URLWithString:[UIModelTools httpPrefixImgUrlStr:liveModel.webinar_user_icon]] placeholderImage:nil];
     
     VHEndPublisherCellModel *model1 = [[VHEndPublisherCellModel alloc] init];
     model1.title = @"直播时长";
@@ -179,7 +178,7 @@
         UICollectionViewFlowLayout *listLayout = [[UICollectionViewFlowLayout alloc] init];
         listLayout.minimumLineSpacing = 15;
         listLayout.minimumInteritemSpacing = 15;
-//        listLayout.sectionInset = UIEdgeInsetsMake(0, (SCREEN_WIDTH - 130 * 2 - 15)/2.0, 0, (SCREEN_WIDTH - 130 * 2 - 15)/2.0);
+//        listLayout.sectionInset = UIEdgeInsetsMake(0, (VHScreenWidth - 130 * 2 - 15)/2.0, 0, (VHScreenWidth - 130 * 2 - 15)/2.0);
         [listLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
         
         _listCV = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) collectionViewLayout:listLayout];

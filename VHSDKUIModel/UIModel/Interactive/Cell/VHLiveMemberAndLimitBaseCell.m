@@ -10,7 +10,6 @@
 #import "VHLiveMemberModel.h"
 #import "UIImageView+WebCache.h"
 #import <VHInteractive/VHRoom.h>
-#import "VUITool.h"
 @interface VHLiveMemberAndLimitBaseCell ()
 /** 角色 */
 @property (nonatomic, strong) UILabel *roleLab;
@@ -91,7 +90,7 @@
 - (void)setModel:(VHRoomMember *)model {
     _model = model;
     
-    [self.headIcon sd_setImageWithURL:[NSURL URLWithString:[VUITool httpPrefixImgUrlStr:model.avatar]] placeholderImage:BundleUIImage(@"head50")];
+    [self.headIcon sd_setImageWithURL:[NSURL URLWithString:[UIModelTools httpPrefixImgUrlStr:model.avatar]] placeholderImage:BundleUIImage(@"head50")];
     if(model.role_name != VHLiveRole_Audience) {
         if(model.role_name == VHLiveRole_Host) {
             self.roleLab.text = @"主持人";

@@ -6,40 +6,28 @@
 //  Copyright (c) 2016年 www.vhall.com. All rights reserved.
 //
 
+#define VHDefaultAvatar @"https://cnstatic01.e.vhall.com/upload/users/face-imgs/24/b6/24b6f81b1a4985d7dcbbeccc707cd7b8.png"
+
 #import "VHStystemSetting.h"
 
 @implementation VHStystemSetting
 
-static VHStystemSetting *pub_sharedSetting = nil;
+static VHStystemSetting *_sharedSetting = nil;
 
-+ (VHStystemSetting *)sharedSetting
-{
-    @synchronized(self)
-    {
-        if (pub_sharedSetting == nil)
-        {
-            pub_sharedSetting = [[VHStystemSetting alloc] init];
-        }
-    }
-    
-    return pub_sharedSetting;
++ (VHStystemSetting *)sharedSetting {
+    return [[self alloc]init];
 }
 
-+ (id)allocWithZone:(NSZone *)zone
-{
-    @synchronized(self) {
-        if (pub_sharedSetting == nil) {
-            
-            pub_sharedSetting = [super allocWithZone:zone];
-            return pub_sharedSetting;  // assignment and return on first allocation
-        }
-    }
-    return nil; //on subsequent allocation attempts return nil
++ (id)allocWithZone:(NSZone *)zone {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedSetting = [super allocWithZone:zone];
+    });
+    return _sharedSetting;
 }
 
-- (id)copyWithZone:(NSZone *)zone
-{
-    return self;
+- (id)copyWithZone:(NSZone *)zone {
+    return _sharedSetting;
 }
 
 - (id)init
@@ -48,11 +36,7 @@ static VHStystemSetting *pub_sharedSetting = nil;
     if (self)
     {
         NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-        //活动设置
-        _activityID = [standardUserDefaults objectForKey:@"VHactivityID"];   //活动ID     必填
-        _watchActivityID= [standardUserDefaults objectForKey:@"VHwatchActivityID"];   //观看活动ID
-        _nickName   = [standardUserDefaults objectForKey:@"VHnickName"];     //参会昵称    为空默认随机字符串做昵称
-        _email     = [standardUserDefaults objectForKey:@"VHuserID"];        //标示该游客用户唯一id 可填写用户邮箱  为空默认使用设备UUID做为唯一ID
+        _email = [standardUserDefaults objectForKey:@"VHuserID"];        //标示该游客用户唯一id 可填写用户邮箱  为空默认使用设备UUID做为唯一ID
         _kValue     = [standardUserDefaults objectForKey:@"VHkValue"];       //K值        可以为空
         _codeWord     = [standardUserDefaults objectForKey:@"VHCodeWord"];    //口令
 
@@ -76,14 +60,6 @@ static VHStystemSetting *pub_sharedSetting = nil;
         _account        = [standardUserDefaults objectForKey:@"VHaccount"];      //账号
         _password       = [standardUserDefaults objectForKey:@"VHpassword"];     //密码
 
-        if(_activityID == nil)
-        {
-            _activityID = DEMO_ActivityId;
-        }
-        if(_watchActivityID == nil)
-        {
-            _watchActivityID = DEMO_ActivityId;
-        }
         if(_liveToken  == nil)
         {
             _liveToken = DEMO_AccessToken;
@@ -97,12 +73,7 @@ static VHStystemSetting *pub_sharedSetting = nil;
         {
             _password = DEMO_password;
         }
-        
-        
-        if(_nickName == nil || _nickName.length == 0)
-        {
-            _nickName = [UIDevice currentDevice].name;
-        }
+
         if(_email == nil || _email.length == 0)
         {
             _email = [NSString stringWithFormat:@"%@@qq.com",[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
@@ -136,12 +107,10 @@ static VHStystemSetting *pub_sharedSetting = nil;
         else
             self.isOpenNoiseSuppresion = YES;
         self.beautifyFilterEnable = [standardUserDefaults boolForKey:@"VHbeautifyFilterEnable"];
-        
-        NSString *pushRe = [standardUserDefaults objectForKey:@"VHInteractivePushResolution"];
-        _pushResolution = (pushRe)?pushRe:@"3";
     }
     return self;
 }
+
 
 - (void)setLive_nick_name:(NSString *)live_nick_name {
     _live_nick_name = live_nick_name;
@@ -149,20 +118,6 @@ static VHStystemSetting *pub_sharedSetting = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void)setActivityID:(NSString*)activityID
-{
-    _activityID = activityID;
-    if(activityID == nil || activityID.length == 0)
-    {
-        _activityID = DEMO_ActivityId;
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"VHactivityID"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        return;
-    }
-    
-    [[NSUserDefaults standardUserDefaults] setObject:_activityID forKey:@"VHactivityID"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
 
 - (void)setTimeOut:(NSInteger)timeOut
 {
@@ -174,35 +129,7 @@ static VHStystemSetting *pub_sharedSetting = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void)setWatchActivityID:(NSString*)watchActivityID
-{
-    _watchActivityID = watchActivityID;
-    if(watchActivityID == nil || watchActivityID.length == 0)
-    {
-        _watchActivityID = DEMO_ActivityId;
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"VHwatchActivityID"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        return;
-    }
-    
-    [[NSUserDefaults standardUserDefaults] setObject:_watchActivityID forKey:@"VHwatchActivityID"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
 
-- (void)setNickName:(NSString*)nickName
-{
-    if(nickName == nil || nickName.length == 0)
-    {
-        _nickName = [UIDevice currentDevice].name;
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"VHnickName"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        return;
-    }
-    
-    _nickName = nickName;
-    [[NSUserDefaults standardUserDefaults] setObject:_nickName forKey:@"VHnickName"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
 - (void)setEmail:(NSString*)email
 {
     if(email == nil || email.length == 0)
@@ -224,6 +151,20 @@ static VHStystemSetting *pub_sharedSetting = nil;
     [[NSUserDefaults standardUserDefaults] setObject:_codeWord forKey:@"VHCodeWord"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
+- (void)setInva_avatar:(NSString *)inva_avatar {
+    [[NSUserDefaults standardUserDefaults] setValue:inva_avatar forKey:@"VHInvaAvatar"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)inva_avatar {
+    NSString *avatar = [[NSUserDefaults standardUserDefaults] valueForKey:@"VHInvaAvatar"];
+    if(!avatar) {
+        avatar = VHDefaultAvatar;
+    }
+    return avatar;
+}
+
 - (void)setAccount:(NSString *)account
 {
     _account  = account ;
@@ -316,12 +257,68 @@ static VHStystemSetting *pub_sharedSetting = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void)setPushResolution:(NSString *)pushResolution {
-    _pushResolution = pushResolution;
-    
-    [[NSUserDefaults standardUserDefaults] setObject:_pushResolution forKey:@"VHInteractivePushResolution"];
+
+
+//发起活动id
+- (void)setActivityID:(NSString *)activityID {
+    [[NSUserDefaults standardUserDefaults] setValue:activityID forKey:@"VHactivityID"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (NSString *)activityID {
+    NSString *activityId = [[NSUserDefaults standardUserDefaults] valueForKey:@"VHactivityID"];
+    if(!activityId) {
+        activityId = DEMO_ActivityId;
+    }
+    return activityId;
+}
+
+//观看活动id
+- (void)setWatchActivityID:(NSString *)watchActivityID {
+    [[NSUserDefaults standardUserDefaults] setValue:watchActivityID forKey:@"VHwatchActivityID"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)watchActivityID {
+    NSString *watchActivityID = [[NSUserDefaults standardUserDefaults] valueForKey:@"VHwatchActivityID"];
+    if(!watchActivityID) {
+        watchActivityID = DEMO_ActivityId;
+    }
+    return watchActivityID;
+}
+
+//三方id
+- (void)setThird_Id:(NSString *)third_Id {
+    [[NSUserDefaults standardUserDefaults] setValue:third_Id forKey:@"third_Id"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)third_Id {
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"third_Id"];
+}
+
+//三方昵称
+- (void)setThird_nickName:(NSString *)third_nickName {
+    [[NSUserDefaults standardUserDefaults] setValue:third_nickName forKey:@"third_nickName"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)third_nickName {
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"third_nickName"];
+}
+
+//三方头像
+- (void)setThird_avatar:(NSString *)third_avatar {
+    [[NSUserDefaults standardUserDefaults] setValue:third_avatar forKey:@"third_avatar"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)third_avatar {
+    NSString *avatar = [[NSUserDefaults standardUserDefaults] valueForKey:@"third_avatar"];
+    if(!avatar) {
+        avatar = VHDefaultAvatar;
+    }
+    return avatar;
+}
 
 @end

@@ -16,6 +16,7 @@
 #import "WatchPlayBackViewController.h"
 #import "LaunchLiveViewController.h"
 #import "UIModelTools.h"
+#import "ProgressHud.h"
 
 #ifdef  UIModel_Lib //独立打 UIModel 静态库 需要在工程设置 Preprocessor Macros选项中添加 UIModel_Lib=1
     #define UIModelBundlePath       [[NSBundle mainBundle] pathForResource:@"UIModel" ofType:@"bundle"]
@@ -60,9 +61,11 @@
 
 #define VH_SH                   ((VHScreenWidth<VHScreenHeight)?VHScreenHeight:VHScreenWidth)
 #define VH_SW                   ((VHScreenWidth<VHScreenHeight)?VHScreenWidth:VHScreenHeight)
+
 #define VHScreenHeight          ([UIScreen mainScreen].bounds.size.height)
 #define VHScreenWidth           ([UIScreen mainScreen].bounds.size.width)
 #define VHScreenScale           ([[UIScreen mainScreen] scale])
+
 #define VH_Device_OS_ver        [[UIDevice currentDevice] systemVersion]
 #define IOSVersion              [[UIDevice currentDevice].systemVersion floatValue]
 #define kViewFramePath          @"frame"
@@ -102,9 +105,11 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 #define VH_ShowToast(string)  [ProgressHud showToast:string]
 //是否为空字符串
-#define VH_EmptyStr(string)  ([VUITool safeString:string].length <= 0)
+#define VH_EmptyStr(string)  ([UIModelTools safeString:string].length <= 0)
 //emoji表情字典
 #define VHEmojiDic [NSDictionary dictionaryWithContentsOfFile:[UIModelBundle pathForResource:@"faceExpression" ofType:@"plist"]]
+
+
 
 
 #ifndef weakify

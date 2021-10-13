@@ -110,7 +110,7 @@ IB_DESIGNABLE
  * The designated initializers are @c initWithFrame: and @c initWithCoder:.
  * init will not properly initialize many required properties and other configuration.
  */
-- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) init;
 
 ///-----------------------------
 /// @name Accessing the Delegate

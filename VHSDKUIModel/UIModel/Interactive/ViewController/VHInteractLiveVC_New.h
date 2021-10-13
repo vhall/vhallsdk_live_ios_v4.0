@@ -9,11 +9,10 @@
 #import "VHLiveBroadcastBaseVC.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@class VHRoom;
+
 @interface VHInteractLiveVC_New : VHLiveBroadcastBaseVC
 
-/** 互动SDK */
-@property (nonatomic, strong) VHRoom *inavRoom;
+@property (nonatomic, assign) NSInteger inav_num;     ///<当前活动支持的最大连麦人数，如：6代表1v5，16代表1v15...
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;

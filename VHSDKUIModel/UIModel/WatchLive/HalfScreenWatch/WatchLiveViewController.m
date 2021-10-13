@@ -12,7 +12,7 @@
 #import "WatchLiveQATableViewCell.h"
 #import "WatchLiveSurveyTableViewCell.h"
 #import "WatchLiveLotteryViewController.h"
-#import "VHMessageToolView.h"
+#import "VHKeyboardToolView.h"
 #import <VHLiveSDK/VHallApi.h>
 #import "MBProgressHUD.h"
 #import "AnnouncementView.h"
@@ -35,7 +35,7 @@
 # define DebugLog(fmt, ...) NSLog((@"\n[文件名:%s]\n""[函数名:%s]\n""[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
 
 static AnnouncementView* announcementView = nil;
-@interface WatchLiveViewController ()<VHallMoviePlayerDelegate, VHallChatDelegate, VHallQAndADelegate, VHallLotteryDelegate,VHallSignDelegate,VHallSurveyDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,VHMessageToolBarDelegate,MicCountDownViewDelegate,VHInvitationAlertDelegate,VHSurveyViewControllerDelegate,DLNAViewDelegate,VHWebinarInfoDelegate>
+@interface WatchLiveViewController ()<VHallMoviePlayerDelegate, VHallChatDelegate, VHallQAndADelegate, VHallLotteryDelegate,VHallSignDelegate,VHallSurveyDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,MicCountDownViewDelegate,VHInvitationAlertDelegate,VHSurveyViewControllerDelegate,DLNAViewDelegate,VHWebinarInfoDelegate,VHKeyboardToolViewDelegate>
 {
     VHallChat         *_chat;       //聊天
     VHallQAndA        *_QA;         //问答
@@ -88,7 +88,7 @@ static AnnouncementView* announcementView = nil;
 @property(nonatomic,strong)  Reachability     *reachAbility;
 @property (weak, nonatomic) IBOutlet UIButton *definitionBtn0;
 @property (weak, nonatomic) IBOutlet UIButton *playModeBtn0;
-@property (nonatomic,strong) VHMessageToolView * messageToolView;  //输入框
+@property (nonatomic,strong) VHKeyboardToolView * messageToolView;  //输入框
 @property (weak, nonatomic) IBOutlet UIButton *GyroBtn; //陀螺仪开关，支持vr才有效
 @property (weak, nonatomic) IBOutlet UIButton *sendCustomMsgBtn; //发送自定义消息按钮
 
@@ -315,7 +315,8 @@ static AnnouncementView* announcementView = nil;
         default:
             break;
     }
-    [self showMsgInWindow:message afterDelay:2];
+    
+    VH_ShowToast(message);
 }
 
 //tableView刷新设置
@@ -459,13 +460,13 @@ static AnnouncementView* announcementView = nil;
     
     if(_chat.isAllSpeakBlocked)
     {
-        [self showMsgInWindow:@"已开启全体禁言" afterDelay:2];
+        VH_ShowToast(@"已开启全体禁言");
         return;
     }
 
     if(_chat.isSpeakBlocked)
     {
-        [self showMsgInWindow:@"您已被禁言" afterDelay:2];
+        VH_ShowToast(@"您已被禁言");
         return;
     }
 
@@ -479,11 +480,11 @@ static AnnouncementView* announcementView = nil;
             if(error)
             {
                 NSString *msg = [NSString stringWithFormat:@"申请上麦失败：%@",error.description];
-                [wf showMsgInWindow:msg afterDelay:2];
+                VH_ShowToast(msg);
             }
             else
             {
-                [wf showMsgInWindow:@"申请上麦成功" afterDelay:2];
+                VH_ShowToast(@"申请上麦成功");
                 //开启上麦倒计时
                 [wf.countDowwnView countdDown:30];
             }
@@ -495,11 +496,11 @@ static AnnouncementView* announcementView = nil;
             if(error)
             {
                 NSString *msg = [NSString stringWithFormat:@"取消上麦失败：%@",error.description];
-                [wf showMsgInWindow:msg afterDelay:2];
+                VH_ShowToast(msg);
             }
             else
             {
-                [wf showMsgInWindow:@"已取消申请" afterDelay:2];
+                VH_ShowToast(@"已取消申请");
                 //停止倒计时
                 [wf.countDowwnView stopCountDown];
             }
@@ -566,7 +567,7 @@ static AnnouncementView* announcementView = nil;
     [_moviePlayer setMute:_isMute];
     sender.selected = _isMute;
     [VHallMoviePlayer audioOutput:YES];
-    [self showMsgInWindow:_isMute ? @"已静音" : @"已取消静音" afterDelay:2];
+    VH_ShowToast(_isMute ? @"已静音" : @"已取消静音");
 }
 
 #pragma mark - 视频屏幕自适应模式
@@ -578,7 +579,8 @@ static AnnouncementView* announcementView = nil;
     }else{
         _moviePlayer.movieScalingMode = VHRTMPMovieScalingModeAspectFit;
     }
-    [self showMsgInWindow:[NSString stringWithFormat:@"切换裁切模式%zd",_moviePlayer.movieScalingMode] afterDelay:2];
+    NSString *string = [NSString stringWithFormat:@"切换裁切模式%zd",_moviePlayer.movieScalingMode];
+    VH_ShowToast(string);
 }
 
 #pragma mark - 详情
@@ -678,49 +680,48 @@ static AnnouncementView* announcementView = nil;
 {
     if(_chat.isAllSpeakBlocked)
     {
-        [self showMsgInWindow:@"已开启全体禁言" afterDelay:2];
+        VH_ShowToast(@"已开启全体禁言");
         return;
     }
 
     if(_chat.isSpeakBlocked)
     {
-        [self showMsgInWindow:@"您已被禁言" afterDelay:2];
+        VH_ShowToast(@"您已被禁言");
         return;
     }
     
-    [self.messageToolView beginTextViewInView];
+    [self.messageToolView becomeFirstResponder];
 }
 
-- (VHMessageToolView *)messageToolView
+- (VHKeyboardToolView *)messageToolView
 {
     if (!_messageToolView)
     {
-        _messageToolView = [[VHMessageToolView alloc] init];
+        _messageToolView = [[VHKeyboardToolView alloc] init];
         _messageToolView.delegate = self;
-        _messageToolView.maxLength = 140;
+//        _messageToolView.maxLength = 140;
         [self.view addSubview:_messageToolView];
     }
     return _messageToolView;
 }
 
-#pragma mark - messageToolViewDelegate
-- (void)didSendText:(NSString *)text
+#pragma mark - VHKeyboardToolViewDelegate
+/*! 发送按钮事件回调*/
+- (void)keyboardToolView:(VHKeyboardToolView *)view sendText:(NSString *)text;
 {
     if ([text isEqualToString:@""]) {
-        [self showMsgInWindow:@"发送的消息不能为空" afterDelay:2];
+        VH_ShowToast(@"发送的消息不能为空");
         return;
     }
     __weak typeof(self) weakSelf = self;
     //发送聊天
     if (self.currentSelectedButton == _chatBtn) {
         [_chat sendMsg:text success:^{
-            
-            [weakSelf.messageToolView endEditing:YES];
-            
+            NSLog(@"发送聊天成功：%@",text);
         } failed:^(NSDictionary *failedData) {
             
             NSString *tipMsg = [NSString stringWithFormat:@"%@",failedData[@"content"]];
-            [weakSelf showMsgInWindow:tipMsg afterDelay:2];
+            VH_ShowToast(tipMsg);
         }];
         
         return;
@@ -729,13 +730,12 @@ static AnnouncementView* announcementView = nil;
     if (self.currentSelectedButton == _QABtn) {
         
         [_QA sendMsg:text success:^{
-            
-            [weakSelf.messageToolView endEditing:YES];
+         
             
         } failed:^(NSDictionary *failedData) {
             
-            NSString* code = [NSString stringWithFormat:@"%@",failedData[@"content"]];
-            [weakSelf showMsgInWindow:code afterDelay:2];
+            NSString* tipMsg = [NSString stringWithFormat:@"%@",failedData[@"content"]];
+            VH_ShowToast(tipMsg);
         }];
         
         return;
@@ -754,11 +754,11 @@ static AnnouncementView* announcementView = nil;
 //    NSString *jsonStr = @"{\"key\":\"value\",\"name\":\"小明\",\"phone\":18300001111}";
     __weak typeof(self) wf = self;
     [_chat sendCustomMsg:jsonStr success:^{
-        [wf showMsgInWindow:@"发送成功" afterDelay:2];
+        VH_ShowToast(@"发送成功");
     } failed:^(NSDictionary *failedData) {
         
         NSString* tipMsg = [NSString stringWithFormat:@"%@",failedData[@"content"]];
-        [wf showMsgInWindow:tipMsg afterDelay:2];
+        VH_ShowToast(tipMsg);
     }];
     
 }
@@ -767,7 +767,7 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - 问答
 - (IBAction)QAButtonClick:(UIButton *)sender {
     if (!_isQuestion_status) {
-        [self showMsgInWindow:@"主播关闭了问答" afterDelay:2];
+        VH_ShowToast(@"主播关闭了问答");
         return;
     }
     
@@ -811,7 +811,7 @@ static AnnouncementView* announcementView = nil;
         [weakself.chatView.mj_header endRefreshing];
     } failed:^(NSDictionary *failedData) {
         NSString* tipMsg = [NSString stringWithFormat:@"%@",failedData[@"content"]];
-        [weakself showMsgInWindow:tipMsg afterDelay:2];
+        VH_ShowToast(tipMsg);
         [weakself.chatView.mj_header endRefreshing];
     }];
 }
@@ -879,7 +879,7 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - 播放模式，是否纯音频直播
 - (IBAction)playModeBtnCLicked:(UIButton *)sender {
     if(!_startAndStopBtn.selected) {
-        [self showMsgInWindow:@"请先开始播放" afterDelay:2];
+        VH_ShowToast(@"请先开始播放");
         return;
     };
     sender.selected = !sender.selected;
@@ -894,7 +894,7 @@ static AnnouncementView* announcementView = nil;
         _logView.hidden = NO;
         _liveTypeLabel.text = @"音频播放中";
         _definitionBtn0.hidden = YES;
-        [self showMsgInWindow:@"已切换为音频播放" afterDelay:2];
+        VH_ShowToast(@"已切换为音频播放");
     }else
     {
         _playModeBtn0.selected = NO;
@@ -903,7 +903,7 @@ static AnnouncementView* announcementView = nil;
         _logView.hidden = YES;
         _liveTypeLabel.text = @"";
         _definitionBtn0.hidden = NO;
-        [self showMsgInWindow:@"已切换为视频播放" afterDelay:2];
+        VH_ShowToast(@"已切换为视频播放");
     }
 }
 
@@ -914,11 +914,11 @@ static AnnouncementView* announcementView = nil;
     if (_rendererOpenBtn.selected)
     {
         [_renderer start];
-        [self showMsgInWindow:@"已开启弹幕" afterDelay:2];
+        VH_ShowToast(@"已开启弹幕");
     }else
     {
         [_renderer stop];
-        [self showMsgInWindow:@"已关闭弹幕" afterDelay:2];
+        VH_ShowToast(@"已关闭弹幕");
     }
     
 }
@@ -930,10 +930,10 @@ static AnnouncementView* announcementView = nil;
     btn.selected = !btn.selected;
     if (btn.selected) {
         [_moviePlayer setUsingGyro:YES];
-        [self showMsgInWindow:@"已开启陀螺仪" afterDelay:2];
+        VH_ShowToast(@"已开启陀螺仪");
     }else {
         [_moviePlayer setUsingGyro:NO];
-        [self showMsgInWindow:@"已关闭陀螺仪" afterDelay:2];
+        VH_ShowToast(@"已关闭陀螺仪");
     }
 }
 
@@ -977,12 +977,12 @@ static AnnouncementView* announcementView = nil;
 - (IBAction)DlNAClick:(id)sender
 {
     if (!self.isCast_screen) {
-        [self showMsg:@"无投屏权限，如需使用请咨询您的销售人员或拨打客服电话：400-888-9970" afterDelay:2];
+        VH_ShowToast(@"无投屏权限，如需使用请咨询您的销售人员或拨打客服电话：400-888-9970");
         return;
     }
     if(![self.dlnaView showInView:self.view moviePlayer:_moviePlayer])
     {
-        [self showMsg:@"投屏失败，投屏前请确保当前视频正在播放" afterDelay:2];
+        VH_ShowToast(@"投屏失败，投屏前请确保当前视频正在播放");
         return;
     }
     
@@ -997,7 +997,7 @@ static AnnouncementView* announcementView = nil;
 //投屏代理回调 DLNAViewDelegate
 - (void)dlnaControlState:(DLNAControlStateType)type errormsg:(NSString *)msg
 {
-    [self showMsg:msg afterDelay:2];
+    VH_ShowToast(msg);
 }
 
 -(DLNAView *)dlnaView
@@ -1321,17 +1321,7 @@ static AnnouncementView* announcementView = nil;
 - (void)moviePlayer:(VHallMoviePlayer *)player microInvitationWithAttributes:(NSDictionary *)attributes error:(NSError *)error {
     
     if (!error) {
-        //退出全屏
-        [self forceRotateUIInterfaceOrientation:UIInterfaceOrientationPortrait];
-//        [self rotateScreen:NO];
-        _fullscreenBtn.selected = NO;
-        //进入互动
-        VHinteractiveViewController *controller = [[VHinteractiveViewController alloc] init];
-        controller.joinRoomPrams = [self playParam];
-        controller.pushResolution = self.interactResolution;
-        controller.inavBeautifyFilterEnable = self.interactBeautifyEnable;
-        controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:controller animated:YES completion:nil];
+        [self presentInteractiveVC];
     }
 }
 // 主持人邀请你上麦
@@ -1361,7 +1351,7 @@ static AnnouncementView* announcementView = nil;
     if(isHave)
     {
         if(_docShow != isShow) {
-            [self showMsgInWindow:isShow ? @"主持人打开文档" : @"主持人关闭文档" afterDelay:2];
+            VH_ShowToast(isShow ? @"主持人打开文档" : @"主持人关闭文档");
             _docShow = isShow;
         }
         _moviePlayer.documentView.frame = self.docAreaView.bounds;
@@ -1397,27 +1387,29 @@ static AnnouncementView* announcementView = nil;
     if(index == 1)
     {
         [self.moviePlayer replyInvitationWithType:1 finish:nil];
-        
-        //退出全屏
-//        [self rotateScreen:NO];
-        [self forceRotateUIInterfaceOrientation:UIInterfaceOrientationPortrait];
-        _fullscreenBtn.selected = NO;
-        
-        //进入互动
-        VHinteractiveViewController *controller = [[VHinteractiveViewController alloc] init];
-        controller.joinRoomPrams = [self playParam];
-        controller.pushResolution = self.interactResolution;
-        controller.inavBeautifyFilterEnable = self.interactBeautifyEnable;
-        controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:controller animated:YES completion:^{
-            
-        }];
+        [self presentInteractiveVC];
     }
     else if(index == 0)
     {
         [self.moviePlayer replyInvitationWithType:2 finish:nil];
     }
 }
+
+//弹出互动页面
+- (void)presentInteractiveVC {
+    //退出全屏
+    [self forceRotateUIInterfaceOrientation:UIInterfaceOrientationPortrait];
+    _fullscreenBtn.selected = NO;
+    
+    //进入互动
+    VHinteractiveViewController *controller = [[VHinteractiveViewController alloc] init];
+    controller.joinRoomPrams = [self playParam];
+    controller.inav_num = self.moviePlayer.webinarInfo.inav_num;
+    controller.inavBeautifyFilterEnable = self.interactBeautifyEnable;
+    controller.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
 #pragma mark - MicCountDownViewDelegate
 //举手倒计时结束回调
 - (void)countDownViewDidEndCountDown:(MicCountDownView *)view {
@@ -1520,12 +1512,12 @@ static AnnouncementView* announcementView = nil;
 
 - (void)forbidChat:(BOOL) forbidChat
 {
-    [self showMsg:forbidChat?@"您已被禁言":@"您已被取消禁言" afterDelay:2];
+    VH_ShowToast(forbidChat?@"您已被禁言":@"您已被取消禁言");
 }
 
 - (void)allForbidChat:(BOOL) allForbidChat
 {
-    [self showMsg:allForbidChat?@"已开启全体禁言":@"已取消全体禁言" afterDelay:2];
+    VH_ShowToast(allForbidChat?@"已开启全体禁言":@"已取消全体禁言");
 }
 
 
@@ -1545,14 +1537,14 @@ static AnnouncementView* announcementView = nil;
 //主播开启问答
 - (void)vhallQAndADidOpened:(VHallQAndA *)QA
 {
-    [self showMsgInWindow:@"主播开启了问答" afterDelay:2];
+    VH_ShowToast(@"主持人开启了问答");
     _isQuestion_status = YES;
 }
 
 //主播关闭问答
 - (void)vhallQAndADidClosed:(VHallQAndA *)QA
 {
-    [self showMsgInWindow:@"主播关闭了问答" afterDelay:2];
+    VH_ShowToast(@"主持人关闭了问答");
     [self chatButtonClick:self.chatBtn];
     _isQuestion_status = NO;
 }
@@ -1604,7 +1596,7 @@ static AnnouncementView* announcementView = nil;
 - (void)stopSign
 {
     [SignView close];
-    [self showMsgInWindow:@"签到结束" afterDelay:2];
+    VH_ShowToast(@"签到结束");
 }
 
 //----------------签到私有方法-----------------
@@ -1612,10 +1604,11 @@ static AnnouncementView* announcementView = nil;
 - (void)SignBtnClicked {
     __weak typeof(self) weakSelf = self;
     [_sign signSuccessIsStop:YES success:^{
-      [SignView close];
-      [weakSelf showMsgInWindow:@"签到成功" afterDelay:2];
+        [SignView close];
+        VH_ShowToast(@"签到成功");
     } failed:^(NSDictionary *failedData) {
-        [weakSelf showMsgInWindow:[NSString stringWithFormat:@"%@,错误码%@",failedData[@"content"],failedData[@"code"]] afterDelay:2];
+        NSString *string = [NSString stringWithFormat:@"%@,错误码%@",failedData[@"content"],failedData[@"code"]];
+        VH_ShowToast(string);
         [_sign cancelSign];
         [SignView close];
     }];
@@ -1656,7 +1649,7 @@ static AnnouncementView* announcementView = nil;
 - (void)surveyViewControllerWebViewDidSubmit:(VHSurveyViewController *)vc msg:(NSDictionary *)body {
     [_surveyController.view removeFromSuperview];
     _surveyController = nil;
-    [self showMsgInWindow:@"提交成功" afterDelay:2];
+    VH_ShowToast(@"提交成功");
 }
 
 //--------点击展示问卷-------
@@ -1664,7 +1657,7 @@ static AnnouncementView* announcementView = nil;
 - (void)clickSurvey:(VHallSurveyModel *)model
 {
     if (![VHallApi isLoggedIn]) {
-        [self showMsgInWindow:@"请登录" afterDelay:2];
+        VH_ShowToast(@"请登录");
         return;
     }
     

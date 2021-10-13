@@ -536,8 +536,8 @@
         _endPulishVC = [[VHEndPublisherVC alloc] init];
         VHLiveModel *liveModel = [[VHLiveModel alloc] init];
         liveModel.liveDuration = self.infoDetailView.topToolView.liveTimeStr;
-        liveModel.webinar_user_nick = self.roomInfo.selfNickname;
-        liveModel.webinar_user_icon = self.roomInfo.selfAvatar;
+        liveModel.webinar_user_nick = self.roomInfo.webinar_user_nick;
+        liveModel.webinar_user_icon = self.roomInfo.webinar_user_icon;
         _endPulishVC.liveModel = liveModel;
         _endPulishVC.delegate = self;
     }
@@ -555,7 +555,7 @@
         [_docContentView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.infoDetailView);
         }];
-        _docContentView.transform = CGAffineTransformMakeTranslation(SCREEN_WIDTH, 0);
+        _docContentView.transform = CGAffineTransformMakeTranslation(VHScreenWidth, 0);
     }
     return _docContentView;
 }

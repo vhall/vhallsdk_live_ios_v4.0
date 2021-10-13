@@ -21,6 +21,7 @@
 #import "VHWebWatchLiveViewController.h"
 #import "VHNavigationController.h"
 #import "VHInteractLiveVC_New.h"
+#import "UIModel.h"
 
 @interface VHHomeViewController ()<VHallApiDelegate>
 @property (weak, nonatomic) IBOutlet UILabel        *deviceCategory;
@@ -70,7 +71,7 @@
 
 -(void)updateUI
 {
-    _nickName.text              = DEMO_Setting.nickName;
+    _nickName.text              = [VHallApi currentUserNickName];
     _loginBtn.selected          = [VHallApi isLoggedIn];
     _deviceCategory.text        = [UIDevice currentDevice].name;
     _activityIdLabel.text       = [@"发起ID:" stringByAppendingString:DEMO_Setting.activityID];//发起活动id
@@ -84,19 +85,19 @@
 - (void)startLive:(UIInterfaceOrientation)orientation
 {
     if (DEMO_Setting.activityID.length<=0) {
-        [self showMsg:@"请在设置中输入发直播活动ID" afterDelay:2];
+        VH_ShowToast(@"请在设置中输入发直播活动ID");
         return;
     }
     if (DEMO_Setting.liveToken == nil||DEMO_Setting.liveToken<=0) {
-        [self showMsg:@"请在设置中输入token" afterDelay:2];
+        VH_ShowToast(@"请在设置中输入token");
         return;
     }
     if (DEMO_Setting.videoBitRate<=0 || DEMO_Setting.audioBitRate<=0) {
-        [self showMsg:@"码率不能为负数" afterDelay:2];
+        VH_ShowToast(@"码率不能为负数");
         return;
     }
     if (DEMO_Setting.videoCaptureFPS< 1 || DEMO_Setting.videoCaptureFPS>30) {
-        [self showMsg:@"帧率设置错误[1-30]" afterDelay:2];
+        VH_ShowToast(@"帧率设置错误[1-30]");
         return;
     }
     
@@ -118,26 +119,39 @@
 #pragma mark - 进入互动直播
 - (void)enterInteractLiveRoomWithIsHost:(BOOL)isHost {
     if (isHost && DEMO_Setting.activityID.length<=0) {
-        [self showMsg:@"请在设置中输入发直播活动ID" afterDelay:2];
+        VH_ShowToast(@"请在设置中输入发直播活动ID");
         return;
     }
     if (!isHost && DEMO_Setting.watchActivityID.length<=0) {
-        [self showMsg:@"请在设置中输入看直播活动ID" afterDelay:2];
+        VH_ShowToast(@"请在设置中输入看直播活动ID");
         return;
     }
     if (!isHost && (DEMO_Setting.codeWord == nil||DEMO_Setting.codeWord<=0)) {
-        [self showMsg:@"请在设置中输入口令" afterDelay:2];
+        VH_ShowToast(@"请在设置中输入口令");
         return;
     }
 
-    [VHWebinarBaseInfo getWebinarBaseInfoWithWebinarId:isHost?DEMO_Setting.activityID:DEMO_Setting.watchActivityID success:^(VHWebinarBaseInfo * _Nonnull baseInfo) {
-        NSDictionary *params = isHost ? @{@"id":DEMO_Setting.activityID,@"nickname":self.nickName.text,@"avatar":[VHallApi currentUserHeadUrl]} : @{@"id":DEMO_Setting.watchActivityID,@"password":DEMO_Setting.codeWord,@"nickname":self.nickName.text,@"avatar":[VHallApi currentUserHeadUrl]};
+    NSString *webinarId = isHost ? DEMO_Setting.activityID : DEMO_Setting.watchActivityID;
+    [VHWebinarBaseInfo getWebinarBaseInfoWithWebinarId:webinarId success:^(VHWebinarBaseInfo * _Nonnull baseInfo) {
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+        if(isHost) { //主持人
+            params[@"id"] = DEMO_Setting.activityID;
+            params[@"nickname"] = self.nickName.text;
+            params[@"avatar"] = [VHallApi currentUserHeadUrl];
+        }else { //嘉宾
+            params[@"id"] = DEMO_Setting.watchActivityID;
+            params[@"nickname"] = self.nickName.text;
+            params[@"password"] = DEMO_Setting.codeWord;
+            params[@"avatar"] = DEMO_Setting.inva_avatar;
+        }
         VHInteractLiveVC_New *vc = [[VHInteractLiveVC_New alloc] initWithParams:params isHost:isHost screenLandscape:baseInfo.webinar_show_type];
+        vc.inav_num = baseInfo.inav_num;
         VHNavigationController *nav = [[VHNavigationController alloc] initWithRootViewController:vc];
         nav.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:nav animated:YES completion:nil];
     } fail:^(NSError * _Nonnull error) {
-        [self showMsg:error.localizedDescription afterDelay:2.0];
+        VH_ShowToast(error.localizedDescription);
     }];
 }
 
@@ -184,7 +198,7 @@
         case 2://观看直播
         {
             if (DEMO_Setting.watchActivityID.length<=0) {
-                [self showMsg:@"请在设置中输入活动ID" afterDelay:2];
+                VH_ShowToast(@"请在设置中输入活动ID");
                 return;
             }
             
@@ -194,7 +208,6 @@
                 watchVC.roomId      = DEMO_Setting.watchActivityID;
                 watchVC.kValue      = DEMO_Setting.kValue;
                 watchVC.bufferTimes = DEMO_Setting.bufferTimes;
-                watchVC.interactResolution = [DEMO_Setting.pushResolution intValue];
                 watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
                 watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
                 [self presentViewController:watchVC animated:YES completion:nil];
@@ -204,7 +217,6 @@
                 VHPortraitWatchLiveViewController * watchVC = [[VHPortraitWatchLiveViewController alloc]init];
                 watchVC.roomId      = DEMO_Setting.watchActivityID;
                 watchVC.kValue      = DEMO_Setting.kValue;
-                watchVC.interactResolution = [DEMO_Setting.pushResolution intValue];
                 watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
                 watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
                 [self presentViewController:watchVC animated:YES completion:nil];
@@ -229,7 +241,7 @@
         case 3://观看回放
         {
             if (DEMO_Setting.watchActivityID.length<=0) {
-                [self showMsg:@"请在设置中输入活动ID" afterDelay:2];
+                VH_ShowToast(@"请在设置中输入活动ID");
                 return;
             }
             WatchPlayBackViewController * watchVC  =[[WatchPlayBackViewController alloc]init];
@@ -264,7 +276,7 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         } failure:^(NSError *error) {
             [MBProgressHUD showHUDAddedTo:window animated:YES];
-            [self showMsg:error.localizedDescription afterDelay:1.5];
+            VH_ShowToast(error.localizedDescription);
         }];
     }
 }

@@ -23,16 +23,11 @@
 //加入互动房间参数（id：房间id pass：密码/k值，等）
 @property (nonatomic, strong) NSDictionary * _Nonnull joinRoomPrams;
 
+@property (nonatomic, assign) NSInteger inav_num;     ///<当前活动支持的最大连麦人数，如：6代表1v5，16代表1v15...
+
 /** 互动工具view */
 @property (nonatomic, strong , readonly) UIView * _Nullable toolView;
 
-//192x144 = 0
-//240x160 = 1
-//320x240 = 2
-//480x360 = 3
-//570x432 = 4
-//640x480 = 5
-@property(nonatomic, assign)int pushResolution;  //互动分辨率
 
 @property(nonatomic, assign)BOOL     inavBeautifyFilterEnable;//互动美颜开关
 

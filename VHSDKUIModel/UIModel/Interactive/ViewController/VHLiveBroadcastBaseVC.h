@@ -36,9 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** 直播状态view */
 @property (nonatomic, strong) VHLiveStateView *liveStateView;
 
-/////视频直播、音频直播推流对象
-//@property (strong, nonatomic , nullable)VHLivePublisher *publisher;
-
 /** 直播信息 */
 @property (nonatomic, strong) VHRoomInfo *roomInfo;
 /** 直播信息 */

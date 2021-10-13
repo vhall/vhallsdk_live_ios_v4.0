@@ -61,7 +61,7 @@
         lblNickName.text = [_model.user_name stringByAppendingFormat:@"[%@-%ld]%@",_model.role,(long)_model.role_name,[_model.account_id isEqualToString:[VHallApi currentUserID]]?@"(myself)":@""];
         lblTime.text = _model.time;
         lblNickName.textColor = [UIColor blackColor];
-        NSString *contextText = [NSString stringWithFormat:@"%@%@",_model.text?_model.text:@"",_model.imageUrls.count>0? [_model.imageUrls componentsJoinedByString:@";"]:@""];
+        NSString *contextText = [NSString stringWithFormat:@"%@\n%@",_model.text?_model.text:@"",_model.imageUrls.count>0? [_model.imageUrls componentsJoinedByString:@";"]:@""];
 
         if(_model.replyMsg) { //回复
             replayTop.constant = 10;

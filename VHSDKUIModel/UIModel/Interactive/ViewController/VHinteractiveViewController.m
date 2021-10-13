@@ -28,9 +28,11 @@
 @property (nonatomic, strong) UIButton *micBtn;
 /** 下麦按钮 */
 @property (nonatomic, strong) UIButton *closeBtn;
-
+//分辨率提示
+@property (nonatomic, strong) UILabel *resolutionLab;
 /** 互动工具view */
 @property (nonatomic, strong) UIView *toolView;
+@property (nonatomic, strong) UIScrollView *scrollView;
 
 @end
 
@@ -60,6 +62,7 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     self.cameraView.frame = self.view.bounds;
+    self.resolutionLab.frame = CGRectMake(VHScreenWidth - 200-10, VH_KStatusBarHeight, 200, 20);
 }
 
 
@@ -174,6 +177,7 @@
     [_cameraView removeFromSuperview];
     self.cameraView.frame = self.view.bounds;
     [self.view insertSubview:self.cameraView atIndex:0];
+    [self.view insertSubview:self.resolutionLab aboveSubview:self.cameraView];
 }
 
 
@@ -230,8 +234,8 @@
 //有成员离开互动
 - (void)room:(VHRoom *)room didRemovedAttendView:(VHRenderView *)attendView
 {
-    [self showMsg:[NSString stringWithFormat:@"%@ 已下麦",attendView.userId] afterDelay:0];
-    
+    NSString *string = [NSString stringWithFormat:@"%@ 已下麦",attendView.userId];
+    VH_ShowToast(string);    
     [self removeView:attendView];
 }
 
@@ -240,7 +244,7 @@
  */
 - (void)leaveInteractiveRoomByHost:(VHRoom *)room
 {
-    [UIModelTools showMsgInWindow:@"您已被主播下麦" afterDelay:3 offsetY:100];
+    [ProgressHud showToast:@"您已被主播下麦" offsetY:100];
     //退出
     [self closeButtonClick:nil];
 }
@@ -304,13 +308,7 @@
     }
     //下麦
     else if ([attributes[@"type"] isEqualToString:@"*notSpeak"]) {
-        /*
-         "join_uid" = 1167475;  //操作人参会id
-         "nick_name" = 900530;  //被操作者昵称
-         "role_name" = user;    //
-         type = "*notSpeak";    //
-         */
-        
+
         //离开互动房间
         [self closeButtonClick:nil];
     }
@@ -319,12 +317,12 @@
 }
 
 /*
- * iskickout 被踢出房间
+ * 自己被踢出房间回调
  */
 - (void)room:(VHRoom *)room iskickout:(BOOL)iskickout
 {
     [self kickOut];
-    [self showMsgInWindow:@"已被踢出互动" afterDelay:1];
+    VH_ShowToast(@"您已被踢出互动");
 }
 
 //直播结束回调
@@ -337,8 +335,7 @@
  */
 - (void)room:(VHRoom *)room forbidChat:(BOOL)forbidChat
 {
-    
-    [self showMsg:forbidChat?@"您已被禁言":@"您已被取消禁言" afterDelay:1];
+    VH_ShowToast(forbidChat?@"您已被禁言":@"您已被取消禁言");
     //被禁言后，退出
     [self closeButtonClick:nil];
 }
@@ -347,7 +344,7 @@
  */
 - (void)room:(VHRoom *)room allForbidChat:(BOOL)allForbidChat
 {
-    [self showMsg:allForbidChat?@"已开启全体禁言":@"已取消全体禁言" afterDelay:1];
+    VH_ShowToast(allForbidChat?@"已开启全体禁言":@"已取消全体禁言");
 }
 
 #pragma mark - button click
@@ -442,13 +439,15 @@
     }
     [self.views removeAllObjects];
 }
-- (void)updateUI
-{
-    int i = 0;
-    for (UIView *view in self.views) {
-        view.frame = CGRectMake(8, 28+i*(80+1), 140, 80);
-        [self.view addSubview:view];
-        i++;
+- (void)updateUI {
+    
+    for (int i = 0 ; i < self.views.count ; i++ ) {
+        UIView *view = self.views[i];
+        view.frame = CGRectMake(0, 0 + i*(80+1), self.scrollView.width, 80);
+        [self.scrollView addSubview:view];
+        if(i == self.views.count - 1) {
+            self.scrollView.contentSize = CGSizeMake(self.scrollView.width, CGRectGetMaxY(view.frame));
+        }
     }
 }
 
@@ -462,16 +461,19 @@
 - (VHLocalRenderView *)cameraView {
     if (!_cameraView) {
         
-        //设置中设置的推流分辨率
-        NSDictionary* options = @{VHFrameResolutionTypeKey:@(VHFrameResolution640x480),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};
-        switch (_pushResolution) {
-            case 0:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution192x144),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
-            case 1:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution320x240),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
-            case 2:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution480x360),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
-            case 3:options = @{VHFrameResolutionTypeKey:@(VHFrameResolution640x480),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};break;
-            default:
-                break;
+        VHFrameResolutionValue resolution = VHFrameResolution480x360;
+        //根据当前活动支持的连麦人数来设置分辨率
+        if (self.inav_num > 0 && self.inav_num <= 5) {
+            resolution = VHFrameResolution480x360;
+            self.resolutionLab.text = @"推流分辨率：480x360";
+        } else if (self.inav_num > 5 && self.inav_num < 10) {
+            resolution = VHFrameResolution320x240;
+            self.resolutionLab.text = @"推流分辨率：320x240";
+        }else{
+            resolution = VHFrameResolution240x160;
+            self.resolutionLab.text = @"推流分辨率：240x160";
         }
+        NSDictionary* options = @{VHFrameResolutionTypeKey:@(resolution),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo)};
         
         _cameraView = [[VHLocalRenderView alloc] initCameraViewWithFrame:CGRectZero options:options];
         _cameraView.scalingMode = VHRenderViewScalingModeAspectFill;
@@ -490,4 +492,24 @@
     return _cameraView;
 }
 
+- (UILabel *)resolutionLab {
+    if(!_resolutionLab) {
+        _resolutionLab = [[UILabel alloc] init];
+        _resolutionLab.textColor = [UIColor whiteColor];
+        _resolutionLab.font = [UIFont systemFontOfSize:10];
+        _resolutionLab.textAlignment = NSTextAlignmentRight;
+    }
+    return _resolutionLab;
+}
+
+
+- (UIScrollView *)scrollView {
+    if(!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
+        _scrollView.backgroundColor = [UIColor clearColor];
+        _scrollView.frame = CGRectMake(8, VH_KStatusBarHeight, 140, VHScreenHeight - VH_KStatusBarHeight - VH_KBottomSafeMargin - 10);
+        [self.view addSubview:_scrollView];
+    }
+    return _scrollView;
+}
 @end

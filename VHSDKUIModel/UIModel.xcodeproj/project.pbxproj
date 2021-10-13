@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		031A39C226F5C77F00E7EDBE /* VHTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 031A39C026F5C77F00E7EDBE /* VHTextView.m */; };
+		031A39C626F5F6FC00E7EDBE /* ProgressHud.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F3A105742626DA6A00F73EEA /* ProgressHud.h */; };
 		033CE4802519961B001BBA7F /* VHPortraitWatchLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 033CE47F2519961B001BBA7F /* VHPortraitWatchLiveViewController.m */; };
 		033CE48225199D85001BBA7F /* VHPortraitWatchLiveViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 033CE47E2519961B001BBA7F /* VHPortraitWatchLiveViewController.h */; };
 		0341C567261E9E3900EF599B /* VHScrollTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0341C566261E9E3900EF599B /* VHScrollTextView.m */; };
@@ -174,15 +176,10 @@
 		C0443C2A242839550063FB0D /* UIModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0443AEB242839540063FB0D /* UIModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C0443C32242839550063FB0D /* UIAlertController+ITTAdditionsUIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443AF6242839540063FB0D /* UIAlertController+ITTAdditionsUIModel.m */; };
 		C0443C33242839550063FB0D /* UIView+ITTAdditionsUIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443AF7242839540063FB0D /* UIView+ITTAdditionsUIModel.m */; };
-		C0443C36242839550063FB0D /* VHMessageToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443AFB242839540063FB0D /* VHMessageToolView.m */; };
-		C0443C38242839550063FB0D /* FacialView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443AFD242839540063FB0D /* FacialView.m */; };
 		C0443C3A242839550063FB0D /* message_emoji@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0443AFF242839540063FB0D /* message_emoji@2x.png */; };
 		C0443C3B242839550063FB0D /* live_keyboard@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0443B00242839540063FB0D /* live_keyboard@3x.png */; };
-		C0443C3C242839550063FB0D /* DXFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B01242839540063FB0D /* DXFaceView.m */; };
 		C0443C3D242839550063FB0D /* live_keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0443B02242839540063FB0D /* live_keyboard@2x.png */; };
 		C0443C3E242839550063FB0D /* message_emoji@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0443B03242839540063FB0D /* message_emoji@3x.png */; };
-		C0443C3F242839550063FB0D /* UIImage+Tint.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B04242839540063FB0D /* UIImage+Tint.m */; };
-		C0443C41242839550063FB0D /* VHMessageTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B06242839540063FB0D /* VHMessageTextView.m */; };
 		C0443C50242839550063FB0D /* WatchPlayBackViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0443B18242839540063FB0D /* WatchPlayBackViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C0443C51242839550063FB0D /* WatchPlayBackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0443B19242839540063FB0D /* WatchPlayBackViewController.xib */; };
 		C0443C52242839550063FB0D /* VHPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B1A242839540063FB0D /* VHPlayerView.m */; };
@@ -241,7 +238,6 @@
 		F32B64DF26281C5B0067BD0C /* VHFacialView.m in Sources */ = {isa = PBXBuildFile; fileRef = F32B64D926281C5B0067BD0C /* VHFacialView.m */; };
 		F32B64E026281C5B0067BD0C /* VHKeyboardToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = F32B64DA26281C5B0067BD0C /* VHKeyboardToolView.m */; };
 		F32B64E126281C5B0067BD0C /* VHFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F32B64DB26281C5B0067BD0C /* VHFaceView.m */; };
-		F32B64E4262835A00067BD0C /* VUITool.m in Sources */ = {isa = PBXBuildFile; fileRef = F32B64E3262835A00067BD0C /* VUITool.m */; };
 		F32B64E7262836420067BD0C /* VHInteractLiveVC_New.m in Sources */ = {isa = PBXBuildFile; fileRef = F32B64E6262836420067BD0C /* VHInteractLiveVC_New.m */; };
 		F32B64ED262843000067BD0C /* VHLiveInfoDetailChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = F32B64EC262843000067BD0C /* VHLiveInfoDetailChatView.m */; };
 		F32B64F026284B440067BD0C /* VHLiveDocListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F32B64EF26284B440067BD0C /* VHLiveDocListCell.m */; };
@@ -488,6 +484,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				031A39C626F5F6FC00E7EDBE /* ProgressHud.h in CopyFiles */,
 				F3A360E2263AC77700306870 /* VHNavigationController.h in CopyFiles */,
 				F32B66192629441A0067BD0C /* VHLiveBroadcastBaseVC.h in CopyFiles */,
 				F32B6618262944120067BD0C /* VHLiveBaseVC.h in CopyFiles */,
@@ -507,6 +504,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		031A39C026F5C77F00E7EDBE /* VHTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHTextView.m; sourceTree = "<group>"; };
+		031A39C126F5C77F00E7EDBE /* VHTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHTextView.h; sourceTree = "<group>"; };
 		033CE47E2519961B001BBA7F /* VHPortraitWatchLiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveViewController.h; sourceTree = "<group>"; };
 		033CE47F2519961B001BBA7F /* VHPortraitWatchLiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHPortraitWatchLiveViewController.m; sourceTree = "<group>"; };
 		0341C565261E9E3900EF599B /* VHScrollTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHScrollTextView.h; sourceTree = "<group>"; };
@@ -686,20 +685,10 @@
 		C0443AF7242839540063FB0D /* UIView+ITTAdditionsUIModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ITTAdditionsUIModel.m"; sourceTree = "<group>"; };
 		C0443AF8242839540063FB0D /* UIAlertController+ITTAdditionsUIModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+ITTAdditionsUIModel.h"; sourceTree = "<group>"; };
 		C0443AF9242839540063FB0D /* UIView+ITTAdditionsUIModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ITTAdditionsUIModel.h"; sourceTree = "<group>"; };
-		C0443AFB242839540063FB0D /* VHMessageToolView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHMessageToolView.m; sourceTree = "<group>"; };
-		C0443AFC242839540063FB0D /* UIImage+Tint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Tint.h"; sourceTree = "<group>"; };
-		C0443AFD242839540063FB0D /* FacialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacialView.m; sourceTree = "<group>"; };
-		C0443AFE242839540063FB0D /* VHMessageTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHMessageTextView.h; sourceTree = "<group>"; };
 		C0443AFF242839540063FB0D /* message_emoji@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_emoji@2x.png"; sourceTree = "<group>"; };
 		C0443B00242839540063FB0D /* live_keyboard@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_keyboard@3x.png"; sourceTree = "<group>"; };
-		C0443B01242839540063FB0D /* DXFaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DXFaceView.m; sourceTree = "<group>"; };
 		C0443B02242839540063FB0D /* live_keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_keyboard@2x.png"; sourceTree = "<group>"; };
 		C0443B03242839540063FB0D /* message_emoji@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_emoji@3x.png"; sourceTree = "<group>"; };
-		C0443B04242839540063FB0D /* UIImage+Tint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Tint.m"; sourceTree = "<group>"; };
-		C0443B05242839540063FB0D /* VHMessageToolView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHMessageToolView.h; sourceTree = "<group>"; };
-		C0443B06242839540063FB0D /* VHMessageTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHMessageTextView.m; sourceTree = "<group>"; };
-		C0443B07242839540063FB0D /* FacialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacialView.h; sourceTree = "<group>"; };
-		C0443B08242839540063FB0D /* DXFaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DXFaceView.h; sourceTree = "<group>"; };
 		C0443B18242839540063FB0D /* WatchPlayBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchPlayBackViewController.h; sourceTree = "<group>"; };
 		C0443B19242839540063FB0D /* WatchPlayBackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatchPlayBackViewController.xib; sourceTree = "<group>"; };
 		C0443B1A242839540063FB0D /* VHPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHPlayerView.m; sourceTree = "<group>"; };
@@ -786,8 +775,6 @@
 		F32B64DC26281C5B0067BD0C /* VHFacialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHFacialView.h; sourceTree = "<group>"; };
 		F32B64DD26281C5B0067BD0C /* VHFaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHFaceView.h; sourceTree = "<group>"; };
 		F32B64DE26281C5B0067BD0C /* VHKeyboardToolView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHKeyboardToolView.h; sourceTree = "<group>"; };
-		F32B64E2262835A00067BD0C /* VUITool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUITool.h; sourceTree = "<group>"; };
-		F32B64E3262835A00067BD0C /* VUITool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUITool.m; sourceTree = "<group>"; };
 		F32B64E5262836420067BD0C /* VHInteractLiveVC_New.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHInteractLiveVC_New.h; sourceTree = "<group>"; };
 		F32B64E6262836420067BD0C /* VHInteractLiveVC_New.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHInteractLiveVC_New.m; sourceTree = "<group>"; };
 		F32B64EB262843000067BD0C /* VHLiveInfoDetailChatView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHLiveInfoDetailChatView.h; sourceTree = "<group>"; };
@@ -1078,6 +1065,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		031A39C326F5CD1C00E7EDBE /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				031A39C526F5F69300E7EDBE /* VHProgressHud */,
+				C0443AFA242839540063FB0D /* KeyboardView */,
+				F3A105622626D78C00F73EEA /* VHActionSheet */,
+				F3A105772626E7EB00F73EEA /* VHRefresh */,
+				F3A1055F2626CE8900F73EEA /* VHSegmentView.h */,
+				F3A105602626CE8900F73EEA /* VHSegmentView.m */,
+				F3A1093426297F78003552F8 /* VHPrivacyManager.h */,
+				F3A1093526297F78003552F8 /* VHPrivacyManager.m */,
+				F3A1093826297FAC003552F8 /* VHAlertView.h */,
+				F3A1093926297FAC003552F8 /* VHAlertView.m */,
+				031A39C126F5C77F00E7EDBE /* VHTextView.h */,
+				031A39C026F5C77F00E7EDBE /* VHTextView.m */,
+				F3C114A0262ED9FA006C7623 /* OMTimer.h */,
+				F3C114A1262ED9FA006C7623 /* OMTimer.m */,
+				03750799251B526500DBDF24 /* UIModelTools.h */,
+				0375079A251B526500DBDF24 /* UIModelTools.m */,
+				0341C56A261ECD8600EF599B /* VHLiveWeakTimer.h */,
+				0341C569261ECD8600EF599B /* VHLiveWeakTimer.m */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		031A39C526F5F69300E7EDBE /* VHProgressHud */ = {
+			isa = PBXGroup;
+			children = (
+				F3A105742626DA6A00F73EEA /* ProgressHud.h */,
+				F3A105752626DA6A00F73EEA /* ProgressHud.m */,
+			);
+			path = VHProgressHud;
+			sourceTree = "<group>";
+		};
 		033CE48125199678001BBA7F /* FullScreenWatch */ = {
 			isa = PBXGroup;
 			children = (
@@ -1122,13 +1143,10 @@
 		C0443A17242839530063FB0D /* UIModel */ = {
 			isa = PBXGroup;
 			children = (
+				C0443AF5242839540063FB0D /* Common */,
 				C0443A24242839530063FB0D /* UIModel_PrefixHeader.pch */,
 				F3A105722626D88F00F73EEA /* VHEnum.h */,
 				C0443AEB242839540063FB0D /* UIModel.h */,
-				C0443B1D242839540063FB0D /* VHBaseViewController.h */,
-				C0443A18242839530063FB0D /* VHBaseViewController.m */,
-				F33732312632A97600124882 /* VHNavigationController.h */,
-				F33732322632A97600124882 /* VHNavigationController.m */,
 				C0443B21242839540063FB0D /* WatchLive */,
 				C0443B17242839540063FB0D /* WatchPlayBack */,
 				C0443A19242839530063FB0D /* LaunchLive */,
@@ -1344,9 +1362,7 @@
 		C0443AEC242839540063FB0D /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				C0443AF5242839540063FB0D /* Common */,
 				C0529856242A13D30029B29C /* DLNA */,
-				C0443AFA242839540063FB0D /* KeyboardView */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -1354,16 +1370,15 @@
 		C0443AF5242839540063FB0D /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				F3A105742626DA6A00F73EEA /* ProgressHud.h */,
-				F3A105752626DA6A00F73EEA /* ProgressHud.m */,
-				0341C56A261ECD8600EF599B /* VHLiveWeakTimer.h */,
-				0341C569261ECD8600EF599B /* VHLiveWeakTimer.m */,
+				031A39C326F5CD1C00E7EDBE /* Tools */,
 				C0443AF8242839540063FB0D /* UIAlertController+ITTAdditionsUIModel.h */,
 				C0443AF6242839540063FB0D /* UIAlertController+ITTAdditionsUIModel.m */,
 				C0443AF9242839540063FB0D /* UIView+ITTAdditionsUIModel.h */,
 				C0443AF7242839540063FB0D /* UIView+ITTAdditionsUIModel.m */,
-				03750799251B526500DBDF24 /* UIModelTools.h */,
-				0375079A251B526500DBDF24 /* UIModelTools.m */,
+				C0443B1D242839540063FB0D /* VHBaseViewController.h */,
+				C0443A18242839530063FB0D /* VHBaseViewController.m */,
+				F33732312632A97600124882 /* VHNavigationController.h */,
+				F33732322632A97600124882 /* VHNavigationController.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1371,20 +1386,16 @@
 		C0443AFA242839540063FB0D /* KeyboardView */ = {
 			isa = PBXGroup;
 			children = (
-				C0443B05242839540063FB0D /* VHMessageToolView.h */,
-				C0443AFB242839540063FB0D /* VHMessageToolView.m */,
-				C0443AFE242839540063FB0D /* VHMessageTextView.h */,
-				C0443B06242839540063FB0D /* VHMessageTextView.m */,
-				C0443AFC242839540063FB0D /* UIImage+Tint.h */,
-				C0443B04242839540063FB0D /* UIImage+Tint.m */,
-				C0443B07242839540063FB0D /* FacialView.h */,
-				C0443AFD242839540063FB0D /* FacialView.m */,
-				C0443B08242839540063FB0D /* DXFaceView.h */,
-				C0443B01242839540063FB0D /* DXFaceView.m */,
 				C0443AFF242839540063FB0D /* message_emoji@2x.png */,
 				C0443B00242839540063FB0D /* live_keyboard@3x.png */,
 				C0443B02242839540063FB0D /* live_keyboard@2x.png */,
 				C0443B03242839540063FB0D /* message_emoji@3x.png */,
+				F32B64DD26281C5B0067BD0C /* VHFaceView.h */,
+				F32B64DB26281C5B0067BD0C /* VHFaceView.m */,
+				F32B64DC26281C5B0067BD0C /* VHFacialView.h */,
+				F32B64D926281C5B0067BD0C /* VHFacialView.m */,
+				F32B64DE26281C5B0067BD0C /* VHKeyboardToolView.h */,
+				F32B64DA26281C5B0067BD0C /* VHKeyboardToolView.m */,
 			);
 			path = KeyboardView;
 			sourceTree = "<group>";
@@ -1404,7 +1415,6 @@
 		C0443B1E242839540063FB0D /* Interactive */ = {
 			isa = PBXGroup;
 			children = (
-				F3A1055E2626CE7300F73EEA /* Tool */,
 				F3A105422626927500F73EEA /* Cell */,
 				F3A1052D26268F6D00F73EEA /* Model */,
 				F3A1053126268F6E00F73EEA /* View */,
@@ -1624,19 +1634,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F32B64D826281C5B0067BD0C /* Keyboard */ = {
-			isa = PBXGroup;
-			children = (
-				F32B64DD26281C5B0067BD0C /* VHFaceView.h */,
-				F32B64DB26281C5B0067BD0C /* VHFaceView.m */,
-				F32B64DC26281C5B0067BD0C /* VHFacialView.h */,
-				F32B64D926281C5B0067BD0C /* VHFacialView.m */,
-				F32B64DE26281C5B0067BD0C /* VHKeyboardToolView.h */,
-				F32B64DA26281C5B0067BD0C /* VHKeyboardToolView.m */,
-			);
-			path = Keyboard;
-			sourceTree = "<group>";
-		};
 		F3A1052D26268F6D00F73EEA /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1725,25 +1722,6 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		F3A1055E2626CE7300F73EEA /* Tool */ = {
-			isa = PBXGroup;
-			children = (
-				F32B64E2262835A00067BD0C /* VUITool.h */,
-				F32B64E3262835A00067BD0C /* VUITool.m */,
-				F3C114A0262ED9FA006C7623 /* OMTimer.h */,
-				F3C114A1262ED9FA006C7623 /* OMTimer.m */,
-				F3A1093726297FAC003552F8 /* AlertView */,
-				F32B64D826281C5B0067BD0C /* Keyboard */,
-				F3A105772626E7EB00F73EEA /* VHRefresh */,
-				F3A105622626D78C00F73EEA /* VHActionSheet */,
-				F3A1055F2626CE8900F73EEA /* VHSegmentView.h */,
-				F3A105602626CE8900F73EEA /* VHSegmentView.m */,
-				F3A1093426297F78003552F8 /* VHPrivacyManager.h */,
-				F3A1093526297F78003552F8 /* VHPrivacyManager.m */,
-			);
-			path = Tool;
-			sourceTree = "<group>";
-		};
 		F3A105622626D78C00F73EEA /* VHActionSheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -1770,15 +1748,6 @@
 				F3A105792626E7EB00F73EEA /* VHRefreshHeader.m */,
 			);
 			path = VHRefresh;
-			sourceTree = "<group>";
-		};
-		F3A1093726297FAC003552F8 /* AlertView */ = {
-			isa = PBXGroup;
-			children = (
-				F3A1093826297FAC003552F8 /* VHAlertView.h */,
-				F3A1093926297FAC003552F8 /* VHAlertView.m */,
-			);
-			path = AlertView;
 			sourceTree = "<group>";
 		};
 		F3A1093B26298824003552F8 /* Image */ = {
@@ -2422,7 +2391,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ${PROJECT_DIR}/../\nmkdir -p UIModel\ncd UIModel\n\ncp ${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/lib${PRODUCT_NAME}.a ./\nrm -r ./${PRODUCT_NAME}.bundle\ncp -rf ${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${PRODUCT_NAME}.bundle ./\n\niphoneosFile=${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PRODUCT_NAME}.a\niphonesimulatorFile=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/lib${PRODUCT_NAME}.a\nif [ -f \"$iphoneosFile\" ] && [ -f \"$iphonesimulatorFile\" ]; then\nlipo -create \"$iphoneosFile\" \"$iphonesimulatorFile\" -output ./lib${PRODUCT_NAME}.a\nfi\ncp ${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/include/${PRODUCT_NAME}/*.* ./\n\nmkdir -p libs_third\ncd libs_third\n\ncp ${PROJECT_DIR}/libs_third/BarrageRenderer/*.a ./\ncp ${PROJECT_DIR}/libs_third/Masonry/*.a ./\ncp ${PROJECT_DIR}/libs_third/MBProgressHUD/*.a ./\ncp ${PROJECT_DIR}/libs_third/SDWebImage/*.a ./\ncp ${PROJECT_DIR}/libs_third/Reachability/*.a ./\ncp ${PROJECT_DIR}/libs_third/TTTAttributedLabel/*.a ./\ncp ${PROJECT_DIR}/libs_third/MJRefresh/*.a ./\ncp ${PROJECT_DIR}/libs_third/MJExtension/*.a ./\ncp ${PROJECT_DIR}/libs_third/YYText/*.a ./\ncp ${PROJECT_DIR}/libs_third/QMUIKit/*.a ./\ncp -rf ${PROJECT_DIR}/libs_third/MJRefresh/*.bundle ./\ncp -rf ${PROJECT_DIR}/libs_third/QMUIKit/*.bundle ./\ncp ${PROJECT_DIR}/libs_third/MLEmojiLabel/*.a ./\n\n\n\n";
+			shellScript = "cd ${PROJECT_DIR}/../\nmkdir -p UIModel\ncd UIModel\n\ncp ${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/lib${PRODUCT_NAME}.a ./\nrm -r ./${PRODUCT_NAME}.bundle\ncp -rf ${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${PRODUCT_NAME}.bundle ./\n\niphoneosFile=${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PRODUCT_NAME}.a\niphonesimulatorFile=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/lib${PRODUCT_NAME}.a\nif [ -f \"$iphoneosFile\" ] && [ -f \"$iphonesimulatorFile\" ]; then\nlipo -create \"$iphoneosFile\" \"$iphonesimulatorFile\" -output ./lib${PRODUCT_NAME}.a\nfi\ncp ${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/include/${PRODUCT_NAME}/*.* ./\n\nmkdir -p libs_third\ncd libs_third\n\ncp ${PROJECT_DIR}/libs_third/BarrageRenderer/*.a ./\ncp ${PROJECT_DIR}/libs_third/Masonry/*.a ./\ncp ${PROJECT_DIR}/libs_third/MBProgressHUD/*.a ./\ncp ${PROJECT_DIR}/libs_third/SDWebImage/*.a ./\ncp ${PROJECT_DIR}/libs_third/Reachability/*.a ./\ncp ${PROJECT_DIR}/libs_third/MJRefresh/*.a ./\ncp ${PROJECT_DIR}/libs_third/MJExtension/*.a ./\ncp ${PROJECT_DIR}/libs_third/YYText/*.a ./\ncp ${PROJECT_DIR}/libs_third/TTTAttributedLabel/*.a ./\ncp -rf ${PROJECT_DIR}/libs_third/MJRefresh/*.bundle ./\ncp ${PROJECT_DIR}/libs_third/MLEmojiLabel/*.a ./\n\n\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2438,12 +2407,12 @@
 				C0443C76242839550063FB0D /* VHSurveyViewController.m in Sources */,
 				F3A10554262693C000F73EEA /* VHInteractContentView.m in Sources */,
 				F33732332632A97600124882 /* VHNavigationController.m in Sources */,
-				C0443C41242839550063FB0D /* VHMessageTextView.m in Sources */,
 				F3A1054B262692F700F73EEA /* VHLiveLimitCell.m in Sources */,
 				C0443B5F242839550063FB0D /* LaunchLiveViewController.m in Sources */,
 				F3A1057C2626E7EB00F73EEA /* VHRefreshFooter.m in Sources */,
 				F3A105452626929E00F73EEA /* VHLiveMemberAndLimitBaseCell.m in Sources */,
 				F3A105832626F23000F73EEA /* VHDocListModel.m in Sources */,
+				031A39C226F5C77F00E7EDBE /* VHTextView.m in Sources */,
 				033CE4802519961B001BBA7F /* VHPortraitWatchLiveViewController.m in Sources */,
 				C0443C6A242839550063FB0D /* SZQuestionCell.m in Sources */,
 				C0443C69242839550063FB0D /* SZConfigure.m in Sources */,
@@ -2456,7 +2425,6 @@
 				F32B64ED262843000067BD0C /* VHLiveInfoDetailChatView.m in Sources */,
 				F3A1057D2626E7EB00F73EEA /* VHRefreshHeader.m in Sources */,
 				F3A10A462629B36B003552F8 /* VHLiveStateView.m in Sources */,
-				C0443C36242839550063FB0D /* VHMessageToolView.m in Sources */,
 				C0443C33242839550063FB0D /* UIView+ITTAdditionsUIModel.m in Sources */,
 				F3A105762626DA6A00F73EEA /* ProgressHud.m in Sources */,
 				C0443C63242839550063FB0D /* WatchLiveQATableViewCell.m in Sources */,
@@ -2478,7 +2446,6 @@
 				F3A5B9B7263BCA1500CE7142 /* VHEndPublisherDetailView.m in Sources */,
 				F3DCF2A52627F02B0014D3F0 /* VHLiveBroadcastInfoDetailView.m in Sources */,
 				F32B64DF26281C5B0067BD0C /* VHFacialView.m in Sources */,
-				C0443C3C242839550063FB0D /* DXFaceView.m in Sources */,
 				0341C56B261ECD8700EF599B /* VHLiveWeakTimer.m in Sources */,
 				F3A1056F2626D78C00F73EEA /* VHCBaseActionView.m in Sources */,
 				C0443C60242839550063FB0D /* WatchLiveChatTableViewCell.m in Sources */,
@@ -2502,7 +2469,6 @@
 				F3A1054E2626934D00F73EEA /* VHLiveMemberModel.m in Sources */,
 				F3A2CFD22631679100B4A23C /* VHDocBrushPopView.m in Sources */,
 				F3A10551262693A600F73EEA /* HLHorizontalPageLayout.m in Sources */,
-				C0443C38242839550063FB0D /* FacialView.m in Sources */,
 				0375075C251AF10000DBDF24 /* VHPortraitWatchLiveDecorateView.m in Sources */,
 				C0443C52242839550063FB0D /* VHPlayerView.m in Sources */,
 				F3A5B9BD263BCBD600CE7142 /* VHEndPublisherCell.m in Sources */,
@@ -2513,11 +2479,9 @@
 				F3A105412626924700F73EEA /* VHLiveLimitListView.m in Sources */,
 				F3A1093A26297FB4003552F8 /* VHAlertView.m in Sources */,
 				C0443B64242839550063FB0D /* VHLiveChatView.m in Sources */,
-				C0443C3F242839550063FB0D /* UIImage+Tint.m in Sources */,
 				C0443C7E242839550063FB0D /* MicCountDownView.m in Sources */,
 				C0443C53242839550063FB0D /* WatchPlayBackViewController.m in Sources */,
 				F3A105702626D78C00F73EEA /* VHActionSheetViewController.m in Sources */,
-				F32B64E4262835A00067BD0C /* VUITool.m in Sources */,
 				C0443C82242839550063FB0D /* WatchLiveLotteryViewController.m in Sources */,
 				03E4A93225087659005BB8D8 /* WatchLiveLotteryWinListView.m in Sources */,
 				F3A105322626900000F73EEA /* VHinteractiveViewController.m in Sources */,
@@ -2697,7 +2661,6 @@
 					"$(PROJECT_DIR)/libs_third/SDWebImage",
 					"$(PROJECT_DIR)/libs_third/TTTAttributedLabel",
 					"$(PROJECT_DIR)/libs_third/MJExtension",
-					"$(PROJECT_DIR)/libs_third/QMUIKit",
 					"$(PROJECT_DIR)/libs_third/MJExtension",
 					"$(PROJECT_DIR)/libs_third/YYText",
 				);
@@ -2736,7 +2699,6 @@
 					"$(PROJECT_DIR)/libs_third/SDWebImage",
 					"$(PROJECT_DIR)/libs_third/TTTAttributedLabel",
 					"$(PROJECT_DIR)/libs_third/MJExtension",
-					"$(PROJECT_DIR)/libs_third/QMUIKit",
 					"$(PROJECT_DIR)/libs_third/MJExtension",
 					"$(PROJECT_DIR)/libs_third/YYText",
 				);

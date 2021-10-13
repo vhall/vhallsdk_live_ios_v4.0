@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VHRoomEnum.h"
 #import <VHLiveSDK/VHDocument.h>
 #import <VHLiveSDK/VHallConst.h>
+#import <VHInteractive/VHRoomEnum.h>
 NS_ASSUME_NONNULL_BEGIN
 
 // 房间活动相关信息
@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 自己的用户id
 @property (nonatomic, copy) NSString *selfUserId;
 /// 自己的昵称
-@property (nonatomic, copy) NSString *selfNickname;
+@property (nonatomic, copy) NSString *selfNickName;
 /// 自己的头像
 @property (nonatomic, copy) NSString *selfAvatar;
 /// 自己是否有成员管理权限
@@ -41,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *mainSpeakerId;
 /// 文档实例对象 ，获取该对象后，设置VHDocument的代理，监听文档相关回调
 @property (nonatomic, strong, readonly) VHDocument *documentManager;
+/// 当前活动支持的最大连麦人数，如：6表示1v5，16表示1v15
+@property (nonatomic, assign) NSInteger inav_num;
 
 @property (nonatomic, strong) id data;
 @end

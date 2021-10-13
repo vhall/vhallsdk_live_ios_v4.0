@@ -13,14 +13,14 @@
                 <outlet property="accountLoginBtn" destination="SUQ-qV-e0P" id="GtI-qm-sX6"/>
                 <outlet property="accountLoginView" destination="UNy-3I-OgQ" id="shu-94-QGx"/>
                 <outlet property="accountTextField" destination="e3x-Ea-ufm" id="SfB-dV-v8S"/>
-                <outlet property="avatarTextField" destination="0SN-fz-ys6" id="CL6-Oz-1lQ"/>
                 <outlet property="contentView" destination="1At-sj-6fU" id="xJ5-Y6-sSY"/>
                 <outlet property="loginBtn" destination="WOA-vL-cY7" id="YJE-0E-9pv"/>
-                <outlet property="nameTextField" destination="Dco-6k-9tN" id="J4w-3E-gkB"/>
                 <outlet property="passwordTextField" destination="qy4-sT-QhO" id="Ztw-CX-IY1"/>
+                <outlet property="thirdAvatarTextField" destination="0SN-fz-ys6" id="3Yf-S6-2BB"/>
                 <outlet property="thirdIdLoginBtn" destination="oGY-4s-Vrf" id="CwV-Wf-JBV"/>
                 <outlet property="thirdIdLoginView" destination="KBS-gg-6lJ" id="I6D-Xb-qbf"/>
                 <outlet property="thirdIdTextField" destination="evj-Kf-AFF" id="NEz-qB-jOA"/>
+                <outlet property="thirdNameTextField" destination="Dco-6k-9tN" id="aNN-BQ-4Vz"/>
                 <outlet property="versionLabel" destination="Bhr-wC-ECr" id="UUc-n2-OfO"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

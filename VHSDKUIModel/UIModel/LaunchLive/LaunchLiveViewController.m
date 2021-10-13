@@ -15,9 +15,9 @@
 #import "UIAlertController+ITTAdditionsUIModel.h"
 
 #import "VHLiveChatView.h"
-#import "VHMessageToolView.h"
+#import "VHKeyboardToolView.h"
 
-@interface LaunchLiveViewController ()<VHallLivePublishDelegate, VHallChatDelegate,VHMessageToolBarDelegate>
+@interface LaunchLiveViewController ()<VHallLivePublishDelegate, VHallChatDelegate,VHKeyboardToolViewDelegate>
 {
     BOOL  _isAudioStart;
     BOOL  _torchType;
@@ -53,7 +53,7 @@
 
 @property (nonatomic, strong) VHLiveChatView *chatView;
 @property (nonatomic, strong) NSMutableArray *chatDataArray;
-@property (nonatomic,strong) VHMessageToolView * messageToolView;  //输入工具view
+@property (nonatomic,strong) VHKeyboardToolView * messageToolView;  //输入工具view
 @property (weak, nonatomic) IBOutlet UIView *noiseView;
 @property (weak, nonatomic) IBOutlet UILabel *noiseLabel;
 
@@ -296,7 +296,7 @@
 - (IBAction)startVideoPlayer:(UIButton *)sender
 {
 #if (TARGET_IPHONE_SIMULATOR)
-    [self showMsg:@"无法在模拟器上发起直播！" afterDelay:1.5];
+    VH_ShowToast(@"无法在模拟器上发起直播！");
     return;
 #endif
     
@@ -575,7 +575,7 @@
 
 //点击"我来说两句"
 - (IBAction)sendMsgButtonClick:(UIButton *)sender {
-    [self.messageToolView beginTextViewInView];
+    [self.messageToolView becomeFirstResponder];
 }
 
 #pragma mark Chat && QA(VHallChatDelegate)
@@ -629,7 +629,11 @@
             msg.formUserName= m.user_name;
             msg.formUserId= m.account_id;
             msg.time= m.time;
-            msg.text = [NSString stringWithFormat:@"%@\n%@",m.time, m.text];
+            
+            NSString *contextText = [NSString stringWithFormat:@"%@\n%@",m.text ? m.text : @"",m.imageUrls.count>0 ? [m.imageUrls componentsJoinedByString : @";"] : @""];
+            
+            msg.text = [NSString stringWithFormat:@"%@\n%@",m.time, contextText];
+            
             [_chatDataArray addObject:msg];
         }
         [_chatView update];
@@ -661,7 +665,7 @@
 
 - (IBAction)hideKey:(id)sender {
     //关闭键盘输入
-    [_messageToolView endEditing:YES];
+    [_messageToolView resignFirstResponder];
  
     _hideKeyBtn.hidden = YES;
     
@@ -677,12 +681,11 @@
     [_engine setVolumeAmplificateSize:sender.value];
 }
 
-#pragma mark - messageToolViewDelegate
-- (void)didSendText:(NSString *)text
-{
-    if(text == nil || text.length <= 0)
-    {
-        [super showMsg:@"发送内容不能为空" afterDelay:1.5];
+#pragma mark - VHKeyboardToolViewDelegate
+/*! 发送按钮事件回调*/
+- (void)keyboardToolView:(VHKeyboardToolView *)view sendText:(NSString *)text {
+    if(text == nil || text.length <= 0) {
+        VH_ShowToast(@"发送内容不能为空");
         return;
     }
     
@@ -690,19 +693,19 @@
     [_chat sendMsg:text success:^{
         
     } failed:^(NSDictionary *failedData) {
-        NSString* error = [NSString stringWithFormat:@"(%@)%@", failedData[@"code"],failedData[@"content"]];
-        [super showMsg:error afterDelay:2];
+        NSString* string = [NSString stringWithFormat:@"(%@)%@", failedData[@"code"],failedData[@"content"]];
+        VH_ShowToast(string);
     }];
 }
 
 
-- (VHMessageToolView *)messageToolView
+
+- (VHKeyboardToolView *)messageToolView
 {
     if (!_messageToolView)
     {
-        _messageToolView = [[VHMessageToolView alloc] init];
+        _messageToolView = [[VHKeyboardToolView alloc] init];
         _messageToolView.delegate = self;
-        _messageToolView.maxLength = 140;
         [self.view addSubview:_messageToolView];
     }
     return _messageToolView;

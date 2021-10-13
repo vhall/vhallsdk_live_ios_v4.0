@@ -10,7 +10,7 @@
 #import "VHLiveMemberModel.h"
 #import "UIImageView+WebCache.h"
 #import <VHInteractive/VHRoom.h>
-#import "VUITool.h"
+
 @interface VHInteractVideoCell ()
 /** 名字 */
 @property (nonatomic, strong) UILabel *nameLab;
@@ -133,7 +133,7 @@
     if(model.closeCamera) { //关闭摄像头
         self.headIcon.hidden = NO;
         self.videoIcon.hidden = NO;
-        [self.headIcon sd_setImageWithURL:[NSURL URLWithString:[VUITool httpPrefixImgUrlStr:model.avatar]] placeholderImage:BundleUIImage(@"head50")];
+        [self.headIcon sd_setImageWithURL:[NSURL URLWithString:[UIModelTools httpPrefixImgUrlStr:model.avatar]] placeholderImage:BundleUIImage(@"head50")];
     }else { //开启摄像头
         self.headIcon.hidden = YES;
         self.videoIcon.hidden = YES;

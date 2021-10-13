@@ -11,10 +11,10 @@
 #import "WatchLiveOnlineTableViewCell.h"
 #import "WatchLiveSurveyTableViewCell.h"
 #import "VHPortraitWatchLiveChatTableViewCell.h"
-#import "VHMessageToolView.h"
-@interface VHPortraitWatchLiveDecorateView () <UITableViewDelegate,UITableViewDataSource,VHMessageToolBarDelegate,MicCountDownViewDelegate>
+#import "VHKeyboardToolView.h"
+@interface VHPortraitWatchLiveDecorateView () <UITableViewDelegate,UITableViewDataSource,VHKeyboardToolViewDelegate,MicCountDownViewDelegate>
 {
-    VHMessageToolView * _messageToolView;  //输入框
+    VHKeyboardToolView * _messageToolView;  //输入框
 }
 /** 网速 */
 @property (nonatomic, strong) UILabel *networkSpeedLab;
@@ -109,10 +109,9 @@
 #pragma mark - UI事件
 //说点什么
 - (void)chatBtnClick {
-    _messageToolView = [[VHMessageToolView alloc] init];
+    _messageToolView = [[VHKeyboardToolView alloc] init];
     _messageToolView.delegate = self;
-    _messageToolView.maxLength = 140;
-    [_messageToolView beginTextViewInView];
+    [_messageToolView becomeFirstResponder];
     [[UIApplication sharedApplication].delegate.window addSubview:_messageToolView];
 }
 
@@ -137,12 +136,11 @@
 }
 
 
-#pragma mark messageToolViewDelegate
-- (void)didSendText:(NSString *)text {
+#pragma mark VHKeyboardToolViewDelegate
+- (void)keyboardToolView:(VHKeyboardToolView *)view sendText:(NSString *)text {
     if([self.delegate respondsToSelector:@selector(decorateView:sendMessage:)]) {
         [self.delegate decorateView:self sendMessage:text];
     }
-    [_messageToolView endEditing:YES];
 }
 
 

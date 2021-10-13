@@ -76,11 +76,10 @@
 - (void)reloadAllData {
     [self.collectionView reloadData];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //更新pageControl显示，collectionView在刷新后立即获取contentSize会不准确，这里延迟获取
+    dispatch_async(dispatch_get_main_queue(), ^{
         self.pageControl.hidden = self.collectionViewLayout.pageNum == 1;
         self.pageControl.numberOfPages = self.collectionViewLayout.pageNum;
-        self.pageControl.currentPage = self.collectionView.contentOffset.x / self.collectionView.contentSize.width;
+        self.pageControl.currentPage = self.collectionView.contentOffset.x / self.collectionView.width;
     });
 }
 

@@ -186,7 +186,8 @@
             }
             else
             {
-                [self showMsg:[NSString stringWithFormat:@"%@",msg[@"msg"]] afterDelay:2];
+                NSString *string = [NSString stringWithFormat:@"%@",msg[@"msg"]];
+                VH_ShowToast(string);
             }
         }
     }

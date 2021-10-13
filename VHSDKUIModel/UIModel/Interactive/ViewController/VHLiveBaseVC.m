@@ -83,11 +83,6 @@
 }
 
 
-//是否开启侧滑返回（集成QMUIKit需要加这个代码）
-- (BOOL)forceEnableInteractivePopGestureRecognizer {
-    return YES;
-}
-
 //是否隐藏状态栏
 - (BOOL)prefersStatusBarHidden {
     return NO;

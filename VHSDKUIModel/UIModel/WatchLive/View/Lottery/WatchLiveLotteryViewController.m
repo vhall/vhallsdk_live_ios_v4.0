@@ -116,7 +116,7 @@
             self.lotteringText.text = self.startLotteryModel.remark;
         }
     } failed:^(NSDictionary *failedData) {
-        [UIModelTools showMsgInWindow:failedData[@"content"] afterDelay:2];
+        VH_ShowToast(failedData[@"content"]);
     }];
 }
 
@@ -139,7 +139,7 @@
                 [MBProgressHUD hideHUDForView:self.view animated:NO];
             } failed:^(NSDictionary *failedData) {
                 [MBProgressHUD hideHUDForView:self.view animated:NO];
-                [UIModelTools showMsgInWindow:failedData[@"content"] afterDelay:2];
+                VH_ShowToast(failedData[@"content"]);
             }];
         }else { //老版抽奖，填写项固定只能提交姓名、电话
             NSMutableArray <VHallLotterySubmitConfig *> *array = [NSMutableArray array];
@@ -174,7 +174,7 @@
                 [weakSelf.winListView setLotteryPrizeInfo:self.endLotteryModel.prizeInfo winList:submitList];
             } failed:^(NSDictionary *failedData) {
                 [MBProgressHUD hideHUDForView:weakSelf.view animated:NO];
-                [UIModelTools showMsgInWindow:failedData[@"content"] afterDelay:2];
+                VH_ShowToast(failedData[@"content"]);
             }];
         }else { //老版抽奖，无奖品信息，从抽奖结束消息里获取中奖名单
             [self.winListView setLotteryPrizeInfo:nil winList:self.endLotteryModel.resultModels];

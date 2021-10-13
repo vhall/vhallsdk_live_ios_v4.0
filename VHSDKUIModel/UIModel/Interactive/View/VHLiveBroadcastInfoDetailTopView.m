@@ -8,7 +8,7 @@
 
 #import "VHLiveBroadcastInfoDetailTopView.h"
 #import "UIImageView+WebCache.h"
-#import "VUITool.h"
+
 @interface VHLiveBroadcastInfoDetailTopView ()
 
 /// 主播头像
@@ -173,7 +173,7 @@
 //设置头像
 - (void)setHeadIconStr:(NSString *)headIconStr {
     _headIconStr = headIconStr;
-    [self.headImgView sd_setImageWithURL:[NSURL URLWithString:[VUITool httpPrefixImgUrlStr:headIconStr]] placeholderImage:BundleUIImage(@"head50")];
+    [self.headImgView sd_setImageWithURL:[NSURL URLWithString:[UIModelTools httpPrefixImgUrlStr:headIconStr]] placeholderImage:BundleUIImage(@"head50")];
 }
 
 #pragma mark - UI事件

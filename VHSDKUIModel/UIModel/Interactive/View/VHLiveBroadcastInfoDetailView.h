@@ -67,12 +67,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) VHLiveBroadcastInfoDetailBootomView *bottomToolView;
 /// 聊天视图
 @property (nonatomic , strong) VHLiveInfoDetailChatView * chatView;
-
+/** 当前是否已打开文档view */
+@property (nonatomic, assign) BOOL openDocView;
 /** 开播倒计时Label */
 @property (nonatomic, strong) UILabel *countDownLab;
+@property (nonatomic, strong) UILabel *resolutionLab; //分辨率显示（方便测试确认当前推流分辨率）
 
-/** 当前是否打开文档view */
-@property (nonatomic, assign) BOOL openDocView;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;

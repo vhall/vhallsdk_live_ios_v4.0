@@ -64,7 +64,7 @@
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.contentView);
-        make.height.equalTo(@(1/ScreenScale));
+        make.height.equalTo(@(1/VHScreenScale));
     }];
 }
 

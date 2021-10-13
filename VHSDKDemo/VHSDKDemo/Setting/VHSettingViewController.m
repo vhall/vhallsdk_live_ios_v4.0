@@ -13,6 +13,7 @@
 #import "VHSettingArrowItem.h"
 #import "CustomPickerView.h"
 #import <VHLiveSDK/VHallApi.h>
+#import "UIModel.h"
 
 #define CLASSNAME   "VHAppSetViewController"
 
@@ -22,10 +23,9 @@
     
     NSMutableArray * _inavBtns;//互动设置btns
 
-    VHSettingTextFieldItem *item00,*item01,*item02,*item03,*item04;
+    VHSettingTextFieldItem *item00,*item01,*item02,*item03,*item04,*item05;
     VHSettingTextFieldItem *item10,*item11,*item12,*item13,*item14,*item15,*item16;
     VHSettingTextFieldItem *item20,*item21;
-    VHSettingTextFieldItem *item30;
 
     UISwitch *_noiseSwitch;
     UISwitch *_beautifySwitch;
@@ -143,13 +143,16 @@
     item00.text=DEMO_Setting.watchActivityID;
     item01 = [VHSettingTextFieldItem  itemWithTitle:@"密码或k值"];
     item01.text =  DEMO_Setting.kValue;
-    item02 = [VHSettingTextFieldItem  itemWithTitle:@"口令"];
-    item02.text =  DEMO_Setting.codeWord;
-    item03 = [VHSettingTextFieldItem  itemWithTitle:@"缓冲时间"];
-    item03.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.bufferTimes];
-    item04 = [VHSettingTextFieldItem  itemWithTitle:@"超时时间"];
-    item04.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.timeOut];
-    VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item00,item01,item02,item03,item04]];
+    item02 = [VHSettingTextFieldItem  itemWithTitle:@"缓冲时间(s)"];
+    item02.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.bufferTimes];
+    item03 = [VHSettingTextFieldItem  itemWithTitle:@"超时时间(s)"];
+    item03.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.timeOut];
+    item04 = [VHSettingTextFieldItem  itemWithTitle:@"嘉宾互动口令"];
+    item04.text =  DEMO_Setting.codeWord;
+    item05 = [VHSettingTextFieldItem  itemWithTitle:@"嘉宾互动头像"];
+    item05.text =  DEMO_Setting.inva_avatar;
+    
+    VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item00,item01,item02,item03,item04,item05]];
     group.headerTitle = @"看直播/回放";
     [self.groups addObject:group];
 }
@@ -183,34 +186,28 @@
 
 -(void)setupGroup2
 {
-    item20 = [VHSettingTextFieldItem  itemWithTitle:@"用户ID"];
+    item20 = [VHSettingTextFieldItem  itemWithTitle:@"用户id"];
     
     if ([VHallApi isLoggedIn])
     {
-        item20.text =  DEMO_Setting.account;
+        item20.text =  [VHallApi currentUserID];
     }else
     {
         item20.text =  [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     }
     
     item21 = [VHSettingTextFieldItem  itemWithTitle:@"昵称"];
-    item21.text = DEMO_Setting.nickName;
+    item21.text = [VHallApi currentUserNickName];
     
     VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item20,item21]];
     group.headerTitle = @"其他";
     [self.groups addObject:group];
 }
+
 - (void)setupGroup3
 {
-    __weak typeof(self) weakSelf = self;
-    item30 = [VHSettingTextFieldItem  itemWithTitle:@"分辨率"];
-    item30.operation=^(NSIndexPath *indexPath)
-    {
-        [weakSelf.tempTextField endEditing:YES];
-    };
-
     VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item13]];
-    group.headerTitle = @"互动直播";
+    group.headerTitle = @"观众互动直播";
     [self.groups addObject:group];
 }
 
@@ -223,10 +220,12 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     VHSettingGroup *group =self.groups[section];
-    if(section == 1)
+    if(section == 1) {
         return group.items.count+2;
-    if(section == 3)
-        return group.items.count+1;
+    }
+    if(section == 3) {
+        return group.items.count;
+    }
     return group.items.count;
 }
 
@@ -234,8 +233,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VHSettingGroup *group=self.groups [indexPath.section];
-    if(indexPath.section == 1)
-    {
+    if(indexPath.section == 1) { //发直播
         if(indexPath.row == group.items.count) { //音频降噪
             static   NSString *Identifier = @"noiseSwitchCell";
             UITableViewCell *noiseSwitchcell = [tableView dequeueReusableCellWithIdentifier:Identifier];
@@ -263,52 +261,20 @@
             
             return beautifySwitchcell;
         }
-    }
-    else if(indexPath.section == 3 && indexPath.row == 0)
-    {
-        static   NSString *identifier1 = @"selectedResolutionCell";
-        UITableViewCell *resolutionCell = [tableView dequeueReusableCellWithIdentifier:identifier1];
-        if (resolutionCell == nil)
-            resolutionCell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier1];
-        resolutionCell.textLabel.text = @"  分辨率";
-        resolutionCell.textLabel.font = [UIFont systemFontOfSize:14];
-        
-        if(!_inavBtns)
-        {
-            _inavBtns = [NSMutableArray array];
-            NSArray *titles = @[@" 省流",@" 流畅",@" 清晰",@" 标清"];
-            float w = self.view.width - titles.count*60;
-            for (int i = 0; i<titles.count; i++) {
-                UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-                [button setTitle:titles[i] forState:UIControlStateNormal];
-                [button setImage:[UIImage imageNamed:@"resolution_normal"] forState:UIControlStateNormal];
-                [button setImage:[UIImage imageNamed:@"resolution_Selected"] forState:UIControlStateSelected];
-                [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                button.titleLabel.font = [UIFont systemFontOfSize:15];
-                button.frame = CGRectMake(w+i*60, 0, 60, 50);
-                [resolutionCell.contentView addSubview:button];
-                [_inavBtns addObject:button];
-                [button addTarget:self action:@selector(selectedResolution:) forControlEvents:UIControlEventTouchUpInside];
-                button.tag = i;
-            }
+    } else if(indexPath.section == 3 && indexPath.row == 0) { //互动直播-互动美颜
+        static   NSString *Identifier = @"beautifySwitchcell";
+        UITableViewCell *beautifySwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
+        if (beautifySwitchcell == nil) {
+            beautifySwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
         }
-        [self selectedResolution:_inavBtns[DEMO_Setting.pushResolution.intValue]];
-        return resolutionCell;
-    }
-    if(indexPath.section == 3 && indexPath.row == group.items.count)
-    {
-       static   NSString *Identifier = @"beautifySwitchcell";
-       UITableViewCell *beautifySwitchcell =[tableView dequeueReusableCellWithIdentifier:Identifier];
-       if (beautifySwitchcell == nil)
-           beautifySwitchcell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
         beautifySwitchcell.textLabel.text = @"  互动美颜";
         beautifySwitchcell.textLabel.font = [UIFont systemFontOfSize:14];
-       _inavBeautifySwitch.on = DEMO_Setting.inavBeautifyFilterEnable;
-       _inavBeautifySwitch.left = self.view.width - 60;
-       _inavBeautifySwitch.top = 7;
-       [beautifySwitchcell.contentView addSubview:_inavBeautifySwitch];
-       
-       return beautifySwitchcell;
+        _inavBeautifySwitch.on = DEMO_Setting.inavBeautifyFilterEnable;
+        _inavBeautifySwitch.left = self.view.width - 60;
+        _inavBeautifySwitch.top = 7;
+        [beautifySwitchcell.contentView addSubview:_inavBeautifySwitch];
+        
+        return beautifySwitchcell;
     }
  
     __weak typeof(self) weakSelf = self;
@@ -319,8 +285,7 @@
     
     cell.inputText= ^(NSString *text)
     {
-        if ([text isEqualToString:@""])
-        {
+        if ([text isEqualToString:@""]) {
             text = nil;
         }
         
@@ -388,13 +353,6 @@
     }
 }
 
-- (void)selectedResolution:(UIButton *)sender {
-    for (UIButton *button in _inavBtns) {
-        button.selected = NO;
-    }
-    sender.selected = YES;
-    DEMO_Setting.pushResolution = [NSString stringWithFormat:@"%ld",sender.tag];
-}
 
 - (void)showKeyboard:(NSNotification *)noti
 {
@@ -478,8 +436,50 @@
 
 -(void)value:(NSString*)text indexPath:(NSIndexPath*)indexpath
 {
-    if (indexpath.section == 1)
-    {
+    if (indexpath.section ==0)
+   {
+       switch (indexpath.row)
+       {
+           case 0: //活动ID
+           {
+               DEMO_Setting.watchActivityID = text;
+               item00.text=DEMO_Setting.watchActivityID;
+           }
+               break;
+           case 1: //密码或k值
+           {
+               DEMO_Setting.kValue = text;
+               item01.text =  DEMO_Setting.kValue;
+           }
+               break;
+           case 2: //缓冲时间
+           {
+               DEMO_Setting.bufferTimes = [text integerValue];
+               item02.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.bufferTimes];
+           }
+               break;
+           case 3: //超时时间
+           {
+               DEMO_Setting.timeOut = [text integerValue];
+               item03.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.timeOut];
+           }
+               break;
+           case 4: //嘉宾互动口令
+           {
+               DEMO_Setting.codeWord = text;
+               item04.text =  DEMO_Setting.codeWord;
+           }
+               break;
+           case 5: //嘉宾互动头像
+           {
+               DEMO_Setting.inva_avatar = text;
+               item05.text =  DEMO_Setting.inva_avatar;
+           }
+               break;
+           default:
+               break;
+       }
+   } else if (indexpath.section == 1) {
         switch (indexpath.row)
         {
             case 0:
@@ -487,7 +487,7 @@
                 if(text.length == 32 || text.length == 0)
                     DEMO_Setting.liveToken = text;
                 else
-                    [self showMsg:@"Token长度错误" afterDelay:1.5];
+                    VH_ShowToast(@"Token长度错误");
                 item10.text = DEMO_Setting.liveToken;
             }
                 break;
@@ -522,56 +522,6 @@
                  DEMO_Setting.live_nick_name = text;
                  item15.text = [NSString stringWithFormat:@"%@",DEMO_Setting.live_nick_name];
             }
-                break;
-            default:
-                break;
-        }
-    }else if (indexpath.section ==0)
-    {
-        switch (indexpath.row)
-        {
-            case 0:
-            {
-                DEMO_Setting.watchActivityID = text;
-                item00.text=DEMO_Setting.watchActivityID;
-            }
-                break;
-            case 1:
-            {
-                DEMO_Setting.kValue = text;
-                item01.text =  DEMO_Setting.kValue;
-            }
-                break;
-            case 2:
-            {
-                DEMO_Setting.codeWord = text;
-                item02.text =  DEMO_Setting.codeWord;
-            }
-                break;
-            case 3:
-            {
-                DEMO_Setting.bufferTimes = [text integerValue];
-                item03.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.bufferTimes];
-            }
-                break;
-            case 4:
-            {
-                DEMO_Setting.timeOut = [text integerValue];
-                item04.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.timeOut];
-            }
-                break;
-            default:
-                break;
-        }
-    }else if (indexpath.section == 2)
-    {
-        switch (indexpath.row)
-        {
-            case 0:
-                DEMO_Setting.account =text;
-                break;
-            case 1:
-                DEMO_Setting.nickName =text;
                 break;
             default:
                 break;

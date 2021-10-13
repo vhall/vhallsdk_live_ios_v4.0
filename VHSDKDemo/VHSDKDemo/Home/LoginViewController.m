@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "VHHomeViewController.h"
+#import "UIModel.h"
 
 //#import "WHDebugToolManager.h"
 
@@ -23,8 +24,8 @@
 //免注册登录
 @property (weak, nonatomic) IBOutlet UIView *thirdIdLoginView;
 @property (weak, nonatomic) IBOutlet UITextField *thirdIdTextField; //三方账号id
-@property (weak, nonatomic) IBOutlet UITextField *nameTextField; //昵称
-@property (weak, nonatomic) IBOutlet UITextField *avatarTextField; //头像
+@property (weak, nonatomic) IBOutlet UITextField *thirdNameTextField; //昵称
+@property (weak, nonatomic) IBOutlet UITextField *thirdAvatarTextField; //头像
 
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
 @property (weak, nonatomic) IBOutlet UIButton *accountLoginBtn;
@@ -47,9 +48,6 @@
     _accountTextField.text  = DEMO_Setting.account;
     _passwordTextField.text = DEMO_Setting.password;
     [self.contentView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapContentViewAction)]];
-    
-    //测试示例头像
-    self.avatarTextField.text = @"https://www.vhall.com/public/static/images/index/new/logo@2x.png";
 }
 
 - (void)tapContentViewAction {
@@ -63,7 +61,7 @@
 
     if([DEMO_AppKey isEqualToString:@"替换成您自己的AppKey"])//此处只用于提示信息判断，只替换CONSTS.h中的AppKey即可
     {
-        [self showMsg:@"请填写CONSTS.h中的AppKey" afterDelay:1.5];
+        VH_ShowToast(@"请填写CONSTS.h中的AppKey");
         return;
     }
     
@@ -77,22 +75,19 @@
 //注册账号登录
 - (void)accountLogin{
     if(_accountTextField.text.length <= 0 || _passwordTextField.text.length <= 0) {
-        [self showMsg:@"账号或密码不能为空" afterDelay:1.5];
+        VH_ShowToast(@"账号或密码不能为空");
         return;
     }
     
     DEMO_Setting.account  = _accountTextField.text;
     DEMO_Setting.password = _passwordTextField.text;
-    DEMO_Setting.nickName = @"";
     __weak typeof(self) weekself = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [VHallApi loginWithAccount:DEMO_Setting.account password:DEMO_Setting.password success:^{
         
-        DEMO_Setting.nickName = [VHallApi currentUserNickName];
         [MBProgressHUD hideHUDForView:weekself.view animated:YES];
         VHLog(@"Account: %@ userID:%@",[VHallApi currentAccount],[VHallApi currentUserID]);
-        [weekself showMsg:@"登录成功" afterDelay:1.5];
-        
+        VH_ShowToast(@"登录成功");
         VHHomeViewController *homeVC=[[VHHomeViewController alloc] init];
         homeVC.modalPresentationStyle = UIModalPresentationFullScreen;
         [weekself presentViewController:homeVC animated:YES completion:nil];
@@ -101,31 +96,29 @@
         VHLog(@"登录失败%@",error);
         dispatch_async(dispatch_get_main_queue(), ^{
              [MBProgressHUD hideHUDForView:weekself.view animated:YES];
-            [weekself showMsg:error.domain afterDelay:1.5];
+            VH_ShowToast(error.domain);
         });
     }];
 }
 
 //第三方id登录
 - (void)thirdIdLogin {
-    if(_thirdIdTextField.text.length <= 0)
-    {
-        [self showMsg:@"thirdid不能为空" afterDelay:1.5];
+    if(_thirdIdTextField.text.length <= 0) {
+        VH_ShowToast(@"三方ID不能为空");
         return;
     }
 
-    NSString *thirdId = self.thirdIdTextField.text;
-    NSString *name = self.nameTextField.text;
-    NSString *avatar = self.avatarTextField.text;
-    DEMO_Setting.nickName = @"";
+    DEMO_Setting.third_Id = self.thirdIdTextField.text;
+    DEMO_Setting.third_nickName = self.thirdNameTextField.text;
+    DEMO_Setting.third_avatar = self.thirdAvatarTextField.text;
+
     __weak typeof(self) weekself = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [VHallApi loaginWithThirdUserId:thirdId nickName:name avatar:avatar success:^{
+    [VHallApi loaginWithThirdUserId:DEMO_Setting.third_Id nickName:DEMO_Setting.third_nickName avatar:DEMO_Setting.third_avatar success:^{
 
-        DEMO_Setting.nickName = [VHallApi currentUserNickName];
         [MBProgressHUD hideHUDForView:weekself.view animated:YES];
         VHLog(@"Account: %@ userID:%@",[VHallApi currentAccount],[VHallApi currentUserID]);
-        [weekself showMsg:@"登录成功" afterDelay:1.5];
+        VH_ShowToast(@"登录成功");
         
         VHHomeViewController *homeVC=[[VHHomeViewController alloc] init];
         homeVC.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -135,7 +128,7 @@
         VHLog(@"登录失败%@",error);
         dispatch_async(dispatch_get_main_queue(), ^{
              [MBProgressHUD hideHUDForView:weekself.view animated:YES];
-            [weekself showMsg:error.domain afterDelay:1.5];
+            VH_ShowToast(error.domain);
         });
     }];
 }
@@ -159,6 +152,8 @@
     self.thirdIdLoginBtn.selected = NO;
     self.accountLoginView.hidden = NO;
     self.thirdIdLoginView.hidden = YES;
+    _accountTextField.text  = DEMO_Setting.account;
+    _passwordTextField.text = DEMO_Setting.password;
 }
 
 //第三方id登录
@@ -167,6 +162,9 @@
     self.thirdIdLoginBtn.selected = YES;
     self.accountLoginView.hidden = YES;
     self.thirdIdLoginView.hidden = NO;
+    _thirdIdTextField.text  = DEMO_Setting.third_Id;
+    _thirdNameTextField.text = DEMO_Setting.third_nickName;
+    _thirdAvatarTextField.text = DEMO_Setting.third_avatar;
 }
 
 

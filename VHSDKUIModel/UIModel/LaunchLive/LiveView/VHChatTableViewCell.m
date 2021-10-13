@@ -187,7 +187,7 @@ static MLEmojiLabel  *g_textLabel;
     {
         if(g_textLabel == nil)
         {
-            g_textLabel = [MLEmojiLabel new];
+            g_textLabel = [[MLEmojiLabel alloc] init];
             g_textLabel.numberOfLines = 0;
             g_textLabel.font = TEXT_Font;
             g_textLabel.lineBreakMode = NSLineBreakByCharWrapping;
@@ -213,7 +213,7 @@ static MLEmojiLabel  *g_textLabel;
     {
         if(g_textLabel == nil)
         {
-            g_textLabel = [MLEmojiLabel new];
+            g_textLabel = [[MLEmojiLabel alloc] init];
             g_textLabel.numberOfLines = 0;
             g_textLabel.font = TEXT_Font;
             g_textLabel.lineBreakMode = NSLineBreakByCharWrapping;
@@ -249,7 +249,7 @@ static MLEmojiLabel  *g_textLabel;
         [_headerBtn addTarget:self action:@selector(heardAction) forControlEvents:UIControlEventTouchUpInside];
         _headerBtn.layer.masksToBounds = YES;
         [self.contentView addSubview:_headerBtn];
-        _textLabel = [MLEmojiLabel new];
+        _textLabel = [[MLEmojiLabel alloc] init];
         _textLabel.numberOfLines = 0;
         _textLabel.font = TEXT_Font;
         _textLabel.backgroundColor = [UIColor clearColor];
@@ -427,7 +427,7 @@ static MLEmojiLabel  *g_textLabel;
         [_headerBtn addTarget:self action:@selector(heardAction) forControlEvents:UIControlEventTouchUpInside];
         _headerBtn.layer.masksToBounds = YES;
         [self.contentView addSubview:_headerBtn];
-        _textLabel = [MLEmojiLabel new];
+        _textLabel = [[MLEmojiLabel alloc] init];
         _textLabel.numberOfLines = 0;
         _textLabel.font = TEXT_Font;
         _textLabel.backgroundColor = [UIColor clearColor];
@@ -644,7 +644,7 @@ static MLEmojiLabel  *g_textLabel;
     {
         if(g_textLabel == nil)
         {
-            g_textLabel = [MLEmojiLabel new];
+            g_textLabel = [[MLEmojiLabel alloc] init];
             g_textLabel.numberOfLines = 0;
             g_textLabel.font = TEXT_Font;
             g_textLabel.lineBreakMode = NSLineBreakByCharWrapping;
@@ -686,7 +686,7 @@ static MLEmojiLabel  *g_textLabel;
         [_headerBtn addTarget:self action:@selector(heardAction) forControlEvents:UIControlEventTouchUpInside];
         _headerBtn.layer.masksToBounds = YES;
         [self.contentView addSubview:_headerBtn];
-        _textLabel = [MLEmojiLabel new];
+        _textLabel = [[MLEmojiLabel alloc] init];
         _textLabel.numberOfLines = 0;
         _textLabel.font = TEXT_Font;
         _textLabel.backgroundColor = [UIColor clearColor];
@@ -839,7 +839,7 @@ static MLEmojiLabel  *g_textLabel;
         [self.contentView addSubview:_headerBtn];
         
         
-        _textLabel = [MLEmojiLabel new];
+        _textLabel = [[MLEmojiLabel alloc] init];
         _textLabel.numberOfLines = 0;
         _textLabel.font = TEXT_Font;
         _textLabel.backgroundColor = [UIColor clearColor];

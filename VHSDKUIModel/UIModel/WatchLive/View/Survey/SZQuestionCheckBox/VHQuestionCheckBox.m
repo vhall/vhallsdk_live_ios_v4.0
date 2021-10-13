@@ -525,7 +525,7 @@
 {
     __weak typeof(self) weakSelf =self;
     [_survey sendMsg:dataArray success:^{
-         [weakSelf showMsg:@"提交成功" afterDelay:2];
+        VH_ShowToast(@"提交成功");
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
              [weakSelf closeVC];
         });
@@ -533,7 +533,7 @@
        
     } failed:^(NSDictionary *failedData) {
         NSString* code = [NSString stringWithFormat:@"%@", failedData[@"code"]];
-        [weakSelf showMsg:failedData[@"content"] afterDelay:2];
+        VH_ShowToast(failedData[@"content"]);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf closeVC];
         });

@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VHLocalRenderView.h"
-#import "VHRoomInfo.h"
-#import "VHRoomEnum.h"
 #import <VHLiveSDK/VHDocument.h>
 #import <VHLiveSDK/VHWebinarInfo.h>
+#import <VHInteractive/VHRoomInfo.h>
+#import <VHInteractive/VHLocalRenderView.h>
+#import <VHInteractive/VHRoomEnum.h>
+#import <VHInteractive/VHRoomBroadCastConfig.h>
 
 @protocol   VHRoomDelegate;
 @class      VHRenderView;
@@ -24,13 +25,10 @@
 
 /// 代理
 @property (nonatomic, weak) id <VHRoomDelegate> delegate;
-
-/// 设置旁路直播布局，默认VHCANVAS_LAYOUT_PATTERN_TILED_6_1T5D：主次平铺，一行5个位于底部 （主持人设置）
-@property (nonatomic, assign) VHBroadcastLayout broadcastLayout;
-
 /// 当前房间状态
 @property (nonatomic, assign, readonly) VHRoomStatus status;
-
+/// 旁路布局配置
+@property (nonatomic, strong) VHRoomBroadCastConfig *broadCastConfig;
 /// 当前是否在推流中
 @property (nonatomic, assign, readonly) BOOL isPublishing;
 
@@ -76,9 +74,10 @@
 #pragma mark ------------------v6.1新增--------------------
 /// 嘉宾加入互动房间 (嘉宾使用)
 /// @param params 参数
-/// params[@"id"]    = 房间id，同活动id
-/// params[@"nickname"]  = 昵称
-/// params[@"password"]  = 口令
+/// params[@"id"]    = 房间id，同活动id（必传）
+/// params[@"nickname"]  = 昵称（必传）
+/// params[@"password"]  = 口令（必传）
+/// params[@"avatar"]  = 头像url（可选）
 - (void)guestEnterRoomWithParams:(NSDictionary *)params success:(void(^)(VHRoomInfo *))success fail:(void(^)(NSError *))fail;
 
 /// 主持人进入互动房间，并发起互动直播，收到"房间连接成功回调"后可开始推流（主持人使用）

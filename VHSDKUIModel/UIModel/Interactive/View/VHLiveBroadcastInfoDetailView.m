@@ -39,6 +39,8 @@
         [self addSubview:self.chatView];
         [self addSubview:self.bottomToolView];
         [self addSubview:self.countDownLab];
+        //显示当前推流分辨率
+        [self addSubview:self.resolutionLab];
         [self setupUI];
     }
     
@@ -94,6 +96,13 @@
     [self.countDownLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self);
         make.size.mas_equalTo(CGSizeMake(120, 120));
+    }];
+    
+    [self.resolutionLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self);
+        make.right.equalTo(self).offset(-20);
+        make.top.equalTo(self).offset(VH_KStatusBarHeight);
+        make.height.equalTo(@20);
     }];
 }
 
@@ -315,6 +324,18 @@
     }
     return _brushView;
 }
+
+
+- (UILabel *)resolutionLab {
+    if(!_resolutionLab) {
+        _resolutionLab = [[UILabel alloc] init];
+        _resolutionLab.textColor = [UIColor whiteColor];
+        _resolutionLab.font = [UIFont systemFontOfSize:10];
+        _resolutionLab.textAlignment = NSTextAlignmentRight;
+    }
+    return _resolutionLab;
+}
+
 
 @end
 

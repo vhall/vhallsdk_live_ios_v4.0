@@ -113,7 +113,7 @@
 {
     if (!_txtLab)
     {
-        _txtLab = [MLEmojiLabel new];
+        _txtLab = [[MLEmojiLabel alloc] init];
         _txtLab.numberOfLines = 0;
         _txtLab.font = [UIFont systemFontOfSize:14];
         _txtLab.adjustsFontSizeToFitWidth = YES;

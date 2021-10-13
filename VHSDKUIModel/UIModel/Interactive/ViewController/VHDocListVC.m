@@ -12,7 +12,6 @@
 #import "VHRefreshHeader.h"
 #import "VHRefreshFooter.h"
 #import <VHInteractive/VHRoom.h>
-#import "VUITool.h"
 @interface VHDocListVC ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -45,12 +44,11 @@
     bar.titleTextAttributes = @{NSForegroundColorAttributeName:MakeColorRGB(0x333333),NSFontAttributeName:FONT_Medium(17)};
     
     //设置导航栏背景并去除底部黑线
-    [bar setBackgroundImage:[VUITool imageWithColor:[UIColor whiteColor] size:CGSizeMake(1, 1)] forBarMetrics:UIBarMetricsDefault];
-    [bar setShadowImage:[VUITool imageWithColor:MakeColorRGB(0xE2E2E2) size:CGSizeMake(SCREEN_WIDTH, 1/ScreenScale)]];
+    [bar setBackgroundImage:[UIModelTools imageWithColor:[UIColor whiteColor] size:CGSizeMake(1, 1)] forBarMetrics:UIBarMetricsDefault];
+    [bar setShadowImage:[UIModelTools imageWithColor:MakeColorRGB(0xE2E2E2) size:CGSizeMake(VHScreenWidth, 1/VHScreenScale)]];
     
     //设置UINavigationBar tintColor （UIBarButtonItem图片/文字颜色）
     [UINavigationBar appearance].tintColor = MakeColorRGB(0x222222);
-    [[QMUIConfiguration sharedInstance] setNavBarButtonFont:[UIFont systemFontOfSize:15]];
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:BundleUIImage(@"icon-backblack") style:UIBarButtonItemStyleDone target:self action:@selector(backItemClick)];
     self.navigationItem.leftBarButtonItem = backItem;

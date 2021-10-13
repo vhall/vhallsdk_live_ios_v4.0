@@ -45,11 +45,11 @@
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self);
         if(VH_KScreenIsLandscape) {
-            make.height.equalTo(@(SCREEN_HEIGHT));
-            make.width.equalTo(@(SCREEN_HEIGHT * 16/9.0));
+            make.height.equalTo(@(VHScreenHeight));
+            make.width.equalTo(@(VHScreenHeight * 16/9.0));
         }else {
-            make.height.equalTo(@(SCREEN_WIDTH /(16/9.0)));
-            make.width.equalTo(@(SCREEN_WIDTH));
+            make.height.equalTo(@(VHScreenWidth /(16/9.0)));
+            make.width.equalTo(@(VHScreenWidth));
         }
     }];
     
@@ -143,7 +143,7 @@
 //返回
 - (void)backBtnClick {
     [UIView animateWithDuration:0.3 animations:^{
-        self.transform = CGAffineTransformMakeTranslation(SCREEN_WIDTH, 0);
+        self.transform = CGAffineTransformMakeTranslation(VHScreenWidth, 0);
     } completion:^(BOOL finished) {
         if([self.delegate respondsToSelector:@selector(docContentViewDisMissComplete:)]) {
             [self.delegate docContentViewDisMissComplete:self];

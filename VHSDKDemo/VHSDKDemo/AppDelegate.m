@@ -29,6 +29,7 @@
     NSLog(@"%@",[VHRoom sdkVersionEX]);
     
     self.window = [[UIWindow alloc]initWithFrame:bounds];
+    
     LoginViewController * loginVC = [[LoginViewController alloc]init];
     self.window.rootViewController = loginVC;
     

@@ -25,6 +25,8 @@
 {
     BOOL _noShowDownMicTip; //是否不显示下麦提示
 }
+/** 互动SDK */
+@property (nonatomic, strong) VHRoom *inavRoom;
 
 /** 互动View */
 @property (nonatomic, strong) VHInteractContentView *interactView;
@@ -161,8 +163,10 @@
     //防止横屏转竖屏，返回会有视频画面延迟消失现象
     self.interactView.hidden = YES;
     self.smallVideo.hidden = YES;
-    //隐藏弹窗，防止出现alert弹窗没有关闭的情况
-    [QMUIModalPresentationViewController hideAllVisibleModalPresentationViewControllerIfCan];
+    //关闭弹窗，防止出现alert弹窗没有关闭的情况
+    if(self.presentedViewController) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -180,13 +184,12 @@
 }
 
 //更新主讲人视频小窗口显示
-- (void)updataSmallVideo {
-    if(!self.infoDetailView.openDocView) { //文档未显示时，不处理
-        return;
-    }
+- (void)updateSmallVideo {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //放在主线程，等待collectionView刷新以后，再添加小窗口视频，否则小窗口视频无法添加到文档详情页中，因为collectionView刷新不是立即刷新，先取到模型中的视频view添加，collectionView刷新时又添加同一个视频view,导致又被添加回去
-            //视频容器小窗口展示
+        if(!self.infoDetailView.openDocView) { //文档未显示时，不处理
+            return;
+        }
+        //放在主线程，等待collectionView刷新以后，再添加小窗口视频，否则小窗口视频无法添加到文档详情页中，因为collectionView刷新不是立即刷新，如果先取到模型中的视频view添加，collectionView刷新时又添加同一个视频view，会导致又被添加回去
             self.smallVideo = [self.interactView docPermissionVideoView];
             
             if(self.smallVideo) {
@@ -361,13 +364,11 @@
 
 ///打开成员列表
 - (void)liveDetailViewOpenMemberListView:(VHLiveBroadcastInfoDetailView *)detailView {
-    if(!self.userListView) {
-        BOOL isGuest = self.role == VHLiveRole_Guest; //是否为嘉宾
-        BOOL members_manage = self.roomInfo.membersManageAuthority; //是否有成员管理权限
-        VHLiveMemberAndLimitView *listView = [[VHLiveMemberAndLimitView alloc] initWithRoom:self.inavRoom liveType:VHLiveType_Interact isCuest:isGuest haveMembersManage:members_manage];
-        self.userListView = listView;
-    }
-    [self.userListView showInView:self.view];
+    BOOL isGuest = self.role == VHLiveRole_Guest; //是否为嘉宾
+    BOOL members_manage = self.roomInfo.membersManageAuthority; //是否有成员管理权限
+    VHLiveMemberAndLimitView *listView = [[VHLiveMemberAndLimitView alloc] initWithRoom:self.inavRoom liveType:VHLiveType_Interact isCuest:isGuest haveMembersManage:members_manage];
+    [listView showInView:self.view];
+    self.userListView = listView;
 }
 
 - (void)liveDetailViewDocumentListBtnClick:(VHLiveBroadcastInfoDetailView *)detailView {
@@ -392,7 +393,7 @@
         self.docContentView.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         //更新小窗口视频
-        [self updataSmallVideo];
+        [self updateSmallVideo];
     }];
 }
 
@@ -441,7 +442,7 @@
     model.haveDocPermission = [self.inavRoom.roomInfo.mainSpeakerId isEqualToString:model.account_id];
     [self.interactView addAttendWithUser:model];
     //更新视频小窗口显示
-    [self updataSmallVideo];
+    [self updateSmallVideo];
 }
 
 // 停止推流成功
@@ -476,7 +477,7 @@
     model.haveDocPermission = [self.inavRoom.roomInfo.mainSpeakerId isEqualToString:model.account_id];
     [self.interactView addAttendWithUser:model];
     //更新视频小窗口显示
-    [self updataSmallVideo];
+    [self updateSmallVideo];
     
     //如果自己上麦中收到插播流，则关闭自己麦克风，解决插播时文件与人声混音问题。
     if(attendView.streamType == VHInteractiveStreamTypeFile) { //插播
@@ -491,7 +492,7 @@
 - (void)room:(VHRoom *)room didRemovedAttendView:(VHRenderView *)attendView {
     [self.interactView removeAttendView:(VHLocalRenderView *)attendView];
     //更新视频小窗口显示
-    [self updataSmallVideo];
+    [self updateSmallVideo];
 }
 
 - (void)room:(VHRoom *)room receiveRoomMessage:(VHRoomMessage *)message {
@@ -556,28 +557,28 @@
                 self.infoDetailView.topToolView.voiceBtn.selected = YES;
             }
             [self.interactView targerId:targetId closeMicrophone:YES];
-            [self updataSmallVideo];
+            [self updateSmallVideo];
         }break;
         case VHRoomMessageType_vrtc_mute_cancel:{//取消静音消息
             if(targetIsMyself) {
                 self.infoDetailView.topToolView.voiceBtn.selected = NO;
             }
             [self.interactView targerId:targetId closeMicrophone:NO];
-            [self updataSmallVideo];
+            [self updateSmallVideo];
         }break;
         case VHRoomMessageType_vrtc_frames_forbid:{//关闭摄像头消息
             if(targetIsMyself) {
                 self.infoDetailView.topToolView.videoBtn.selected = YES;
             }
             [self.interactView targerId:targetId closeCamera:YES];
-            [self updataSmallVideo];
+            [self updateSmallVideo];
         }break;
         case VHRoomMessageType_vrtc_frames_display:{//开启摄像头消息
             if(targetIsMyself) {
                 self.infoDetailView.topToolView.videoBtn.selected = NO;
             }
             [self.interactView targerId:targetId closeCamera:NO];
-            [self updataSmallVideo];
+            [self updateSmallVideo];
         }break;
         case VHRoomMessageType_vrtc_big_screen_set:{//用户互动流画面被设置为旁路大画面
             
@@ -603,7 +604,7 @@
             //更新视频view 主讲人标识
             [self.interactView reloadAllData];
             //更新小窗口视频
-            [self updataSmallVideo];
+            [self updateSmallVideo];
         }break;
         case VHRoomMessageType_live_start:{//开始直播
             if(self.isGuest && self.interactView.dadaSource.count == 0) {
@@ -646,11 +647,18 @@
                 //隐藏视频、语音、美颜等按钮
                 [self.infoDetailView.topToolView hiddenCameraOpenBtn:YES microphoneBtn:YES beautyBtn:YES cameraSwitch:YES];
                 //更新小窗口视频
-                [self updataSmallVideo];
+                [self updateSmallVideo];
             }else {
                 NSString *name = targetName.length > VH_MaxNickNameCount ? [NSString stringWithFormat:@"%@...",[targetName substringToIndex:VH_MaxNickNameCount]] : targetName;
                 NSString *tipText = [NSString stringWithFormat:@"%@已下麦",name];
                 VH_ShowToast(tipText);
+                
+                if(self.role == VHLiveRole_Host) { //自己是主持人
+                    //如果离开的此流是用户且是主讲人，则收回主讲人，重新设置主讲人为自己
+                    if([self.inavRoom.roomInfo.mainSpeakerId isEqualToString:targetId]) {
+                        [self.inavRoom setMainSpeakerWithTargetUserId:room.roomInfo.selfUserId success:nil fail:nil];
+                    }
+                }
             }
             //更新成员列表与受限列表
             [self updateUserList];
@@ -758,8 +766,26 @@
 - (VHLocalRenderView *)localRenderView
 {
     if (!_localRenderView) {
-        VHFrameResolutionValue resolution = self.role == VHLiveRole_Host ? VHFrameResolution640x480 : VHFrameResolution480x360;
-        NSString *simulcastLayers = self.role == VHLiveRole_Host ? @"2" : @"1";//同时推流数
+
+        VHFrameResolutionValue resolution = VHFrameResolution480x360;
+        
+        if (self.role == VHLiveRole_Host) { //主持人
+            resolution = VHFrameResolution640x480;
+            self.infoDetailView.resolutionLab.text = @"推流分辨率：640x480";
+        }else{ //嘉宾
+            if (self.inav_num > 0 && self.inav_num <= 5) {
+                resolution = VHFrameResolution480x360;
+                self.infoDetailView.resolutionLab.text = @"推流分辨率：480x360";
+            } else if (self.inav_num > 5 && self.inav_num < 10) {
+                resolution = VHFrameResolution320x240;
+                self.infoDetailView.resolutionLab.text = @"推流分辨率：320x240";
+            }else{
+                resolution = VHFrameResolution240x160;
+                self.infoDetailView.resolutionLab.text = @"推流分辨率：240x160";
+            }
+        }
+        
+        NSString *simulcastLayers = self.role == VHLiveRole_Host ? @"2" : @"1";//同时推流数 (主持人可同时推大小两路流)
         NSDictionary *options = @{VHFrameResolutionTypeKey:@(resolution),VHStreamOptionStreamType:@(VHInteractiveStreamTypeAudioAndVideo),VHSimulcastLayersKey:simulcastLayers};
         _localRenderView = [[VHLocalRenderView alloc] initCameraViewWithFrame:CGRectZero options:options];
         _localRenderView.scalingMode = VHRenderViewScalingModeAspectFill;

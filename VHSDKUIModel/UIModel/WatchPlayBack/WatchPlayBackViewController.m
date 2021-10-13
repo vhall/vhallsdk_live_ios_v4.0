@@ -11,7 +11,7 @@
 #import "WatchLiveChatTableViewCell.h"
 #import "WatchLiveOnlineTableViewCell.h"
 #import <VHLiveSDK/VHallApi.h>
-#import "VHMessageToolView.h"
+#import "VHKeyboardToolView.h"
 #import "MJRefresh.h"
 #import "AnnouncementView.h"
 #import "DLNAView.h"
@@ -22,7 +22,7 @@
 #define RATEARR @[@1.0,@1.25,@1.5,@2.0,@0.5,@0.67,@0.8]//倍速播放循环顺序
 
 static AnnouncementView* announcementView = nil;
-@interface WatchPlayBackViewController ()<VHallMoviePlayerDelegate,UITableViewDelegate,UITableViewDataSource,VHPlayerViewDelegate,DLNAViewDelegate,VHMessageToolBarDelegate,VHallChatDelegate>
+@interface WatchPlayBackViewController ()<VHallMoviePlayerDelegate,UITableViewDelegate,UITableViewDataSource,VHPlayerViewDelegate,DLNAViewDelegate,VHKeyboardToolViewDelegate,VHallChatDelegate>
 {
     NSArray*_videoLevePicArray;
     NSArray* _definitionList;
@@ -53,7 +53,7 @@ static AnnouncementView* announcementView = nil;
 @property (nonatomic,assign) int  pageNum; //聊天记录页码
 @property (nonatomic,strong) NSMutableArray *chatArray;//聊天数据源
 @property (nonatomic , assign) BOOL isCast_screen; //投屏权限
-@property (nonatomic,strong) VHMessageToolView * messageToolView;  //输入view
+@property (nonatomic,strong) VHKeyboardToolView * messageToolView;  //输入view
 @end
 
 @implementation WatchPlayBackViewController
@@ -179,7 +179,8 @@ static AnnouncementView* announcementView = nil;
         mode = 0;
     }
     self.moviePlayer.movieScalingMode = mode;
-    [self showMsgInWindow:[NSString stringWithFormat:@"切换裁切模式%zd",mode] afterDelay:1];
+    NSString *string = [NSString stringWithFormat:@"切换裁切模式%zd",mode];
+    VH_ShowToast(string);
 }
 
 #pragma mark - 倍速播放
@@ -429,14 +430,14 @@ static AnnouncementView* announcementView = nil;
         case VHSaasLivePlayGetUrlError:
         {
             msg = info[@"content"];
-            [self showMsg:msg afterDelay:2];
+            VH_ShowToast(msg);
             NSLog( @"播放失败 %@ %@",info[@"code"],info[@"content"]);
         }
             break;
         case VHSaasVodPlayError:
         {
             msg = @"播放超时,请检查网络后重试";
-            [self showMsg:msg afterDelay:2];
+            VH_ShowToast(msg);
             NSLog( @"播放失败 %@ %@",info[@"code"],info[@"content"]);
         }
             break;
@@ -648,22 +649,22 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - 我来说两句
 - (IBAction)sendMsgBtnClick:(id)sender
 {
-    [self.messageToolView beginTextViewInView];
+    [self.messageToolView becomeFirstResponder];
 }
 
-#pragma mark - messageToolViewDelegate
-- (void)didSendText:(NSString *)text
-{
+#pragma mark - VHKeyboardToolViewDelegate
+/* 发送按钮事件回调*/
+- (void)keyboardToolView:(VHKeyboardToolView *)view sendText:(NSString *)text {
     if ([text isEqualToString:@""]) {
-        [self showMsgInWindow:@"发送的消息不能为空" afterDelay:2];
+        VH_ShowToast(@"发送的消息不能为空");
         return;
     }
     __weak typeof(self) weakSelf = self;
     [_chat sendMsg:text success:^{
-        [weakSelf.messageToolView endEditing:YES];
+        
     } failed:^(NSDictionary *failedData) {
-        NSString* code = [NSString stringWithFormat:@"%@ %@", failedData[@"code"],failedData[@"content"]];
-        [weakSelf showMsgInWindow:code afterDelay:2];
+        NSString* string = [NSString stringWithFormat:@"%@ %@", failedData[@"code"],failedData[@"content"]];
+        VH_ShowToast(string);
     }];
 }
 
@@ -688,7 +689,7 @@ static AnnouncementView* announcementView = nil;
         default:
             break;
     }
-    [self showMsg:message afterDelay:1];
+    VH_ShowToast(message);
 }
 
 #pragma mark  - tableView Delegate
@@ -758,12 +759,12 @@ static AnnouncementView* announcementView = nil;
 - (IBAction)dlnaClick:(id)sender {
 
     if (!self.isCast_screen) {
-        [self showMsg:@"无投屏权限，如需使用请咨询您的销售人员或拨打客服电话：400-888-9970" afterDelay:1];
+        VH_ShowToast(@"无投屏权限，如需使用请咨询您的销售人员或拨打客服电话：400-888-9970");
         return;
     }
     if(![self.dlnaView showInView:self.view moviePlayer:_moviePlayer])
     {
-        [self showMsg:@"投屏失败，投屏前请确保当前视频正在播放" afterDelay:1];
+        VH_ShowToast(@"投屏失败，投屏前请确保当前视频正在播放");
         return;
     }
 
@@ -777,7 +778,7 @@ static AnnouncementView* announcementView = nil;
 #pragma mark - DLNAViewDelegate
 - (void)dlnaControlState:(DLNAControlStateType)type errormsg:(NSString *)msg
 {
-    [self showMsg:msg afterDelay:1];
+    VH_ShowToast(msg);
 }
 
 
@@ -824,13 +825,12 @@ static AnnouncementView* announcementView = nil;
 }
 
 
-- (VHMessageToolView *)messageToolView
+- (VHKeyboardToolView *)messageToolView
 {
     if (!_messageToolView)
     {
-        _messageToolView = [[VHMessageToolView alloc] init];
+        _messageToolView = [[VHKeyboardToolView alloc] init];
         _messageToolView.delegate = self;
-        _messageToolView.maxLength = 140;
         [self.view addSubview:_messageToolView];
     }
     return _messageToolView;

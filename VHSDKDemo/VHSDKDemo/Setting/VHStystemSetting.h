@@ -19,9 +19,9 @@
 
 //观看设置
 @property(nonatomic, assign)NSInteger bufferTimes;      //RTMP观看缓冲时间
-@property(nonatomic, strong)NSString* nickName;     //用户昵称         为空默认随机字符串做昵称
 @property(nonatomic, strong)NSString* email;        //标示该游客用户唯一id 可填写用户邮箱  为空默认使用设备UUID做为唯一ID
-@property(nonatomic, strong)NSString* codeWord;     //口令
+@property(nonatomic, strong)NSString* codeWord;     //嘉宾互动口令
+@property(nonatomic, strong)NSString* inva_avatar;     //嘉宾互动头像
 @property(nonatomic, strong)NSString* kValue;     //K值或直播间密码，可以为空
 @property(nonatomic, assign)NSInteger timeOut;      //超时时间 默认10s
 
@@ -37,18 +37,14 @@
 @property (nonatomic, copy) NSString *live_nick_name;     ///<发直播昵称
 
 
-//互动设置
-/*
-   0 VHFrameResolution192x144
-   1 VHFrameResolution320x240
-   2 VHFrameResolution480x360
-   3 VHFrameResolution640x480
- */
-@property(nonatomic, copy)NSString   *pushResolution;  //互动分辨率
 @property(nonatomic, assign)BOOL      inavBeautifyFilterEnable;//互动美颜开关
 
-//聊天问答等功能需登录
+
 @property(nonatomic, strong)NSString* account;      //账号
 @property(nonatomic, strong)NSString* password;     //密码
 
+
+@property(nonatomic, strong)NSString *third_Id;      //三方登录账号
+@property(nonatomic, strong)NSString *third_nickName;  //三方登录密码
+@property(nonatomic, strong)NSString *third_avatar;  //三方登录头像
 @end

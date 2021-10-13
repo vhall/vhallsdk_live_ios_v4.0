@@ -40,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) NSUInteger pv_real; ///<真实热度
 @property (nonatomic, assign, readonly) NSUInteger pv_virtual; ///<虚拟热度
 @property (nonatomic, assign, readonly) BOOL pv_show; ///<是否显示热度
+@property (nonatomic, assign, readonly) NSInteger inav_num;     ///<当前活动设置的支持大连麦人数， 如：6表示1v5，16表示1v15...
 @property (nonatomic, strong ,readonly) VHWebinarScrollTextInfo *scrollTextInfo; ///<跑马灯信息
 
 @end
@@ -63,6 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //活动基础信息
 @interface VHWebinarBaseInfo : NSObject
+@property (nonatomic, strong) id data;
 @property (nonatomic, copy) NSString *ID;           ///<活动id
 @property (nonatomic, copy) NSString *user_id;       ///<用户id
 @property (nonatomic, copy) NSString *subject;       ///<标题
@@ -75,7 +77,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) VHWebinarLiveType webinar_type;       ///<1 音频 2 视频 3 互动
 @property (nonatomic, assign) VHMovieActiveState type;       ///<1为直播,2为预约,3为结束,4回放
 @property (nonatomic,assign) NSInteger webinar_show_type; ///横竖屏 0竖屏 1横屏
-@property (nonatomic, strong) id data;
+@property (nonatomic, assign) NSInteger no_delay_webinar;     ///<是否无延迟直播 1:是 0:否
+@property (nonatomic, assign) NSInteger inav_num;     ///<当前活动设置的最大连麦人数， 如：6表示1v5，16表示1v15...
 
 
 /// 查询活动基础信息
