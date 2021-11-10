@@ -140,24 +140,15 @@
         return;
     }
     VUI_Log(@"互动房间出错：%@",error);
-    if(error.code == 30009) {
-        
-    }else if(error.code == 284003){ //socket.io fail（一般就是网络错误）
-        if(self.isGuest) {
-            [self.liveStateView setLiveState:VHLiveState_NetError btnTitle:@"重新连接"];
-        }else {
-            [self.liveStateView setLiveState:VHLiveState_NetError btnTitle:@"重新推流"];
-        }
-        //暂时不做重连处理，直接退出
+    if(error.code == 284003){ //socket.io fail（网络错误）
         VH_ShowToast(@"当前网络异常");
-        [self leaveInteracRoom]; //离开房间，并停止推流
-        [self popViewController];
     }else {
         VH_ShowToast(error.domain);
-        [self leaveInteracRoom]; //离开房间，并停止推流
-        [self popViewController];
     }
+    [self leaveInteracRoom]; //离开房间，并停止推流
+    [self popViewController];
 }
+
 
 - (void)popViewController {
     //防止横屏转竖屏，返回会有视频画面延迟消失现象
@@ -371,6 +362,7 @@
     self.userListView = listView;
 }
 
+//打开文档列表
 - (void)liveDetailViewDocumentListBtnClick:(VHLiveBroadcastInfoDetailView *)detailView {
     VHDocListVC *docListVC = [[VHDocListVC alloc] init];
     docListVC.room = self.inavRoom;
@@ -465,9 +457,6 @@
 //房间状态变化
 - (void)room:(VHRoom *)room didChangeStatus:(VHRoomStatus)status {
     VUI_Log(@"房间状态变化：%zd",status);
-    if(status == VHRoomStatusDisconnected || status == VHRoomStatusError) {
-        [self interactiveRoomError:nil];
-    }
 }
 
 // 视频流添加回调（收到此回调后需要添加视频view，可能是连麦用户，也可能是共享屏幕/插播）
@@ -791,13 +780,6 @@
         _localRenderView.scalingMode = VHRenderViewScalingModeAspectFill;
         _localRenderView.beautifyEnable = YES;
         [_localRenderView setDeviceOrientation:self.screenLandscape ? UIDeviceOrientationLandscapeLeft : UIDeviceOrientationPortrait];
-        
-        //设置流用户信息
-        NSDictionary *attributes = @{
-            @"nickName":self.params[@"nickname"],
-            @"role":@(self.role),
-            @"avatar":self.params[@"avatar"]};
-        [_localRenderView setAttributes:attributes.mj_JSONString];
     }
     return _localRenderView;
 }

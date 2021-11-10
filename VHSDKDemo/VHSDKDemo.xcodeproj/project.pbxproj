@@ -79,6 +79,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		03577B252730E999003296E6 /* VHHalfWatchLiveVC_Normal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHHalfWatchLiveVC_Normal.h; sourceTree = "<group>"; };
+		03577B262730E999003296E6 /* VHPortraitWatchLiveVC_Normal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveVC_Normal.h; sourceTree = "<group>"; };
+		03577B272730E999003296E6 /* VHHalfWatchLiveVC_Nodelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHHalfWatchLiveVC_Nodelay.h; sourceTree = "<group>"; };
+		03577B2C27310D9A003296E6 /* VHPortraitWatchLiveVC_Nodelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveVC_Nodelay.h; sourceTree = "<group>"; };
+		035AD5E027202AA1002515B7 /* PubLishLiveVC_Normal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PubLishLiveVC_Normal.h; sourceTree = "<group>"; };
+		035AD5E127202AA1002515B7 /* PubLishLiveVC_Nodelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PubLishLiveVC_Nodelay.h; sourceTree = "<group>"; };
 		2F6B05B61E94FF800010E0C7 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		2FA3F1A71F564C9900E2E436 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
 		C000AA3E1E66E053005DFB7C /* VHSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VHSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -164,7 +170,6 @@
 		F32B66B6262977510067BD0C /* WatchPlayBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchPlayBackViewController.h; sourceTree = "<group>"; };
 		F32B66B7262977510067BD0C /* UIModelTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIModelTools.h; sourceTree = "<group>"; };
 		F32B66B8262977510067BD0C /* VHInteractLiveVC_New.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHInteractLiveVC_New.h; sourceTree = "<group>"; };
-		F32B66B9262977510067BD0C /* WatchLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchLiveViewController.h; sourceTree = "<group>"; };
 		F32B66BA262977510067BD0C /* VHLiveBroadcastBaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHLiveBroadcastBaseVC.h; sourceTree = "<group>"; };
 		F32B66BB262977510067BD0C /* VHLiveBaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHLiveBaseVC.h; sourceTree = "<group>"; };
 		F32B66BD262977510067BD0C /* libSDWebImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSDWebImage.a; sourceTree = "<group>"; };
@@ -177,9 +182,7 @@
 		F32B66C7262977510067BD0C /* libMLEmojiLabel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMLEmojiLabel.a; sourceTree = "<group>"; };
 		F32B66C8262977510067BD0C /* libMJRefresh.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMJRefresh.a; sourceTree = "<group>"; };
 		F32B66CA262977510067BD0C /* libUIModel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUIModel.a; sourceTree = "<group>"; };
-		F32B66CB262977510067BD0C /* VHPortraitWatchLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveViewController.h; sourceTree = "<group>"; };
 		F32B66CC262977510067BD0C /* VHBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHBaseViewController.h; sourceTree = "<group>"; };
-		F32B66CD262977510067BD0C /* LaunchLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchLiveViewController.h; sourceTree = "<group>"; };
 		F32B66CE262977510067BD0C /* UIModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIModel.h; sourceTree = "<group>"; };
 		F32B66CF262977510067BD0C /* UIView+ITTAdditionsUIModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ITTAdditionsUIModel.h"; sourceTree = "<group>"; };
 		F32B66D0262977510067BD0C /* UIModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UIModel.bundle; sourceTree = "<group>"; };
@@ -411,22 +414,25 @@
 		F32B66B4262977510067BD0C /* UIModel */ = {
 			isa = PBXGroup;
 			children = (
-				F3A360E3263AC7CE00306870 /* VHNavigationController.h */,
-				F32B66B5262977510067BD0C /* VHWebWatchLiveViewController.h */,
-				F32B66B6262977510067BD0C /* WatchPlayBackViewController.h */,
-				F32B66B7262977510067BD0C /* UIModelTools.h */,
-				F32B66B8262977510067BD0C /* VHInteractLiveVC_New.h */,
-				F32B66B9262977510067BD0C /* WatchLiveViewController.h */,
-				F32B66BA262977510067BD0C /* VHLiveBroadcastBaseVC.h */,
-				F32B66BB262977510067BD0C /* VHLiveBaseVC.h */,
 				F32B66BC262977510067BD0C /* libs_third */,
 				F32B66CA262977510067BD0C /* libUIModel.a */,
-				F32B66CB262977510067BD0C /* VHPortraitWatchLiveViewController.h */,
-				F32B66CC262977510067BD0C /* VHBaseViewController.h */,
-				F32B66CD262977510067BD0C /* LaunchLiveViewController.h */,
-				F32B66CE262977510067BD0C /* UIModel.h */,
-				F32B66CF262977510067BD0C /* UIView+ITTAdditionsUIModel.h */,
+				035AD5E127202AA1002515B7 /* PubLishLiveVC_Nodelay.h */,
+				035AD5E027202AA1002515B7 /* PubLishLiveVC_Normal.h */,
 				F32B66D0262977510067BD0C /* UIModel.bundle */,
+				F32B66CE262977510067BD0C /* UIModel.h */,
+				F32B66B7262977510067BD0C /* UIModelTools.h */,
+				F32B66CF262977510067BD0C /* UIView+ITTAdditionsUIModel.h */,
+				F32B66CC262977510067BD0C /* VHBaseViewController.h */,
+				03577B272730E999003296E6 /* VHHalfWatchLiveVC_Nodelay.h */,
+				03577B252730E999003296E6 /* VHHalfWatchLiveVC_Normal.h */,
+				F32B66B8262977510067BD0C /* VHInteractLiveVC_New.h */,
+				F32B66BB262977510067BD0C /* VHLiveBaseVC.h */,
+				F32B66BA262977510067BD0C /* VHLiveBroadcastBaseVC.h */,
+				F3A360E3263AC7CE00306870 /* VHNavigationController.h */,
+				03577B2C27310D9A003296E6 /* VHPortraitWatchLiveVC_Nodelay.h */,
+				03577B262730E999003296E6 /* VHPortraitWatchLiveVC_Normal.h */,
+				F32B66B5262977510067BD0C /* VHWebWatchLiveViewController.h */,
+				F32B66B6262977510067BD0C /* WatchPlayBackViewController.h */,
 			);
 			name = UIModel;
 			path = ../../UIModel;
@@ -735,11 +741,12 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 6.2.0;
+				MARKETING_VERSION = 6.2.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -770,11 +777,12 @@
 					"$(PROJECT_DIR)/../UIModel/libs_third",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 6.2.0;
+				MARKETING_VERSION = 6.2.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vhall.VHallSDKDemo.en;
 				PRODUCT_NAME = VHSDKDemo;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};

@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VHWebinarBaseInfo : NSObject
 @property (nonatomic, strong) id data;
 @property (nonatomic, copy) NSString *ID;           ///<活动id
-@property (nonatomic, copy) NSString *user_id;       ///<用户id
+@property (nonatomic, copy) NSString *user_id;       ///<活动创建者用户id
 @property (nonatomic, copy) NSString *subject;       ///<标题
 @property (nonatomic, copy) NSString *introduction;       ///<简介
 @property (nonatomic, copy) NSString *img_url;       ///<封面图片
@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *start_time;           ///<直播开始时间
 @property (nonatomic, copy) NSString *actual_start_time;       ///<实际开始时间
 @property (nonatomic, copy) NSString *end_time;             ///<直播结束时间
-@property (nonatomic, assign) VHWebinarLiveType webinar_type;       ///<1 音频 2 视频 3 互动
+@property (nonatomic, assign) VHWebinarLiveType webinar_type;    ///<1 音频直播 2 视频直播 3 互动直播
 @property (nonatomic, assign) VHMovieActiveState type;       ///<1为直播,2为预约,3为结束,4回放
 @property (nonatomic,assign) NSInteger webinar_show_type; ///横竖屏 0竖屏 1横屏
 @property (nonatomic, assign) NSInteger no_delay_webinar;     ///<是否无延迟直播 1:是 0:否

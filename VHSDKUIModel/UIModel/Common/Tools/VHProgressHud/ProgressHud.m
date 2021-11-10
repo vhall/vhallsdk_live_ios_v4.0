@@ -18,6 +18,11 @@
 
 @implementation VHHudCustomView
 
++ (void)load {
+    //设置HUD菊花颜色
+    [UIActivityIndicatorView appearanceWhenContainedInInstancesOfClasses:@[[MBProgressHUD class]]].color = [UIColor whiteColor];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

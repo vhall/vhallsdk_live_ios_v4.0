@@ -16,8 +16,7 @@
 
 #pragma mark - Public Method
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         _interfaceOrientation = UIInterfaceOrientationPortrait;
@@ -30,7 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.view.backgroundColor = [UIColor blackColor];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,24 +42,34 @@
     [super awakeFromNib];
 }
 
-- (void)dealloc
-{
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+
+- (void)dealloc {
     
 }
 
--(BOOL)shouldAutorotate
-{
+-(BOOL)shouldAutorotate {
     return NO;
 }
 
--(UIInterfaceOrientationMask)supportedInterfaceOrientations
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    if (_interfaceOrientation == UIInterfaceOrientationPortrait) {
+    if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
         return UIInterfaceOrientationMaskPortrait;
-    }else{
+    }else if (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        return UIInterfaceOrientationMaskLandscapeRight;
+    }else if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft){
+        return UIInterfaceOrientationMaskLandscapeLeft;
+    }else {
         return UIInterfaceOrientationMaskLandscape;
     }
 }
+
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {

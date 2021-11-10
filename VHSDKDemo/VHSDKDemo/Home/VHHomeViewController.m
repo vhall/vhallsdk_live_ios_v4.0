@@ -11,9 +11,12 @@
 #import "LoginViewController.h"
 #import <VHLiveSDK/VHallApi.h>
 
-#import "LaunchLiveViewController.h"
-#import "WatchLiveViewController.h"
-#import "VHPortraitWatchLiveViewController.h"
+#import "PubLishLiveVC_Normal.h"
+#import "PubLishLiveVC_Nodelay.h"
+#import "VHHalfWatchLiveVC_Normal.h"
+#import "VHHalfWatchLiveVC_Nodelay.h"
+#import "VHPortraitWatchLiveVC_Normal.h"
+#import "VHPortraitWatchLiveVC_Nodelay.h"
 #import "WatchPlayBackViewController.h"
 
 #import "VHStystemSetting.h"
@@ -77,46 +80,71 @@
     _activityIdLabel.text       = [@"发起ID:" stringByAppendingString:DEMO_Setting.activityID];//发起活动id
     _watchActivityIdLabel.text  = [@"观看ID:" stringByAppendingString:DEMO_Setting.watchActivityID];//观看id
     
-    
     [_headImage sd_setImageWithURL:[NSURL URLWithString:[VHallApi currentUserHeadUrl]] placeholderImage:[UIImage imageNamed:@"defaultHead"]];
 }
 
 #pragma mark - 发直播
-- (void)startLive:(UIInterfaceOrientation)orientation
+//发起常规直播
+- (void)publishNormalLive:(UIInterfaceOrientation)orientation
 {
-    if (DEMO_Setting.activityID.length<=0) {
+    if (DEMO_Setting.activityID.length <= 0) {
         VH_ShowToast(@"请在设置中输入发直播活动ID");
         return;
     }
-    if (DEMO_Setting.liveToken == nil||DEMO_Setting.liveToken<=0) {
-        VH_ShowToast(@"请在设置中输入token");
-        return;
-    }
-    if (DEMO_Setting.videoBitRate<=0 || DEMO_Setting.audioBitRate<=0) {
-        VH_ShowToast(@"码率不能为负数");
-        return;
-    }
-    if (DEMO_Setting.videoCaptureFPS< 1 || DEMO_Setting.videoCaptureFPS>30) {
-        VH_ShowToast(@"帧率设置错误[1-30]");
+    
+    [VHWebinarBaseInfo getWebinarBaseInfoWithWebinarId:DEMO_Setting.activityID success:^(VHWebinarBaseInfo * _Nonnull baseInfo) {
+        if(baseInfo.no_delay_webinar == 1) { //无延迟
+            VH_ShowToast(@"当前直播类型为无延迟直播");
+            return;
+        }
+        
+        PubLishLiveVC_Normal * liveVC = [[PubLishLiveVC_Normal alloc] init];
+        liveVC.videoResolution  = [DEMO_Setting.videoResolution intValue];
+        liveVC.roomId           = DEMO_Setting.activityID;
+        liveVC.token            = DEMO_Setting.liveToken;
+        liveVC.videoBitRate     = DEMO_Setting.videoBitRate;
+        liveVC.audioBitRate     = DEMO_Setting.audioBitRate;
+        liveVC.videoCaptureFPS  = DEMO_Setting.videoCaptureFPS;
+        liveVC.interfaceOrientation = orientation;
+        liveVC.isOpenNoiseSuppresion = DEMO_Setting.isOpenNoiseSuppresion;
+        liveVC.beautifyFilterEnable  = DEMO_Setting.beautifyFilterEnable;
+        liveVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:liveVC animated:YES completion:nil];
+    } fail:^(NSError * _Nonnull error) {
+        VH_ShowToast(error.localizedDescription);
+    }];
+}
+
+//发起无延迟直播
+- (void)publishNodelayLive:(UIInterfaceOrientation)orientation {
+    if (DEMO_Setting.activityID.length <= 0) {
+        VH_ShowToast(@"请在设置中输入发直播活动ID");
         return;
     }
     
-    LaunchLiveViewController * rtmpLivedemoVC = [[LaunchLiveViewController alloc] init];
-    rtmpLivedemoVC.videoResolution  = [DEMO_Setting.videoResolution intValue];
-    rtmpLivedemoVC.roomId           = DEMO_Setting.activityID;
-    rtmpLivedemoVC.token            = DEMO_Setting.liveToken;
-    rtmpLivedemoVC.videoBitRate     = DEMO_Setting.videoBitRate;
-    rtmpLivedemoVC.audioBitRate     = DEMO_Setting.audioBitRate;
-    rtmpLivedemoVC.videoCaptureFPS  = DEMO_Setting.videoCaptureFPS;
-    rtmpLivedemoVC.interfaceOrientation = orientation;
-    rtmpLivedemoVC.isOpenNoiseSuppresion = DEMO_Setting.isOpenNoiseSuppresion;
-    rtmpLivedemoVC.beautifyFilterEnable  = DEMO_Setting.beautifyFilterEnable;
-    rtmpLivedemoVC.nick_name = DEMO_Setting.live_nick_name;
-    rtmpLivedemoVC.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:rtmpLivedemoVC animated:YES completion:nil];
+    [VHWebinarBaseInfo getWebinarBaseInfoWithWebinarId:DEMO_Setting.activityID success:^(VHWebinarBaseInfo * _Nonnull baseInfo) {
+        if(baseInfo.no_delay_webinar == 0) { //非无延迟
+            VH_ShowToast(@"当前直播类型为常规直播");
+            return;
+        }
+        PubLishLiveVC_Nodelay * liveVC = [[PubLishLiveVC_Nodelay alloc] init];
+        liveVC.roomId           = DEMO_Setting.activityID;
+        liveVC.nick_name = DEMO_Setting.live_nick_name;
+        liveVC.interfaceOrientation = orientation;
+        if(baseInfo.webinar_type == 1) { //音频直播
+            liveVC.streamType = VHInteractiveStreamTypeOnlyAudio;
+        }else if(baseInfo.webinar_type == 2){ //视频直播
+            liveVC.streamType = VHInteractiveStreamTypeAudioAndVideo;
+        }
+        liveVC.beautifyFilterEnable  = YES;
+        liveVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:liveVC animated:YES completion:nil];
+    } fail:^(NSError * _Nonnull error) {
+        VH_ShowToast(error.localizedDescription);
+    }];
 }
 
-#pragma mark - 进入互动直播
+#pragma mark - 互动直播
 - (void)enterInteractLiveRoomWithIsHost:(BOOL)isHost {
     if (isHost && DEMO_Setting.activityID.length<=0) {
         VH_ShowToast(@"请在设置中输入发直播活动ID");
@@ -133,8 +161,11 @@
 
     NSString *webinarId = isHost ? DEMO_Setting.activityID : DEMO_Setting.watchActivityID;
     [VHWebinarBaseInfo getWebinarBaseInfoWithWebinarId:webinarId success:^(VHWebinarBaseInfo * _Nonnull baseInfo) {
+        if(baseInfo.webinar_type != 3) {
+            VH_ShowToast(@"只支持互动直播");
+            return;
+        }
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    
         if(isHost) { //主持人
             params[@"id"] = DEMO_Setting.activityID;
             params[@"nickname"] = self.nickName.text;
@@ -155,6 +186,81 @@
     }];
 }
 
+#pragma mark - 看直播
+//半屏观看
+- (void)halfScreenWatchLive {
+    VHHalfWatchLiveVC_Normal * watchVC  = [[VHHalfWatchLiveVC_Normal alloc]init];
+    watchVC.roomId      = DEMO_Setting.watchActivityID;
+    watchVC.kValue      = DEMO_Setting.kValue;
+    watchVC.bufferTimes = DEMO_Setting.bufferTimes;
+    watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
+    watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:watchVC animated:YES completion:nil];
+}
+
+//全屏观看
+- (void)portraitWatchLive {
+    VHPortraitWatchLiveVC_Normal * watchVC = [[VHPortraitWatchLiveVC_Normal alloc]init];
+    watchVC.roomId      = DEMO_Setting.watchActivityID;
+    watchVC.kValue      = DEMO_Setting.kValue;
+    watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
+    watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:watchVC animated:YES completion:nil];
+}
+
+//无延迟观看
+- (void)nodelayWatchLive:(BOOL)isHalf {
+    NSString *webinarId = DEMO_Setting.watchActivityID;
+    [VHWebinarBaseInfo getWebinarBaseInfoWithWebinarId:webinarId success:^(VHWebinarBaseInfo * _Nonnull baseInfo) {
+        if(baseInfo.no_delay_webinar == 0 && baseInfo.webinar_type == 3) { //常规互动直播
+            //如果为常规互动直播，观众需要上麦（申请上麦被同意或被邀请上麦）后再进入互动房间，否则没有上麦直接进入非无延迟互动直播间，会占用房间用户名额，可能会导致其他嘉宾进房间失败>
+            VH_ShowToast(@"观众没有上麦不建议直接进入常规互动房间");
+            return;
+        }
+        if(isHalf) { //半屏
+            VHHalfWatchLiveVC_Nodelay *watchVC  = [[VHHalfWatchLiveVC_Nodelay alloc]init];
+            watchVC.roomId      = webinarId;
+            watchVC.kValue      = DEMO_Setting.kValue;
+            watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
+            watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:watchVC animated:YES completion:nil];
+        }else { //全屏
+            VHPortraitWatchLiveVC_Nodelay * watchVC = [[VHPortraitWatchLiveVC_Nodelay alloc]init];
+            watchVC.roomId      = DEMO_Setting.watchActivityID;
+            watchVC.kValue      = DEMO_Setting.kValue;
+            watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
+            watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:watchVC animated:YES completion:nil];
+        }
+    } fail:^(NSError * _Nonnull error) {
+        VH_ShowToast(error.localizedDescription);
+    }];
+}
+
+//网页观看
+- (void)webViewWatchLive {
+    VHWebWatchLiveViewController *watchVC = [[VHWebWatchLiveViewController alloc] init];
+    watchVC.roomId = DEMO_Setting.watchActivityID;
+    watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:watchVC animated:YES completion:nil];
+}
+
+#pragma mark - 看回放
+//看回放
+- (void)watchPlayBack {
+    if (DEMO_Setting.watchActivityID.length<=0) {
+        VH_ShowToast(@"请在设置中输入活动ID");
+        return;
+    }
+    WatchPlayBackViewController * watchVC  =[[WatchPlayBackViewController alloc]init];
+    watchVC.roomId = DEMO_Setting.watchActivityID;
+    watchVC.kValue = DEMO_Setting.kValue;
+    watchVC.timeOut = DEMO_Setting.timeOut*1000;
+    watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:watchVC animated:YES completion:nil];
+}
+
+
 #pragma mark - UI事件
 //横屏直播/竖屏直播/观看直播/观看回放
 - (IBAction)btnClick:(UIButton*)sender
@@ -166,15 +272,23 @@
         case 0://发起直播
         {
             UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-            UIAlertAction *landscapeLive = [UIAlertAction actionWithTitle:@"竖屏直播" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self startLive:UIInterfaceOrientationPortrait];
+            UIAlertAction *portraitLive_normal = [UIAlertAction actionWithTitle:@"竖屏直播" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self publishNormalLive:UIInterfaceOrientationPortrait];
             }];
-            UIAlertAction *portraitLive = [UIAlertAction actionWithTitle:@"横屏直播" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self startLive:UIInterfaceOrientationLandscapeRight];//设备左转，摄像头在左边
+            UIAlertAction *landscapeLive_normal = [UIAlertAction actionWithTitle:@"横屏直播" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self publishNormalLive:UIInterfaceOrientationLandscapeRight];
+            }];
+            UIAlertAction *portraitLive_nodelay = [UIAlertAction actionWithTitle:@"竖屏无延迟直播" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self publishNodelayLive:UIInterfaceOrientationPortrait];
+            }];
+            UIAlertAction *landscapeLive_nodelay = [UIAlertAction actionWithTitle:@"横屏无延迟直播" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self publishNodelayLive:UIInterfaceOrientationLandscapeRight];
             }];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-            [alertController addAction:landscapeLive];
-            [alertController addAction:portraitLive];
+            [alertController addAction:portraitLive_normal];
+            [alertController addAction:landscapeLive_normal];
+            [alertController addAction:portraitLive_nodelay];
+            [alertController addAction:landscapeLive_nodelay];
             [alertController addAction:cancelAction];
             [self presentViewController:alertController animated:YES completion:nil];
         }
@@ -203,53 +317,40 @@
             }
             
             UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-            UIAlertAction *landscapeWatch = [UIAlertAction actionWithTitle:@"半屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                WatchLiveViewController * watchVC  = [[WatchLiveViewController alloc]init];
-                watchVC.roomId      = DEMO_Setting.watchActivityID;
-                watchVC.kValue      = DEMO_Setting.kValue;
-                watchVC.bufferTimes = DEMO_Setting.bufferTimes;
-                watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
-                watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
-                [self presentViewController:watchVC animated:YES completion:nil];
+            
+            UIAlertAction *halfScreenWatch = [UIAlertAction actionWithTitle:@"半屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self halfScreenWatchLive];
             }];
             
             UIAlertAction *portraitWatch = [UIAlertAction actionWithTitle:@"全屏观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                VHPortraitWatchLiveViewController * watchVC = [[VHPortraitWatchLiveViewController alloc]init];
-                watchVC.roomId      = DEMO_Setting.watchActivityID;
-                watchVC.kValue      = DEMO_Setting.kValue;
-                watchVC.interactBeautifyEnable = DEMO_Setting.inavBeautifyFilterEnable;
-                watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
-                [self presentViewController:watchVC animated:YES completion:nil];
+                [self portraitWatchLive];
+            }];
+            
+            UIAlertAction *halfScreen_NodelayWatch = [UIAlertAction actionWithTitle:@"半屏无延迟观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self nodelayWatchLive:YES];
+            }];
+            
+            UIAlertAction *portrait_NodelayWatch = [UIAlertAction actionWithTitle:@"全屏无延迟观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self nodelayWatchLive:NO];
             }];
 
             UIAlertAction *webWatch = [UIAlertAction actionWithTitle:@"web嵌入观看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                VHWebWatchLiveViewController *watchVC = [[VHWebWatchLiveViewController alloc] init];
-                watchVC.roomId = DEMO_Setting.watchActivityID;
-                watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
-                [self presentViewController:watchVC animated:YES completion:nil];
+                [self webViewWatchLive];
             }];
             
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-            [alertController addAction:landscapeWatch];
+            [alertController addAction:halfScreenWatch];
             [alertController addAction:portraitWatch];
+            [alertController addAction:halfScreen_NodelayWatch];
+            [alertController addAction:portrait_NodelayWatch];
             [alertController addAction:webWatch];
             [alertController addAction:cancelAction];
             [self presentViewController:alertController animated:YES completion:nil];
-
         }
             break;
         case 3://观看回放
         {
-            if (DEMO_Setting.watchActivityID.length<=0) {
-                VH_ShowToast(@"请在设置中输入活动ID");
-                return;
-            }
-            WatchPlayBackViewController * watchVC  =[[WatchPlayBackViewController alloc]init];
-            watchVC.roomId = DEMO_Setting.watchActivityID;
-            watchVC.kValue = DEMO_Setting.kValue;
-            watchVC.timeOut = DEMO_Setting.timeOut*1000;
-            watchVC.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:watchVC animated:YES completion:nil];
+            [self watchPlayBack];
         }
             break;
         default:
@@ -269,13 +370,11 @@
 - (IBAction)loginOrloginOutClick:(id)sender
 {
     if(self.loginBtn.selected) { //退出登录
-        UIWindow *window = [UIApplication sharedApplication].delegate.window;
-        [MBProgressHUD showHUDAddedTo:window animated:YES];
+        [ProgressHud showLoading];
         [VHallApi logout:^{
-            [MBProgressHUD hideHUDForView:window animated:YES];
+            [ProgressHud hideLoading];
             [self dismissViewControllerAnimated:YES completion:nil];
         } failure:^(NSError *error) {
-            [MBProgressHUD showHUDAddedTo:window animated:YES];
             VH_ShowToast(error.localizedDescription);
         }];
     }
@@ -308,18 +407,15 @@
 }
 
 #pragma mark -
--(BOOL)shouldAutorotate
-{
+- (BOOL)shouldAutorotate {
     return NO;
 }
 
--(UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
 
--(UIStatusBarStyle)preferredStatusBarStyle
-{
+- (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
 @end

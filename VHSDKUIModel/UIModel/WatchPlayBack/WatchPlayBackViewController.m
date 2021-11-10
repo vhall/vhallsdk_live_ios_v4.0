@@ -16,7 +16,6 @@
 #import "AnnouncementView.h"
 #import "DLNAView.h"
 #import "VHPlayerView.h"
-#import "MBProgressHUD.h"
 #import "UIAlertController+ITTAdditionsUIModel.h"
 
 #define RATEARR @[@1.0,@1.25,@1.5,@2.0,@0.5,@0.67,@0.8]//倍速播放循环顺序
@@ -158,7 +157,7 @@ static AnnouncementView* announcementView = nil;
 
 - (void)startPlayback
 {
-    [MBProgressHUD showHUDAddedTo:_moviePlayer.moviePlayerView animated:YES];
+    [ProgressHud showLoading];
     [_moviePlayer startPlayback:[self playParam]];
 }
 
@@ -222,8 +221,7 @@ static AnnouncementView* announcementView = nil;
     if(_moviePlayer.curDefinition == _leve)
         return;
     
-    [MBProgressHUD hideHUDForView:_moviePlayer.moviePlayerView animated:NO];
-    [MBProgressHUD showHUDAddedTo:_moviePlayer.moviePlayerView animated:YES];
+    [ProgressHud hideLoading];
     [_moviePlayer setCurDefinition:_leve];
     [_definitionBtn setImage:BundleUIImage(_videoLevePicArray[_moviePlayer.curDefinition]) forState:UIControlStateNormal];
     _playModelTemp=_moviePlayer.playMode;
@@ -424,7 +422,7 @@ static AnnouncementView* announcementView = nil;
 
 - (void)playError:(VHSaasLivePlayErrorType)livePlayErrorType info:(NSDictionary *)info;
 {
-    [MBProgressHUD hideHUDForView:self.moviePlayer.moviePlayerView animated:YES];
+    [ProgressHud hideLoading];
     NSString * msg = @"";
     switch (livePlayErrorType) {
         case VHSaasLivePlayGetUrlError:
@@ -534,14 +532,13 @@ static AnnouncementView* announcementView = nil;
 - (void)bufferStart:(VHallMoviePlayer *)moviePlayer info:(NSDictionary *)info
 {
     NSLog(@"bufferStart");
-    [MBProgressHUD hideHUDForView:_moviePlayer.moviePlayerView animated:NO];
-    [MBProgressHUD showHUDAddedTo:_moviePlayer.moviePlayerView animated:YES];
+    [ProgressHud showLoading];
 }
 
 - (void)bufferStop:(VHallMoviePlayer *)moviePlayer info:(NSDictionary *)info
 {
     NSLog(@"bufferStop");
-    [MBProgressHUD hideHUDForView:_moviePlayer.moviePlayerView animated:YES];
+    [ProgressHud hideLoading];
 }
 
 - (void)moviePlayer:(VHallMoviePlayer *)player statusDidChange:(VHPlayerState)state
@@ -556,7 +553,7 @@ static AnnouncementView* announcementView = nil;
             _playMaskView.playButton.selected  = NO;
             break;
         case VHPlayerStatePlaying:
-            [MBProgressHUD hideHUDForView:self.moviePlayer.moviePlayerView animated:YES];
+            [ProgressHud hideLoading];
             _playMaskView.playButton.selected  = YES;
             
             VHLog(@"播放中=== %f",[[NSDate date] timeIntervalSince1970]);

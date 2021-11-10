@@ -82,14 +82,17 @@
     }
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     //程序进入前后台监听
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
-- (void)appBecomeActive {
+//前台
+- (void)appWillEnterForeground {
     //推流
     [_interactiveRoom publishWithCameraView:_cameraView];
 }
+
+//后台
 - (void)appEnterBackground {
     //停止推流
     [_interactiveRoom unpublish];
@@ -481,13 +484,6 @@
         [_cameraView setDeviceOrientation:UIDeviceOrientationPortrait];
         _cameraView.transform = CGAffineTransformMakeScale(-1,1);//镜像
         _cameraView.beautifyEnable = _inavBeautifyFilterEnable;
-
-        //设置自己的视频流用户信息，使其他端可从视频流中获取该信息
-        NSDictionary *attributes = @{
-            @"nickName":[VHallApi currentUserNickName], //昵称
-            @"role":@(2), // 1主持人 2观众 3助理 4嘉宾
-            @"avatar":[VHallApi currentUserHeadUrl]}; //头像
-        [_cameraView setAttributes:[UIModelTools jsonStringWithObject:attributes]];
     }
     return _cameraView;
 }

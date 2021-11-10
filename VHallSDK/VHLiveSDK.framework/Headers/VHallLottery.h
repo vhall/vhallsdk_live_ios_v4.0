@@ -19,7 +19,7 @@
 @property (nonatomic, assign) NSInteger is_required;     ///<是否必填 1:必填 0:非必填
 @property (nonatomic, assign) NSInteger is_system;     ///<是否是系统选项，即非自定义项 1:是 0:否
 @property (nonatomic, assign) NSInteger rank;      ///<输入项显示位置，控制台添加的自定义项显示顺序，越大越靠后显示
-@property (nonatomic, copy) NSString *field_key;     ///<提交信息传参字典对应的key
+@property (nonatomic, copy) NSString *field_key;     ///<提交中奖信息传参字典对应的key
 @end
 
 @protocol VHallLotteryDelegate <NSObject>

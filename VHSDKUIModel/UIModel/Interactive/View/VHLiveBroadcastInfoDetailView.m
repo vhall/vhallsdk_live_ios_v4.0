@@ -98,6 +98,7 @@
         make.size.mas_equalTo(CGSizeMake(120, 120));
     }];
     
+    
     [self.resolutionLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self);
         make.right.equalTo(self).offset(-20);

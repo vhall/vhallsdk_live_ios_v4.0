@@ -50,17 +50,19 @@
 /// 获取支持的推流视频分辨率列表，如：[480x360,640x480,960x540...]
 + (NSArray<NSString *> *)availableVideoResolutions;
 
-/// 观众加入互动房间 (观众使用，注意必须先进行VHallMoviePlayer观看，参考demo使用)
+/// 观众进入互动房间
+/// <注意：如果为常规(非无延迟)互动直播，观众需要上麦（申请上麦被同意或被邀请上麦）后再进入互动房间，否则没有上麦直接进入非无延迟互动直播间，会占用房间用户名额，可能会导致其他嘉宾进房间失败>
 /// @param roomId 房间id，同活动id
 - (void)enterRoomWithRoomId:(NSString *)roomId;
 
-/// 观众加入互动房间 (观众使用，注意必须先进行VHallMoviePlayer观看，参考demo使用）
+/// 观众进入互动房间
+/// <注意：如果为常规(非无延迟)互动直播，观众需要上麦（申请上麦被同意或被邀请上麦）后再进入互动房间，否则没有上麦直接进入非无延迟互动直播间，会占用房间用户名额，可能会导致其他嘉宾进房间失败>
 /// @param params 参数
 /// params[@"id"]    = 房间id，同活动id
-/// params[@"pass"]  = 活动如果有K值或密码，则需要传
+/// params[@"pass"]  = 活动如果有K值或密码，则必传
 - (void)enterRoomWithParams:(NSDictionary *)params;
 
-/// 开始推流
+/// 开始推流 (加入房间成功以后方可调用)
 /// @param cameraView 需要推流的本地摄像头view
 - (BOOL)publishWithCameraView:(VHLocalRenderView * )cameraView;
 
@@ -72,18 +74,20 @@
 
 
 #pragma mark ------------------v6.1新增--------------------
-/// 嘉宾加入互动房间 (嘉宾使用)
+/// 嘉宾进入互动房间 (嘉宾使用)
 /// @param params 参数
 /// params[@"id"]    = 房间id，同活动id（必传）
 /// params[@"nickname"]  = 昵称（必传）
 /// params[@"password"]  = 口令（必传）
 /// params[@"avatar"]  = 头像url（可选）
-- (void)guestEnterRoomWithParams:(NSDictionary *)params success:(void(^)(VHRoomInfo *))success fail:(void(^)(NSError *))fail;
+- (void)guestEnterRoomWithParams:(NSDictionary *)params success:(void(^)(VHRoomInfo *info))success fail:(void(^)(NSError *error))fail;
 
-/// 主持人进入互动房间，并发起互动直播，收到"房间连接成功回调"后可开始推流（主持人使用）
+/// 主持人进入互动房间发起直播，收到"房间连接成功回调"后可开始推流（主持人使用）
 /// @param params 参数
 /// params[@"id"]    = 房间id，同活动id
-- (void)hostEnterRoomStartWithParams:(NSDictionary *)params success:(void(^)(VHRoomInfo *))success fail:(void(^)(NSError *))fail;
+/// params[@"nickname"]    = 昵称 (可选)
+/// params[@"email"]    = 邮箱（可选）
+- (void)hostEnterRoomStartWithParams:(NSDictionary *)params success:(void(^)(VHRoomInfo *info))success fail:(void(^)(NSError *error))fail;
 
 /// 设置是否开启观众举手申请上麦功能（主持人使用。若开启，则观众可举手申请上麦。）
 /// @param status 1：开启 0：关闭
@@ -227,7 +231,7 @@
 /// @param room room实例
 /// @param eventName 互动消息name，可为空
 /// @param attributes 互动消息体
-- (void)room:(VHRoom *)room interactiveMsgWithEventName:(NSString *)eventName attribute:(id)attributes __deprecated_msg("Use room:receiveMsgType:targetId: instead");
+- (void)room:(VHRoom *)room interactiveMsgWithEventName:(NSString *)eventName attribute:(id)attributes __deprecated_msg("Use room:receiveRoomMessage: instead");
 
 /// 自己下麦回调（主动下麦/被下麦都会触发此回调） v4.0.0+
 /// @param room room实例
@@ -263,10 +267,23 @@
 /// @param liveOver YES
 - (void)room:(VHRoom *)room liveOver:(BOOL)liveOver;
 
-#pragma mark ----------- v6.1新增 --------------
-/// 互动相关消息回调（推荐使用）
+
+/// 互动相关消息回调（推荐使用） v6.1及以上
 /// @param room room实例
 /// @param message 消息相关信息
 - (void)room:(VHRoom *)room receiveRoomMessage:(VHRoomMessage *)message;
+
+
+/// 房间人数改变回调 （目前仅支持真实人数改变触发此回调）
+/// @param online_real 真实在线用户数
+/// @param online_virtual 虚拟在线用户数
+- (void)onlineChangeRealNum:(NSUInteger)online_real virtualNum:(NSUInteger)online_virtual;
+
+
+/// 房间公告发布
+/// @param room room实例
+/// @param content 公告内容
+/// @param time 公告时间
+- (void)room:(VHRoom *)room announcement:(NSString *)content publishTime:(NSString *)time;
 
 @end

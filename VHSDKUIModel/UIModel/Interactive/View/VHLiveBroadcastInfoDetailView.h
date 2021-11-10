@@ -39,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///打开成员列表
 - (void)liveDetailViewOpenMemberListView:(VHLiveBroadcastInfoDetailView *)detailView;
 
+///打开文档列表
 - (void)liveDetailViewDocumentListBtnClick:(VHLiveBroadcastInfoDetailView *)detailView;
 
 ///演示文档id

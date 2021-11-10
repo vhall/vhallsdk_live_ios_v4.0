@@ -7,27 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0308E2CA2726D3FF0047F2A9 /* VHHalfWatchLiveVC_Nodelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308E2C72726D3FD0047F2A9 /* VHHalfWatchLiveVC_Nodelay.m */; };
 		031A39C226F5C77F00E7EDBE /* VHTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 031A39C026F5C77F00E7EDBE /* VHTextView.m */; };
 		031A39C626F5F6FC00E7EDBE /* ProgressHud.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F3A105742626DA6A00F73EEA /* ProgressHud.h */; };
-		033CE4802519961B001BBA7F /* VHPortraitWatchLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 033CE47F2519961B001BBA7F /* VHPortraitWatchLiveViewController.m */; };
-		033CE48225199D85001BBA7F /* VHPortraitWatchLiveViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 033CE47E2519961B001BBA7F /* VHPortraitWatchLiveViewController.h */; };
+		033CE4802519961B001BBA7F /* VHPortraitWatchLiveVC_Normal.m in Sources */ = {isa = PBXBuildFile; fileRef = 033CE47F2519961B001BBA7F /* VHPortraitWatchLiveVC_Normal.m */; };
+		033CE48225199D85001BBA7F /* VHPortraitWatchLiveVC_Normal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 033CE47E2519961B001BBA7F /* VHPortraitWatchLiveVC_Normal.h */; };
 		0341C567261E9E3900EF599B /* VHScrollTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0341C566261E9E3900EF599B /* VHScrollTextView.m */; };
 		0341C56B261ECD8700EF599B /* VHLiveWeakTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0341C569261ECD8600EF599B /* VHLiveWeakTimer.m */; };
+		03577B2A2730E9C6003296E6 /* VHPortraitWatchLiveVC_Nodelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 03577B292730E9C6003296E6 /* VHPortraitWatchLiveVC_Nodelay.m */; };
+		03577B2B2730E9D9003296E6 /* VHPortraitWatchLiveVC_Nodelay.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03577B282730E9C6003296E6 /* VHPortraitWatchLiveVC_Nodelay.h */; };
+		035AD5DE272027D5002515B7 /* PubLishLiveVC_Nodelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 035AD5DC272027D4002515B7 /* PubLishLiveVC_Nodelay.m */; };
+		035AD5DF272028FD002515B7 /* PubLishLiveVC_Nodelay.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 035AD5DD272027D5002515B7 /* PubLishLiveVC_Nodelay.h */; };
+		035AD5E427216021002515B7 /* PubLishLiveVC_Nodelay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 035AD5DB272027D4002515B7 /* PubLishLiveVC_Nodelay.xib */; };
 		0375075C251AF10000DBDF24 /* VHPortraitWatchLiveDecorateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0375075B251AF10000DBDF24 /* VHPortraitWatchLiveDecorateView.m */; };
 		03750761251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0375075F251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.m */; };
 		0375079B251B526500DBDF24 /* UIModelTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 0375079A251B526500DBDF24 /* UIModelTools.m */; };
 		0375079C251B553300DBDF24 /* UIModelTools.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03750799251B526500DBDF24 /* UIModelTools.h */; };
+		03A03A4B27296D58006F4388 /* VHWatchNodelayVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A03A4A27296D58006F4388 /* VHWatchNodelayVideoView.m */; };
+		03A03A4C27297125006F4388 /* VHHalfWatchLiveVC_Nodelay.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0308E2C92726D3FF0047F2A9 /* VHHalfWatchLiveVC_Nodelay.h */; };
+		03A03A4E272973A1006F4388 /* VHHalfWatchLiveVC_Nodelay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0308E2C82726D3FE0047F2A9 /* VHHalfWatchLiveVC_Nodelay.xib */; };
+		03B5F5A0272BFE6800A98E7B /* VHWatchNodelayDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B5F59F272BFE6800A98E7B /* VHWatchNodelayDocumentView.m */; };
 		03D099A7254A9301001F0F36 /* VHWebWatchLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D099A6254A9301001F0F36 /* VHWebWatchLiveViewController.m */; };
 		03D099A8254A93CB001F0F36 /* VHWebWatchLiveViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03D099A5254A9301001F0F36 /* VHWebWatchLiveViewController.h */; };
 		03E4A93225087659005BB8D8 /* WatchLiveLotteryWinListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4A93125087658005BB8D8 /* WatchLiveLotteryWinListView.m */; };
 		03E4A9352508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4A9342508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.m */; };
 		C0443B5E242839550063FB0D /* VHBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A18242839530063FB0D /* VHBaseViewController.m */; };
-		C0443B5F242839550063FB0D /* LaunchLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A1A242839530063FB0D /* LaunchLiveViewController.m */; };
+		C0443B5F242839550063FB0D /* PubLishLiveVC_Normal.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A1A242839530063FB0D /* PubLishLiveVC_Normal.m */; };
 		C0443B61242839550063FB0D /* VHChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A1D242839530063FB0D /* VHChatTableViewCell.m */; };
 		C0443B62242839550063FB0D /* VHActMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A1E242839530063FB0D /* VHActMsg.m */; };
 		C0443B64242839550063FB0D /* VHLiveChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443A20242839530063FB0D /* VHLiveChatView.m */; };
-		C0443B66242839550063FB0D /* LaunchLiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0443A22242839530063FB0D /* LaunchLiveViewController.xib */; };
-		C0443B67242839550063FB0D /* LaunchLiveViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0443A23242839530063FB0D /* LaunchLiveViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C0443B66242839550063FB0D /* PubLishLiveVC_Normal.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0443A22242839530063FB0D /* PubLishLiveVC_Normal.xib */; };
+		C0443B67242839550063FB0D /* PubLishLiveVC_Normal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0443A23242839530063FB0D /* PubLishLiveVC_Normal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C0443B69242839550063FB0D /* faceDelete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0443A27242839540063FB0D /* faceDelete@2x.png */; };
 		C0443B6A242839550063FB0D /* Expression_87@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0443A29242839540063FB0D /* Expression_87@2x.png */; };
 		C0443B6B242839550063FB0D /* Expression_50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0443A2A242839540063FB0D /* Expression_50@2x.png */; };
@@ -185,8 +195,8 @@
 		C0443C52242839550063FB0D /* VHPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B1A242839540063FB0D /* VHPlayerView.m */; };
 		C0443C53242839550063FB0D /* WatchPlayBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B1B242839540063FB0D /* WatchPlayBackViewController.m */; };
 		C0443C55242839550063FB0D /* VHBaseViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0443B1D242839540063FB0D /* VHBaseViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C0443C58242839550063FB0D /* WatchLiveViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0443B22242839540063FB0D /* WatchLiveViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C0443C5D242839550063FB0D /* WatchLiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0443B29242839540063FB0D /* WatchLiveViewController.xib */; };
+		C0443C58242839550063FB0D /* VHHalfWatchLiveVC_Normal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0443B22242839540063FB0D /* VHHalfWatchLiveVC_Normal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C0443C5D242839550063FB0D /* VHHalfWatchLiveVC_Normal.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0443B29242839540063FB0D /* VHHalfWatchLiveVC_Normal.xib */; };
 		C0443C5F242839550063FB0D /* WatchLiveChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0443B2D242839540063FB0D /* WatchLiveChatTableViewCell.xib */; };
 		C0443C60242839550063FB0D /* WatchLiveChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B2E242839540063FB0D /* WatchLiveChatTableViewCell.m */; };
 		C0443C62242839550063FB0D /* WatchLiveQATableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0443B31242839540063FB0D /* WatchLiveQATableViewCell.xib */; };
@@ -210,7 +220,7 @@
 		C0443C82242839550063FB0D /* WatchLiveLotteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B58242839550063FB0D /* WatchLiveLotteryViewController.m */; };
 		C0443C84242839550063FB0D /* WatchLiveLotteryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0443B5A242839550063FB0D /* WatchLiveLotteryViewController.xib */; };
 		C0443C85242839550063FB0D /* WatchLiveLotteryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B5B242839550063FB0D /* WatchLiveLotteryTableViewCell.m */; };
-		C0443C87242839550063FB0D /* WatchLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B5D242839550063FB0D /* WatchLiveViewController.m */; };
+		C0443C87242839550063FB0D /* VHHalfWatchLiveVC_Normal.m in Sources */ = {isa = PBXBuildFile; fileRef = C0443B5D242839550063FB0D /* VHHalfWatchLiveVC_Normal.m */; };
 		C0443C8A24283ACF0063FB0D /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = C0443C8824283ACF0063FB0D /* checked.png */; };
 		C0443C8B24283ACF0063FB0D /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = C0443C8924283ACF0063FB0D /* unchecked.png */; };
 		C052985A242A13D30029B29C /* libVHDLNA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C0529859242A13D30029B29C /* libVHDLNA.a */; };
@@ -245,7 +255,7 @@
 		F32B661426292EFF0067BD0C /* VHLiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F32B661326292EFF0067BD0C /* VHLiveModel.m */; };
 		F32B66162629435C0067BD0C /* VHInteractLiveVC_New.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F32B64E5262836420067BD0C /* VHInteractLiveVC_New.h */; };
 		F32B6618262944120067BD0C /* VHLiveBaseVC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F3A105332626906900F73EEA /* VHLiveBaseVC.h */; };
-		F32B66192629441A0067BD0C /* VHLiveBroadcastBaseVC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F3DCF2A02627ED970014D3F0 /* VHLiveBroadcastBaseVC.h */; };
+		F32B66192629441A0067BD0C /* VHInteractLiveBaseVC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F3DCF2A02627ED970014D3F0 /* VHInteractLiveBaseVC.h */; };
 		F337322D2632A14600124882 /* live_bottomTool_cancelClear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F33732292632A14600124882 /* live_bottomTool_cancelClear@2x.png */; };
 		F337322E2632A14600124882 /* live_bottomTool_clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F337322A2632A14600124882 /* live_bottomTool_clear@2x.png */; };
 		F337322F2632A14600124882 /* live_bottomTool_clear@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F337322B2632A14600124882 /* live_bottomTool_clear@3x.png */; };
@@ -459,7 +469,7 @@
 		F3CA152226329BAE00325F3D /* icon-文档工具hover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F3CA14F826329BAE00325F3D /* icon-文档工具hover@2x.png */; };
 		F3CA152326329BAE00325F3D /* icon-文档-单箭头@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F3CA14F926329BAE00325F3D /* icon-文档-单箭头@3x.png */; };
 		F3CA152426329BAE00325F3D /* icon-文档-颜色蓝@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F3CA14FA26329BAE00325F3D /* icon-文档-颜色蓝@2x.png */; };
-		F3DCF2A22627ED970014D3F0 /* VHLiveBroadcastBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F3DCF2A12627ED970014D3F0 /* VHLiveBroadcastBaseVC.m */; };
+		F3DCF2A22627ED970014D3F0 /* VHInteractLiveBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F3DCF2A12627ED970014D3F0 /* VHInteractLiveBaseVC.m */; };
 		F3DCF2A52627F02B0014D3F0 /* VHLiveBroadcastInfoDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3DCF2A42627F02B0014D3F0 /* VHLiveBroadcastInfoDetailView.m */; };
 		F3DCF2A8262806030014D3F0 /* VHLiveBroadcastInfoDetailTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3DCF2A7262806030014D3F0 /* VHLiveBroadcastInfoDetailTopView.m */; };
 		F3DCF2AB262806170014D3F0 /* VHLiveBroadcastInfoDetailBootomView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3DCF2AA262806170014D3F0 /* VHLiveBroadcastInfoDetailBootomView.m */; };
@@ -484,9 +494,12 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				03577B2B2730E9D9003296E6 /* VHPortraitWatchLiveVC_Nodelay.h in CopyFiles */,
+				03A03A4C27297125006F4388 /* VHHalfWatchLiveVC_Nodelay.h in CopyFiles */,
+				035AD5DF272028FD002515B7 /* PubLishLiveVC_Nodelay.h in CopyFiles */,
 				031A39C626F5F6FC00E7EDBE /* ProgressHud.h in CopyFiles */,
 				F3A360E2263AC77700306870 /* VHNavigationController.h in CopyFiles */,
-				F32B66192629441A0067BD0C /* VHLiveBroadcastBaseVC.h in CopyFiles */,
+				F32B66192629441A0067BD0C /* VHInteractLiveBaseVC.h in CopyFiles */,
 				F32B6618262944120067BD0C /* VHLiveBaseVC.h in CopyFiles */,
 				F32B66162629435C0067BD0C /* VHInteractLiveVC_New.h in CopyFiles */,
 				03D099A8254A93CB001F0F36 /* VHWebWatchLiveViewController.h in CopyFiles */,
@@ -494,30 +507,42 @@
 				C0A270962430AD59000D8708 /* UIView+ITTAdditionsUIModel.h in CopyFiles */,
 				C0443C2A242839550063FB0D /* UIModel.h in CopyFiles */,
 				C0443C55242839550063FB0D /* VHBaseViewController.h in CopyFiles */,
-				C0443C58242839550063FB0D /* WatchLiveViewController.h in CopyFiles */,
+				C0443C58242839550063FB0D /* VHHalfWatchLiveVC_Normal.h in CopyFiles */,
 				C0443C50242839550063FB0D /* WatchPlayBackViewController.h in CopyFiles */,
-				C0443B67242839550063FB0D /* LaunchLiveViewController.h in CopyFiles */,
-				033CE48225199D85001BBA7F /* VHPortraitWatchLiveViewController.h in CopyFiles */,
+				C0443B67242839550063FB0D /* PubLishLiveVC_Normal.h in CopyFiles */,
+				033CE48225199D85001BBA7F /* VHPortraitWatchLiveVC_Normal.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0308E2C72726D3FD0047F2A9 /* VHHalfWatchLiveVC_Nodelay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHHalfWatchLiveVC_Nodelay.m; sourceTree = "<group>"; };
+		0308E2C82726D3FE0047F2A9 /* VHHalfWatchLiveVC_Nodelay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHHalfWatchLiveVC_Nodelay.xib; sourceTree = "<group>"; };
+		0308E2C92726D3FF0047F2A9 /* VHHalfWatchLiveVC_Nodelay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHHalfWatchLiveVC_Nodelay.h; sourceTree = "<group>"; };
 		031A39C026F5C77F00E7EDBE /* VHTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHTextView.m; sourceTree = "<group>"; };
 		031A39C126F5C77F00E7EDBE /* VHTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHTextView.h; sourceTree = "<group>"; };
-		033CE47E2519961B001BBA7F /* VHPortraitWatchLiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveViewController.h; sourceTree = "<group>"; };
-		033CE47F2519961B001BBA7F /* VHPortraitWatchLiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHPortraitWatchLiveViewController.m; sourceTree = "<group>"; };
+		033CE47E2519961B001BBA7F /* VHPortraitWatchLiveVC_Normal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveVC_Normal.h; sourceTree = "<group>"; };
+		033CE47F2519961B001BBA7F /* VHPortraitWatchLiveVC_Normal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHPortraitWatchLiveVC_Normal.m; sourceTree = "<group>"; };
 		0341C565261E9E3900EF599B /* VHScrollTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHScrollTextView.h; sourceTree = "<group>"; };
 		0341C566261E9E3900EF599B /* VHScrollTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHScrollTextView.m; sourceTree = "<group>"; };
 		0341C569261ECD8600EF599B /* VHLiveWeakTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHLiveWeakTimer.m; sourceTree = "<group>"; };
 		0341C56A261ECD8600EF599B /* VHLiveWeakTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHLiveWeakTimer.h; sourceTree = "<group>"; };
+		03577B282730E9C6003296E6 /* VHPortraitWatchLiveVC_Nodelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveVC_Nodelay.h; sourceTree = "<group>"; };
+		03577B292730E9C6003296E6 /* VHPortraitWatchLiveVC_Nodelay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHPortraitWatchLiveVC_Nodelay.m; sourceTree = "<group>"; };
+		035AD5DB272027D4002515B7 /* PubLishLiveVC_Nodelay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PubLishLiveVC_Nodelay.xib; sourceTree = "<group>"; };
+		035AD5DC272027D4002515B7 /* PubLishLiveVC_Nodelay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PubLishLiveVC_Nodelay.m; sourceTree = "<group>"; };
+		035AD5DD272027D5002515B7 /* PubLishLiveVC_Nodelay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PubLishLiveVC_Nodelay.h; sourceTree = "<group>"; };
 		0375075A251AF10000DBDF24 /* VHPortraitWatchLiveDecorateView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveDecorateView.h; sourceTree = "<group>"; };
 		0375075B251AF10000DBDF24 /* VHPortraitWatchLiveDecorateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHPortraitWatchLiveDecorateView.m; sourceTree = "<group>"; };
 		0375075E251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHPortraitWatchLiveChatTableViewCell.h; sourceTree = "<group>"; };
 		0375075F251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHPortraitWatchLiveChatTableViewCell.m; sourceTree = "<group>"; };
 		03750799251B526500DBDF24 /* UIModelTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIModelTools.h; sourceTree = "<group>"; };
 		0375079A251B526500DBDF24 /* UIModelTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIModelTools.m; sourceTree = "<group>"; };
+		03A03A4927296D58006F4388 /* VHWatchNodelayVideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHWatchNodelayVideoView.h; sourceTree = "<group>"; };
+		03A03A4A27296D58006F4388 /* VHWatchNodelayVideoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHWatchNodelayVideoView.m; sourceTree = "<group>"; };
+		03B5F59E272BFE6800A98E7B /* VHWatchNodelayDocumentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHWatchNodelayDocumentView.h; sourceTree = "<group>"; };
+		03B5F59F272BFE6800A98E7B /* VHWatchNodelayDocumentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHWatchNodelayDocumentView.m; sourceTree = "<group>"; };
 		03D099A5254A9301001F0F36 /* VHWebWatchLiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHWebWatchLiveViewController.h; sourceTree = "<group>"; };
 		03D099A6254A9301001F0F36 /* VHWebWatchLiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHWebWatchLiveViewController.m; sourceTree = "<group>"; };
 		03E4A93025087658005BB8D8 /* WatchLiveLotteryWinListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WatchLiveLotteryWinListView.h; sourceTree = "<group>"; };
@@ -525,15 +550,15 @@
 		03E4A9332508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WatchLiveLotteryWriteWinInfoView.h; sourceTree = "<group>"; };
 		03E4A9342508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WatchLiveLotteryWriteWinInfoView.m; sourceTree = "<group>"; };
 		C0443A18242839530063FB0D /* VHBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHBaseViewController.m; sourceTree = "<group>"; };
-		C0443A1A242839530063FB0D /* LaunchLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchLiveViewController.m; sourceTree = "<group>"; };
+		C0443A1A242839530063FB0D /* PubLishLiveVC_Normal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PubLishLiveVC_Normal.m; sourceTree = "<group>"; };
 		C0443A1C242839530063FB0D /* VHLiveChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHLiveChatView.h; sourceTree = "<group>"; };
 		C0443A1D242839530063FB0D /* VHChatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHChatTableViewCell.m; sourceTree = "<group>"; };
 		C0443A1E242839530063FB0D /* VHActMsg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHActMsg.m; sourceTree = "<group>"; };
 		C0443A1F242839530063FB0D /* VHChatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHChatTableViewCell.h; sourceTree = "<group>"; };
 		C0443A20242839530063FB0D /* VHLiveChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHLiveChatView.m; sourceTree = "<group>"; };
 		C0443A21242839530063FB0D /* VHActMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHActMsg.h; sourceTree = "<group>"; };
-		C0443A22242839530063FB0D /* LaunchLiveViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchLiveViewController.xib; sourceTree = "<group>"; };
-		C0443A23242839530063FB0D /* LaunchLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchLiveViewController.h; sourceTree = "<group>"; };
+		C0443A22242839530063FB0D /* PubLishLiveVC_Normal.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PubLishLiveVC_Normal.xib; sourceTree = "<group>"; };
+		C0443A23242839530063FB0D /* PubLishLiveVC_Normal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PubLishLiveVC_Normal.h; sourceTree = "<group>"; };
 		C0443A24242839530063FB0D /* UIModel_PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIModel_PrefixHeader.pch; sourceTree = "<group>"; };
 		C0443A27242839540063FB0D /* faceDelete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "faceDelete@2x.png"; sourceTree = "<group>"; };
 		C0443A29242839540063FB0D /* Expression_87@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Expression_87@2x.png"; sourceTree = "<group>"; };
@@ -695,8 +720,8 @@
 		C0443B1B242839540063FB0D /* WatchPlayBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchPlayBackViewController.m; sourceTree = "<group>"; };
 		C0443B1C242839540063FB0D /* VHPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHPlayerView.h; sourceTree = "<group>"; };
 		C0443B1D242839540063FB0D /* VHBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHBaseViewController.h; sourceTree = "<group>"; };
-		C0443B22242839540063FB0D /* WatchLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchLiveViewController.h; sourceTree = "<group>"; };
-		C0443B29242839540063FB0D /* WatchLiveViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatchLiveViewController.xib; sourceTree = "<group>"; };
+		C0443B22242839540063FB0D /* VHHalfWatchLiveVC_Normal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHHalfWatchLiveVC_Normal.h; sourceTree = "<group>"; };
+		C0443B29242839540063FB0D /* VHHalfWatchLiveVC_Normal.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHHalfWatchLiveVC_Normal.xib; sourceTree = "<group>"; };
 		C0443B2C242839540063FB0D /* WatchLiveChatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchLiveChatTableViewCell.h; sourceTree = "<group>"; };
 		C0443B2D242839540063FB0D /* WatchLiveChatTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatchLiveChatTableViewCell.xib; sourceTree = "<group>"; };
 		C0443B2E242839540063FB0D /* WatchLiveChatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchLiveChatTableViewCell.m; sourceTree = "<group>"; };
@@ -737,7 +762,7 @@
 		C0443B5A242839550063FB0D /* WatchLiveLotteryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatchLiveLotteryViewController.xib; sourceTree = "<group>"; };
 		C0443B5B242839550063FB0D /* WatchLiveLotteryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchLiveLotteryTableViewCell.m; sourceTree = "<group>"; };
 		C0443B5C242839550063FB0D /* WatchLiveLotteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchLiveLotteryViewController.h; sourceTree = "<group>"; };
-		C0443B5D242839550063FB0D /* WatchLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchLiveViewController.m; sourceTree = "<group>"; };
+		C0443B5D242839550063FB0D /* VHHalfWatchLiveVC_Normal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHHalfWatchLiveVC_Normal.m; sourceTree = "<group>"; };
 		C0443C8824283ACF0063FB0D /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
 		C0443C8924283ACF0063FB0D /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		C04D57521E5D83B600F75A64 /* UIModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1030,8 +1055,8 @@
 		F3CA14F826329BAE00325F3D /* icon-文档工具hover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-文档工具hover@2x.png"; sourceTree = "<group>"; };
 		F3CA14F926329BAE00325F3D /* icon-文档-单箭头@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-文档-单箭头@3x.png"; sourceTree = "<group>"; };
 		F3CA14FA26329BAE00325F3D /* icon-文档-颜色蓝@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-文档-颜色蓝@2x.png"; sourceTree = "<group>"; };
-		F3DCF2A02627ED970014D3F0 /* VHLiveBroadcastBaseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHLiveBroadcastBaseVC.h; sourceTree = "<group>"; };
-		F3DCF2A12627ED970014D3F0 /* VHLiveBroadcastBaseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHLiveBroadcastBaseVC.m; sourceTree = "<group>"; };
+		F3DCF2A02627ED970014D3F0 /* VHInteractLiveBaseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHInteractLiveBaseVC.h; sourceTree = "<group>"; };
+		F3DCF2A12627ED970014D3F0 /* VHInteractLiveBaseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHInteractLiveBaseVC.m; sourceTree = "<group>"; };
 		F3DCF2A32627F02B0014D3F0 /* VHLiveBroadcastInfoDetailView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHLiveBroadcastInfoDetailView.h; sourceTree = "<group>"; };
 		F3DCF2A42627F02B0014D3F0 /* VHLiveBroadcastInfoDetailView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VHLiveBroadcastInfoDetailView.m; sourceTree = "<group>"; };
 		F3DCF2A6262806030014D3F0 /* VHLiveBroadcastInfoDetailTopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VHLiveBroadcastInfoDetailTopView.h; sourceTree = "<group>"; };
@@ -1102,8 +1127,10 @@
 		033CE48125199678001BBA7F /* FullScreenWatch */ = {
 			isa = PBXGroup;
 			children = (
-				033CE47E2519961B001BBA7F /* VHPortraitWatchLiveViewController.h */,
-				033CE47F2519961B001BBA7F /* VHPortraitWatchLiveViewController.m */,
+				033CE47E2519961B001BBA7F /* VHPortraitWatchLiveVC_Normal.h */,
+				033CE47F2519961B001BBA7F /* VHPortraitWatchLiveVC_Normal.m */,
+				03577B282730E9C6003296E6 /* VHPortraitWatchLiveVC_Nodelay.h */,
+				03577B292730E9C6003296E6 /* VHPortraitWatchLiveVC_Nodelay.m */,
 				0375075A251AF10000DBDF24 /* VHPortraitWatchLiveDecorateView.h */,
 				0375075B251AF10000DBDF24 /* VHPortraitWatchLiveDecorateView.m */,
 				0375075E251B2B1800DBDF24 /* VHPortraitWatchLiveChatTableViewCell.h */,
@@ -1124,9 +1151,12 @@
 		0361360525DF644300C5C029 /* HalfScreenWatch */ = {
 			isa = PBXGroup;
 			children = (
-				C0443B22242839540063FB0D /* WatchLiveViewController.h */,
-				C0443B5D242839550063FB0D /* WatchLiveViewController.m */,
-				C0443B29242839540063FB0D /* WatchLiveViewController.xib */,
+				C0443B22242839540063FB0D /* VHHalfWatchLiveVC_Normal.h */,
+				C0443B5D242839550063FB0D /* VHHalfWatchLiveVC_Normal.m */,
+				C0443B29242839540063FB0D /* VHHalfWatchLiveVC_Normal.xib */,
+				0308E2C92726D3FF0047F2A9 /* VHHalfWatchLiveVC_Nodelay.h */,
+				0308E2C72726D3FD0047F2A9 /* VHHalfWatchLiveVC_Nodelay.m */,
+				0308E2C82726D3FE0047F2A9 /* VHHalfWatchLiveVC_Nodelay.xib */,
 			);
 			path = HalfScreenWatch;
 			sourceTree = "<group>";
@@ -1140,6 +1170,17 @@
 			path = WebViewWatch;
 			sourceTree = "<group>";
 		};
+		03A03A4827296CFC006F4388 /* NodelayView */ = {
+			isa = PBXGroup;
+			children = (
+				03A03A4927296D58006F4388 /* VHWatchNodelayVideoView.h */,
+				03A03A4A27296D58006F4388 /* VHWatchNodelayVideoView.m */,
+				03B5F59E272BFE6800A98E7B /* VHWatchNodelayDocumentView.h */,
+				03B5F59F272BFE6800A98E7B /* VHWatchNodelayDocumentView.m */,
+			);
+			path = NodelayView;
+			sourceTree = "<group>";
+		};
 		C0443A17242839530063FB0D /* UIModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1149,7 +1190,7 @@
 				C0443AEB242839540063FB0D /* UIModel.h */,
 				C0443B21242839540063FB0D /* WatchLive */,
 				C0443B17242839540063FB0D /* WatchPlayBack */,
-				C0443A19242839530063FB0D /* LaunchLive */,
+				C0443A19242839530063FB0D /* PublishLive */,
 				C0443B1E242839540063FB0D /* Interactive */,
 				C0443A25242839540063FB0D /* Resources */,
 				C0443AEC242839540063FB0D /* libs */,
@@ -1157,15 +1198,18 @@
 			path = UIModel;
 			sourceTree = "<group>";
 		};
-		C0443A19242839530063FB0D /* LaunchLive */ = {
+		C0443A19242839530063FB0D /* PublishLive */ = {
 			isa = PBXGroup;
 			children = (
 				C0443A1B242839530063FB0D /* LiveView */,
-				C0443A23242839530063FB0D /* LaunchLiveViewController.h */,
-				C0443A1A242839530063FB0D /* LaunchLiveViewController.m */,
-				C0443A22242839530063FB0D /* LaunchLiveViewController.xib */,
+				C0443A23242839530063FB0D /* PubLishLiveVC_Normal.h */,
+				C0443A1A242839530063FB0D /* PubLishLiveVC_Normal.m */,
+				C0443A22242839530063FB0D /* PubLishLiveVC_Normal.xib */,
+				035AD5DD272027D5002515B7 /* PubLishLiveVC_Nodelay.h */,
+				035AD5DC272027D4002515B7 /* PubLishLiveVC_Nodelay.m */,
+				035AD5DB272027D4002515B7 /* PubLishLiveVC_Nodelay.xib */,
 			);
-			path = LaunchLive;
+			path = PublishLive;
 			sourceTree = "<group>";
 		};
 		C0443A1B242839530063FB0D /* LiveView */ = {
@@ -1437,6 +1481,7 @@
 		C0443B2A242839540063FB0D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				03A03A4827296CFC006F4388 /* NodelayView */,
 				0341C564261E9DEF00EF599B /* ScrollText */,
 				C0443B2B242839540063FB0D /* Chat */,
 				C0443B2F242839540063FB0D /* QA */,
@@ -1656,8 +1701,8 @@
 				F3A1052F26268F6D00F73EEA /* VHinteractiveViewController.m */,
 				F3A105332626906900F73EEA /* VHLiveBaseVC.h */,
 				F3A105342626906900F73EEA /* VHLiveBaseVC.m */,
-				F3DCF2A02627ED970014D3F0 /* VHLiveBroadcastBaseVC.h */,
-				F3DCF2A12627ED970014D3F0 /* VHLiveBroadcastBaseVC.m */,
+				F3DCF2A02627ED970014D3F0 /* VHInteractLiveBaseVC.h */,
+				F3DCF2A12627ED970014D3F0 /* VHInteractLiveBaseVC.m */,
 				F32B64E5262836420067BD0C /* VHInteractLiveVC_New.h */,
 				F32B64E6262836420067BD0C /* VHInteractLiveVC_New.m */,
 				F3A1057E2626F1FF00F73EEA /* VHDocListVC.h */,
@@ -2067,6 +2112,7 @@
 				C0443BA2242839550063FB0D /* Expression_84@2x.png in Resources */,
 				C0443C02242839550063FB0D /* 单视频关@3x.png in Resources */,
 				C0443C21242839550063FB0D /* 闪光关闭@2x.png in Resources */,
+				035AD5E427216021002515B7 /* PubLishLiveVC_Nodelay.xib in Resources */,
 				C0A26E2F242F0DDC000D8708 /* DLNA_seekbar@2x.png in Resources */,
 				C0443B6F242839550063FB0D /* Expression_74@2x.png in Resources */,
 				F3A10A3A26298824003552F8 /* icon-成员-主持人@2x.png in Resources */,
@@ -2123,6 +2169,7 @@
 				C0443C22242839550063FB0D /* 闪光关闭@3x.png in Resources */,
 				F3A109F026298824003552F8 /* icon-受限列表为空@3x.png in Resources */,
 				C0443BB0242839550063FB0D /* Expression_49@2x.png in Resources */,
+				03A03A4E272973A1006F4388 /* VHHalfWatchLiveVC_Nodelay.xib in Resources */,
 				F3A109E626298824003552F8 /* 公告@2x.png in Resources */,
 				F337322F2632A14600124882 /* live_bottomTool_clear@3x.png in Resources */,
 				C0443BBF242839550063FB0D /* Expression_1@2x.png in Resources */,
@@ -2227,7 +2274,7 @@
 				C0443BA8242839550063FB0D /* Expression_14@2x.png in Resources */,
 				F3A10A3F26298824003552F8 /* icon-jpg@3x.png in Resources */,
 				C0443BF9242839550063FB0D /* 适应屏幕@3x.png in Resources */,
-				C0443C5D242839550063FB0D /* WatchLiveViewController.xib in Resources */,
+				C0443C5D242839550063FB0D /* VHHalfWatchLiveVC_Normal.xib in Resources */,
 				F3A109EE26298824003552F8 /* icon_笑脸@2x.png in Resources */,
 				F3A109D426298824003552F8 /* live_bottomTool_doc@3x.png in Resources */,
 				C0443B8F242839550063FB0D /* Expression_70@2x.png in Resources */,
@@ -2356,7 +2403,7 @@
 				F3CA150026329BAE00325F3D /* icon-文档-线条@2x.png in Resources */,
 				C0443BA9242839550063FB0D /* Expression_69@2x.png in Resources */,
 				F3A10A0726298824003552F8 /* live_topTool_beautys_on@3x.png in Resources */,
-				C0443B66242839550063FB0D /* LaunchLiveViewController.xib in Resources */,
+				C0443B66242839550063FB0D /* PubLishLiveVC_Normal.xib in Resources */,
 				C0A26E29242F0DDC000D8708 /* DLNA_hide@3x.png in Resources */,
 				F3A109DF26298824003552F8 /* 插图_中奖_信息错误@2x.png in Resources */,
 				F3CA151F26329BAE00325F3D /* icon-文档-正方形@3x.png in Resources */,
@@ -2408,12 +2455,13 @@
 				F3A10554262693C000F73EEA /* VHInteractContentView.m in Sources */,
 				F33732332632A97600124882 /* VHNavigationController.m in Sources */,
 				F3A1054B262692F700F73EEA /* VHLiveLimitCell.m in Sources */,
-				C0443B5F242839550063FB0D /* LaunchLiveViewController.m in Sources */,
+				C0443B5F242839550063FB0D /* PubLishLiveVC_Normal.m in Sources */,
 				F3A1057C2626E7EB00F73EEA /* VHRefreshFooter.m in Sources */,
 				F3A105452626929E00F73EEA /* VHLiveMemberAndLimitBaseCell.m in Sources */,
 				F3A105832626F23000F73EEA /* VHDocListModel.m in Sources */,
+				03577B2A2730E9C6003296E6 /* VHPortraitWatchLiveVC_Nodelay.m in Sources */,
 				031A39C226F5C77F00E7EDBE /* VHTextView.m in Sources */,
-				033CE4802519961B001BBA7F /* VHPortraitWatchLiveViewController.m in Sources */,
+				033CE4802519961B001BBA7F /* VHPortraitWatchLiveVC_Normal.m in Sources */,
 				C0443C6A242839550063FB0D /* SZQuestionCell.m in Sources */,
 				C0443C69242839550063FB0D /* SZConfigure.m in Sources */,
 				03E4A9352508A6E2005BB8D8 /* WatchLiveLotteryWriteWinInfoView.m in Sources */,
@@ -2426,7 +2474,9 @@
 				F3A1057D2626E7EB00F73EEA /* VHRefreshHeader.m in Sources */,
 				F3A10A462629B36B003552F8 /* VHLiveStateView.m in Sources */,
 				C0443C33242839550063FB0D /* UIView+ITTAdditionsUIModel.m in Sources */,
+				0308E2CA2726D3FF0047F2A9 /* VHHalfWatchLiveVC_Nodelay.m in Sources */,
 				F3A105762626DA6A00F73EEA /* ProgressHud.m in Sources */,
+				03B5F5A0272BFE6800A98E7B /* VHWatchNodelayDocumentView.m in Sources */,
 				C0443C63242839550063FB0D /* WatchLiveQATableViewCell.m in Sources */,
 				F3DCF2AB262806170014D3F0 /* VHLiveBroadcastInfoDetailBootomView.m in Sources */,
 				C0443C85242839550063FB0D /* WatchLiveLotteryTableViewCell.m in Sources */,
@@ -2455,9 +2505,10 @@
 				F3A1056E2626D78C00F73EEA /* VHActionSheet.m in Sources */,
 				F3A105612626CE8900F73EEA /* VHSegmentView.m in Sources */,
 				F3A105802626F1FF00F73EEA /* VHDocListVC.m in Sources */,
+				035AD5DE272027D5002515B7 /* PubLishLiveVC_Nodelay.m in Sources */,
 				C0443B61242839550063FB0D /* VHChatTableViewCell.m in Sources */,
 				F3A1053B2626914E00F73EEA /* VHLiveMemberListView.m in Sources */,
-				F3DCF2A22627ED970014D3F0 /* VHLiveBroadcastBaseVC.m in Sources */,
+				F3DCF2A22627ED970014D3F0 /* VHInteractLiveBaseVC.m in Sources */,
 				0375079B251B526500DBDF24 /* UIModelTools.m in Sources */,
 				03D099A7254A9301001F0F36 /* VHWebWatchLiveViewController.m in Sources */,
 				F3DCF2B1262815490014D3F0 /* VHLiveInfoDetailChatCell.m in Sources */,
@@ -2465,7 +2516,7 @@
 				F32B64E7262836420067BD0C /* VHInteractLiveVC_New.m in Sources */,
 				C0443C7F242839550063FB0D /* SignView.m in Sources */,
 				F32B660F262850920067BD0C /* VHLiveDocContentView.m in Sources */,
-				C0443C87242839550063FB0D /* WatchLiveViewController.m in Sources */,
+				C0443C87242839550063FB0D /* VHHalfWatchLiveVC_Normal.m in Sources */,
 				F3A1054E2626934D00F73EEA /* VHLiveMemberModel.m in Sources */,
 				F3A2CFD22631679100B4A23C /* VHDocBrushPopView.m in Sources */,
 				F3A10551262693A600F73EEA /* HLHorizontalPageLayout.m in Sources */,
@@ -2477,6 +2528,7 @@
 				F3DCF2A8262806030014D3F0 /* VHLiveBroadcastInfoDetailTopView.m in Sources */,
 				F3A1053E2626917E00F73EEA /* VHLiveMemberAndLimitView.m in Sources */,
 				F3A105412626924700F73EEA /* VHLiveLimitListView.m in Sources */,
+				03A03A4B27296D58006F4388 /* VHWatchNodelayVideoView.m in Sources */,
 				F3A1093A26297FB4003552F8 /* VHAlertView.m in Sources */,
 				C0443B64242839550063FB0D /* VHLiveChatView.m in Sources */,
 				C0443C7E242839550063FB0D /* MicCountDownView.m in Sources */,

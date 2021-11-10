@@ -6,11 +6,11 @@
 //  Copyright © 2021 www.vhall.com. All rights reserved.
 //
 
-#import "VHLiveBroadcastBaseVC.h"
+#import "VHInteractLiveBaseVC.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VHInteractLiveVC_New : VHLiveBroadcastBaseVC
+@interface VHInteractLiveVC_New : VHInteractLiveBaseVC
 
 @property (nonatomic, assign) NSInteger inav_num;     ///<当前活动支持的最大连麦人数，如：6代表1v5，16代表1v15...
 

@@ -14,7 +14,6 @@
 #import "WatchLiveLotteryWinListView.h"
 #import "WatchLiveLotteryWriteWinInfoView.h"
 #import "Masonry.h"
-#import "MBProgressHUD.h"
 
 @interface WatchLiveLotteryViewController () <WatchLiveLotteryWriteWinInfoViewDelegate>
 /**  ----------抽奖结果View---------- */
@@ -131,14 +130,13 @@
 - (void)lotteryResultBtnClick:(UIButton *)button {
     if([button.titleLabel.text isEqualToString:@"立即领奖"]) { //领奖
         if(self.startLotteryModel.is_new) { //新版抽奖，填写项通过接口获取
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            [ProgressHud showLoading];
             //获取输入项配置
             [_lottery getSubmitConfigSuccess:^(NSArray<VHallLotterySubmitConfig *> *submitList) {
                 self.writeWinInfoView.submitConfigArr = submitList;
                 self.writeWinInfoView.hidden = NO;
-                [MBProgressHUD hideHUDForView:self.view animated:NO];
+                [ProgressHud hideLoading];
             } failed:^(NSDictionary *failedData) {
-                [MBProgressHUD hideHUDForView:self.view animated:NO];
                 VH_ShowToast(failedData[@"content"]);
             }];
         }else { //老版抽奖，填写项固定只能提交姓名、电话
@@ -167,13 +165,12 @@
         
         if(self.endLotteryModel.is_new) { //新版抽奖，请求接口获取中奖名单
             __weak __typeof(self)weakSelf = self;
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            [ProgressHud showLoading];
             [_lottery getLotteryWinListSuccess:^(NSArray<VHallLotteryResultModel *> *submitList) {
-                [MBProgressHUD hideHUDForView:weakSelf.view animated:NO];
+                [ProgressHud hideLoading];
                 //获取中奖名单
                 [weakSelf.winListView setLotteryPrizeInfo:self.endLotteryModel.prizeInfo winList:submitList];
             } failed:^(NSDictionary *failedData) {
-                [MBProgressHUD hideHUDForView:weakSelf.view animated:NO];
                 VH_ShowToast(failedData[@"content"]);
             }];
         }else { //老版抽奖，无奖品信息，从抽奖结束消息里获取中奖名单
@@ -187,7 +184,7 @@
 
 //提交中奖信息
 - (void)writeWinInfoView:(WatchLiveLotteryWriteWinInfoView *)writeWinInfoView submitWinInfo:(NSDictionary *)param {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [ProgressHud showLoading];
     [_lottery submitLotteryInfo:param success:^{
         //提交成功
         self.writeWinInfoView.hidden = YES;
@@ -196,9 +193,9 @@
         self.lotteryResultText.textColor = MakeColorRGB(0xFC5659);
         self.lotteryResultBtn.hidden = (self.endLotteryModel.is_new && self.endLotteryModel.publish_winner == NO);
         [self.lotteryResultBtn setTitle:@"查看中奖名单" forState:UIControlStateNormal];
-        [MBProgressHUD hideHUDForView:self.view animated:NO];
+        [ProgressHud hideLoading];
     } failed:^(NSDictionary *failedData) {
-        [MBProgressHUD hideHUDForView:self.view animated:NO];
+        [ProgressHud hideLoading];
         [UIAlertController showAlertControllerTitle:@"信息提交失败" msg:failedData[@"content"] btnTitle:@"确定" callBack:nil];
     }];
 }

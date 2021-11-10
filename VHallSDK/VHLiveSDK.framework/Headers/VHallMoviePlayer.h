@@ -19,7 +19,7 @@
 /// 代理对象
 @property (nonatomic, weak) id <VHallMoviePlayerDelegate> delegate;
 
-/// 设置链接的超时时间 默认6000毫秒，单位为毫秒  MP4点播 最小10000毫秒
+/// 设置链接的超时时间 默认5000毫秒，单位为毫秒  MP4点播 最小10000毫秒
 @property (nonatomic, assign) int timeout;
 
 /// 设置RTMP 的缓冲时间 默认 6秒 单位为秒 必须>0 值越小延时越小,卡顿增加

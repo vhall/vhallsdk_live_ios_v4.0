@@ -82,10 +82,10 @@
     DEMO_Setting.account  = _accountTextField.text;
     DEMO_Setting.password = _passwordTextField.text;
     __weak typeof(self) weekself = self;
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [ProgressHud showLoading];
     [VHallApi loginWithAccount:DEMO_Setting.account password:DEMO_Setting.password success:^{
         
-        [MBProgressHUD hideHUDForView:weekself.view animated:YES];
+        [ProgressHud hideLoading];
         VHLog(@"Account: %@ userID:%@",[VHallApi currentAccount],[VHallApi currentUserID]);
         VH_ShowToast(@"登录成功");
         VHHomeViewController *homeVC=[[VHHomeViewController alloc] init];
@@ -94,10 +94,7 @@
         
     } failure:^(NSError * error) {
         VHLog(@"登录失败%@",error);
-        dispatch_async(dispatch_get_main_queue(), ^{
-             [MBProgressHUD hideHUDForView:weekself.view animated:YES];
-            VH_ShowToast(error.domain);
-        });
+        VH_ShowToast(error.domain);
     }];
 }
 
@@ -113,10 +110,10 @@
     DEMO_Setting.third_avatar = self.thirdAvatarTextField.text;
 
     __weak typeof(self) weekself = self;
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [ProgressHud showLoading];
     [VHallApi loaginWithThirdUserId:DEMO_Setting.third_Id nickName:DEMO_Setting.third_nickName avatar:DEMO_Setting.third_avatar success:^{
 
-        [MBProgressHUD hideHUDForView:weekself.view animated:YES];
+        [ProgressHud hideLoading];
         VHLog(@"Account: %@ userID:%@",[VHallApi currentAccount],[VHallApi currentUserID]);
         VH_ShowToast(@"登录成功");
         
@@ -126,25 +123,10 @@
     } failure:^(NSError *error) {
 
         VHLog(@"登录失败%@",error);
-        dispatch_async(dispatch_get_main_queue(), ^{
-             [MBProgressHUD hideHUDForView:weekself.view animated:YES];
-            VH_ShowToast(error.domain);
-        });
+        VH_ShowToast(error.domain);
     }];
 }
 
-//- (IBAction)guestCLick:(id)sender
-//{
-//    if([DEMO_AppKey isEqualToString:@"替换成您自己的AppKey"])//此处只用于提示信息判断，只替换CONSTS.h中的AppKey即可
-//    {
-//        [self showMsg:@"请填写CONSTS.h中的AppKey" afterDelay:1.5];
-//        return;
-//    }
-//
-//    VHHomeViewController *homeVC=[[VHHomeViewController alloc] init];
-//    homeVC.modalPresentationStyle = UIModalPresentationFullScreen;
-//    [self presentViewController:homeVC animated:YES completion:nil];
-//}
 
 //注册账号登录
 - (IBAction)accountLoginBtnClick:(UIButton *)sender {

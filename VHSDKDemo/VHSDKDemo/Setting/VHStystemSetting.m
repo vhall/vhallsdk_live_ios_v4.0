@@ -96,7 +96,7 @@ static VHStystemSetting *_sharedSetting = nil;
             _audioBitRate = 64;
         }
         if(_videoCaptureFPS <10)
-            _videoCaptureFPS =  15;
+            _videoCaptureFPS =  10;
         if(_videoCaptureFPS >30)
             _videoCaptureFPS = 30;
         if(_bufferTimes <=0)

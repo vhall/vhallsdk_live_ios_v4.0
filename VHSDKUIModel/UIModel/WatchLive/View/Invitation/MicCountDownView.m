@@ -21,8 +21,6 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        
-        
         self.button = [UIButton buttonWithType:UIButtonTypeCustom];
         self.button.titleLabel.font = [UIFont systemFontOfSize:10.0];
         self.button.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -112,16 +110,9 @@
 - (void)stopCountDown {
     [self.button setTitle:@" " forState:UIControlStateNormal];
     [self.button setBackgroundImage:BundleUIImage(@"icon_video_upper wheat") forState:UIControlStateNormal];
-    
     self.button.selected = NO;
-
     [self removeTimer];
 }
 
-
-- (void)dealloc {
-    
-    [self removeTimer];
-}
 
 @end

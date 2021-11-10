@@ -35,6 +35,11 @@
 
 @implementation VHPortraitWatchLiveDecorateView
 
+- (void)dealloc
+{
+    [_upMicBtnView stopCountDown];
+}
+
 - (instancetype)initWithDelegate:(id<VHPortraitWatchLiveDecorateViewDelegate>)delegate
 {
     self = [super init];
@@ -125,11 +130,13 @@
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     //判断是否有需要响应的交互视图
-    UIView *hitTestView = [self.delegate decorateViewHitTestEventView];
-    if(hitTestView && hitTestView.userInteractionEnabled == YES && hitTestView.hidden == NO && hitTestView.alpha >= 0.01) {
-        CGPoint testViewPoint = [self convertPoint:point toView:hitTestView];
-        if ([hitTestView pointInside:testViewPoint withEvent:event]) {
-            return [hitTestView hitTest:testViewPoint withEvent:event];
+    if([self.delegate respondsToSelector:@selector(decorateViewHitTestEventView)]) {
+        UIView *hitTestView = [self.delegate decorateViewHitTestEventView];
+        if(hitTestView && hitTestView.userInteractionEnabled == YES && hitTestView.hidden == NO && hitTestView.alpha >= 0.01) {
+            CGPoint testViewPoint = [self convertPoint:point toView:hitTestView];
+            if ([hitTestView pointInside:testViewPoint withEvent:event]) {
+                return [hitTestView hitTest:testViewPoint withEvent:event];
+            }
         }
     }
     return [super hitTest:point withEvent:event];

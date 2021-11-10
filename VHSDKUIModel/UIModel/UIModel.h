@@ -12,9 +12,9 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "UIView+ITTAdditionsUIModel.h"
-#import "WatchLiveViewController.h"
+#import "VHHalfWatchLiveVC_Normal.h"
 #import "WatchPlayBackViewController.h"
-#import "LaunchLiveViewController.h"
+#import "PubLishLiveVC_Normal.h"
 #import "UIModelTools.h"
 #import "ProgressHud.h"
 

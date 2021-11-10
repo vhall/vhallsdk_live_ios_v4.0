@@ -171,11 +171,11 @@
         [weakSelf.tempTextField endEditing:YES];
         [weakSelf.pickerView showPickerView:weakSelf.view];
     };
-    item13 = [VHSettingTextFieldItem  itemWithTitle:@"视频码率(kpbs)"];
+    item13 = [VHSettingTextFieldItem  itemWithTitle:@"视频码率(kbps)"];
     item13.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.videoBitRate];
     item14 = [VHSettingTextFieldItem  itemWithTitle:@"视频帧率(fps)"];
     item14.text =  [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.videoCaptureFPS];
-    item15 = [VHSettingTextFieldItem  itemWithTitle:@"音频码率(kpbs)"];
+    item15 = [VHSettingTextFieldItem  itemWithTitle:@"音频码率(kbps)"];
     item15.text = [NSString stringWithFormat:@"%ld",(long)DEMO_Setting.audioBitRate];
     item16 = [VHSettingTextFieldItem  itemWithTitle:@"主播昵称"];
     item16.text = DEMO_Setting.live_nick_name;
@@ -207,7 +207,7 @@
 - (void)setupGroup3
 {
     VHSettingGroup *group= [VHSettingGroup groupWithItems:@[item13]];
-    group.headerTitle = @"观众互动直播";
+    group.headerTitle = @"观众互动";
     [self.groups addObject:group];
 }
 

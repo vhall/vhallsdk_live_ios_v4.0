@@ -48,12 +48,12 @@
 /**
  * 是否被禁言（YES：自己被禁言或全体被禁言，NO：自己未被禁言且全体未被禁言）
  */
-@property (nonatomic, assign,readonly) BOOL isSpeakBlocked;
+@property (nonatomic, assign ,readonly) BOOL isSpeakBlocked;
 
 /**
  * 是否全体被禁言
  */
-@property (nonatomic, assign,readonly) BOOL isAllSpeakBlocked;
+@property (nonatomic, assign ,readonly) BOOL isAllSpeakBlocked;
 
 /**
  * 发送聊天内容
