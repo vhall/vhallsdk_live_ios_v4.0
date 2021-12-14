@@ -34,7 +34,15 @@ pod 'VHLiveSDK'<br>
 pod 'VHLiveSDK_Interactive'<br>
 
 ### 版本更新信息
+
+#### 版本 v6.2.2 更新时间：2021.12.14
+
+更新内容：<br>
+1、增加对关键词过滤的支持<br>
+2、优化部分代码<br>
+
 #### 版本 v6.2.1 更新时间：2021.11.10
+
 更新内容：<br>
 1、支持发起和观看无延迟直播<br>
 2、修复已知问题<br>
@@ -211,7 +219,7 @@ VHallSDK                微吼 SaaS 直播 SDK<br>
 3、选择target 为 VHSDKDemo4.x 直接编译运行<br>
 4、登录<br>
 5、设置相关参数，发直播需要设置有效期内的直播token (AccessToken) 需要用 API 生成<br>
- 
+
 
 
 ### 两种引入App 工程方式
